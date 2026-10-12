@@ -64,6 +64,12 @@ def init_db():
         """
     with get_connection() as connection:
         connection.execute(create_table_sql)
+        connection.execute(
+            "CREATE TABLE IF NOT EXISTS reels (id TEXT PRIMARY KEY, payload TEXT NOT NULL)"
+        )
+        connection.execute(
+            "CREATE TABLE IF NOT EXISTS reel_hire_requests (id TEXT PRIMARY KEY, payload TEXT NOT NULL)"
+        )
 
 
 def save_creator_upload(creator_name, file_name, file_type, score, status, allowed_to_dashboard):

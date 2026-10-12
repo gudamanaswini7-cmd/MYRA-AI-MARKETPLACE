@@ -108,6 +108,7 @@ class MarketplaceAppTests(unittest.TestCase):
                 self.assertEqual(embedded.status_code, 200)
                 self.assertIn(b'data-account-email="maya@example.com"', embedded.data)
                 self.assertIn(b'data-account-name="Maya Chen"', embedded.data)
+                self.assertIn(b'id="scrollNext"', embedded.data)
 
     def test_creator_upload_binds_reel_to_signed_in_account(self):
         with tempfile.TemporaryDirectory() as temp_dir:

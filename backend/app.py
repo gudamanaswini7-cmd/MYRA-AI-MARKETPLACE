@@ -9,7 +9,13 @@ from pathlib import Path
 from flask import Flask, jsonify, redirect, render_template, request, send_from_directory, url_for
 from werkzeug.utils import secure_filename
 
-from backend.database import init_db
+from backend.database import USE_POSTGRES, get_connection, init_db
+from backend.reels_storage import (
+    cloudinary_configured,
+    cloudinary_delivery_url,
+    create_upload_signature,
+    validate_cloudinary_asset,
+)
 from backend.routes.marketplace import marketplace_bp
 from backend.routes.ai_provider import ai_provider_bp
 from backend.routes.match_score import match_score_bp
@@ -37,6 +43,24 @@ REELSLY_SEED = [
 
 
 def load_reels_db():
+    if USE_POSTGRES:
+        with get_connection() as connection:
+            reels = [
+                json.loads(row["payload"])
+                for row in connection.execute("SELECT payload FROM reels").fetchall()
+            ]
+            hire_requests = [
+                json.loads(row["payload"])
+                for row in connection.execute("SELECT payload FROM reel_hire_requests").fetchall()
+            ]
+
+        if not reels and REELSLY_DB.exists():
+            legacy = json.loads(REELSLY_DB.read_text(encoding="utf-8"))
+            reels = legacy.get("reels", [])
+            hire_requests = legacy.get("hire_requests", [])
+            save_reels_db({"reels": reels, "hire_requests": hire_requests})
+        return {"reels": reels, "hire_requests": hire_requests}
+
     if not REELSLY_DB.exists():
         reels = []
         for i, (fname, creator, caption, likes) in enumerate(REELSLY_SEED):
@@ -66,6 +90,21 @@ def load_reels_db():
 
 
 def save_reels_db(db):
+    if USE_POSTGRES:
+        placeholder = "%s"
+        with get_connection() as connection:
+            connection.executemany(
+                f"""INSERT INTO reels (id, payload) VALUES ({placeholder}, {placeholder})
+                    ON CONFLICT (id) DO UPDATE SET payload = excluded.payload""",
+                [(reel["id"], json.dumps(reel)) for reel in db.get("reels", [])],
+            )
+            connection.executemany(
+                f"""INSERT INTO reel_hire_requests (id, payload) VALUES ({placeholder}, {placeholder})
+                    ON CONFLICT (id) DO UPDATE SET payload = excluded.payload""",
+                [(item["id"], json.dumps(item)) for item in db.get("hire_requests", [])],
+            )
+        return
+
     REELSLY_DB.parent.mkdir(exist_ok=True)
     REELSLY_DB.write_text(json.dumps(db, indent=2), encoding="utf-8")
 
@@ -192,6 +231,36 @@ def create_app(test_config=None):
             return jsonify(error="Not found"), 404
         return send_from_directory(str(REELSLY_STATIC), filename)
 
+    @app.get("/api/reels/storage")
+    def reels_storage_config():
+        if cloudinary_configured() and USE_POSTGRES:
+            return jsonify(mode="shared")
+        if os.environ.get("VERCEL") == "1" or USE_POSTGRES or cloudinary_configured():
+            return jsonify(
+                mode="unavailable",
+                error="Persistent Reels need both a managed PostgreSQL DATABASE_URL and Cloudinary credentials.",
+            )
+        return jsonify(mode="local")
+
+    @app.post("/api/reels/upload-signature")
+    def sign_reel_upload():
+        if not cloudinary_configured() or not USE_POSTGRES:
+            return jsonify(
+                error="Cross-device reel uploads require managed PostgreSQL and Cloudinary to be configured."
+            ), 503
+        data = request.get_json(silent=True) or {}
+        try:
+            signature = create_upload_signature(
+                str(data.get("filename") or ""),
+                REELSLY_ALLOWED,
+                REELSLY_IMAGE_EXTENSIONS,
+                REELSLY_AUDIO_EXTENSIONS,
+                REELSLY_FILE_EXTENSIONS,
+            )
+        except (ValueError, RuntimeError) as error:
+            return jsonify(error=str(error)), 400
+        return jsonify(signature)
+
     @app.get("/api/reels")
     def list_reels():
         with app.config["REELSLY_LOCK"]:
@@ -200,6 +269,60 @@ def create_app(test_config=None):
             reels = [r for r in reels if r["saved"]]
         public_reels = [{key: value for key, value in reel.items() if key != "creator_email"} for reel in reels]
         return jsonify(sorted(public_reels, key=lambda r: r["created"], reverse=True))
+
+    @app.post("/api/reels")
+    def create_cloud_reel():
+        if not cloudinary_configured() or not USE_POSTGRES:
+            return jsonify(error="Persistent Reels storage is not configured."), 503
+        data = request.get_json(silent=True) or {}
+        try:
+            asset = validate_cloudinary_asset(data.get("asset"), data.get("filename"))
+        except ValueError as error:
+            return jsonify(error=str(error)), 400
+
+        original_name = secure_filename(asset["original_filename"])
+        extension = Path(original_name).suffix.lower()
+        if extension not in REELSLY_ALLOWED:
+            return jsonify(error="This file type is not supported."), 400
+        media_kind = (
+            "video" if extension in REELSLY_VIDEO_EXTENSIONS else
+            "image" if extension in REELSLY_IMAGE_EXTENSIONS else
+            "audio" if extension in REELSLY_AUDIO_EXTENSIONS else
+            "file"
+        )
+        expected_resource = (
+            "image" if media_kind == "image" else
+            "raw" if media_kind == "file" else
+            "video"
+        )
+        if asset["resource_type"] != expected_resource:
+            return jsonify(error="The uploaded media type does not match its Cloudinary asset."), 400
+
+        creator_name = str(data.get("creator") or "you").strip()[:30]
+        reel = {
+            "id": uuid.uuid4().hex[:10],
+            "video_url": cloudinary_delivery_url(asset, media_kind),
+            "media_url": cloudinary_delivery_url(asset, media_kind),
+            "media_kind": media_kind,
+            "media_type": mimetypes.guess_type(original_name)[0] or "application/octet-stream",
+            "media_name": original_name,
+            "cloudinary_public_id": asset["public_id"],
+            "creator": creator_name,
+            "creator_profile": sanitize_creator_profile(
+                json.dumps(data.get("creator_profile") or {}), creator_name
+            ),
+            "creator_email": str(data.get("creator_email") or "").strip().casefold(),
+            "caption": str(data.get("caption") or "").strip()[:200],
+            "likes": 0,
+            "liked": False,
+            "saved": False,
+            "created": datetime.now().isoformat(),
+        }
+        with app.config["REELSLY_LOCK"]:
+            db = load_reels_db()
+            db["reels"].append(reel)
+            save_reels_db(db)
+        return jsonify(reel), 201
 
     @app.post("/api/reels/<reel_id>/like")
     def toggle_like(reel_id):
@@ -290,6 +413,12 @@ def create_app(test_config=None):
 
     @app.post("/api/upload")
     def upload_reel():
+        if cloudinary_configured() and USE_POSTGRES:
+            return jsonify(error="Use the persistent Cloudinary upload flow."), 400
+        if os.environ.get("VERCEL") == "1" or USE_POSTGRES:
+            return jsonify(
+                error="Uploads are disabled until Cloudinary media storage is configured for cross-device access."
+            ), 503
         f = request.files.get("media") or request.files.get("video")
         if not f or not f.filename:
             return jsonify(error="Choose an image, video, audio, or document file."), 400

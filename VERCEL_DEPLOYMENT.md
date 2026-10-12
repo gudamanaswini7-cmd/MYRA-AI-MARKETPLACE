@@ -14,8 +14,41 @@
 5. In Project Settings -> Environment Variables, add `SECRET_KEY` with a long, random private value. Redeploy after adding it.
 6. Deploy and test `/`, `/health`, `/marketplace`, `/work-twin/`, `/simulator/`, and the API interactions.
 
-## Important limitations
-- The included SQLite setup is not durable on Vercel. For persistent creator submissions and other saved records, migrate to a managed PostgreSQL database and configure its connection string.
+## Persistent Reels storage
+
+Reels uploaded to a local development server are stored in local files and are not
+shared with other devices. For a deployed app, Reels media must be uploaded to
+Cloudinary and reel metadata must be stored in managed PostgreSQL.
+
+1. Create a managed PostgreSQL database (Neon or Supabase are supported through
+   `DATABASE_URL`).
+2. Create a Cloudinary account and copy its cloud name, API key, and API secret.
+3. In Vercel Project Settings → Environment Variables, set `DATABASE_URL`,
+   `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, and
+   `SECRET_KEY` for Production (and Preview if needed). Keep the API secret private.
+4. Redeploy. New Reels uploads go directly from the browser to Cloudinary; metadata
+   and hire requests go to PostgreSQL. Video playback URLs request H.264/AAC MP4
+   delivery for broad browser compatibility. If shared storage is not configured,
+   deployed uploads fail with a clear error instead of appearing to succeed temporarily.
+5. To migrate existing local Reels and media, configure those same environment
+   variables in PowerShell and run:
+
+   ```powershell
+   .venv\Scripts\python.exe scripts\migrate_reels_to_cloudinary.py
+   ```
+
+   Run this from the project root on a machine that still has the old
+   `reelsly\data\db.json` and media files. The script preserves reel IDs and
+   existing hire requests, uploads local media to Cloudinary, and stores updated
+   URLs in PostgreSQL. It leaves already-migrated Cloudinary media unchanged.
+
+The `Scroll` control is rendered inside the Reels iframe because Reels uses its own
+scrollable feed. Its visibility and next/previous action are based on that feed,
+not the outer marketplace page scrollbar.
+
+## Other persistence notes
+- The included SQLite setup is not durable on Vercel. Persistent creator submissions
+  and other saved records also require managed PostgreSQL.
 - Gemini-backed portfolio summaries and brief enhancement are available through `/api/ai/generate`. Set `GEMINI_API_KEY` to enable live Gemini calls; without it the app labels the response as a demo fallback. Creator matching remains explainable rule-based scoring, not an AI claim.
 - Never put private API keys in frontend JavaScript.
 
@@ -27,6 +60,6 @@ The app supports both local SQLite and managed PostgreSQL. To persist creator su
 2. Copy its pooled/standard PostgreSQL connection string. Keep it private.
 3. In Vercel, open Project Settings → Environment Variables and add `DATABASE_URL` with that connection string for Production (and Preview if needed).
 4. Keep `SECRET_KEY` configured as a private environment variable.
-5. Redeploy. On startup, the app creates the `creator_uploads` table if it does not exist.
+5. Redeploy. On startup, the app creates the required tables if they do not exist.
 
 If `DATABASE_URL` is absent, the app falls back to SQLite. On Vercel this fallback uses `/tmp` and is temporary; it is only suitable for a demo. Existing SQLite data is not automatically migrated to PostgreSQL.

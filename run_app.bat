@@ -2,8 +2,6 @@
 setlocal ENABLEEXTENSIONS
 cd /d "%~dp0"
 
-set "PORT=5001"
-set "APP_URL=http://127.0.0.1:%PORT%"
 set "PYTHON_EXE=%CD%\.venv\Scripts\python.exe"
 
 if not exist "%PYTHON_EXE%" (
@@ -33,8 +31,26 @@ if errorlevel 1 (
 	)
 )
 
+set "PORT_FILE=%TEMP%\myra-port-%RANDOM%-%RANDOM%.txt"
+"%PYTHON_EXE%" -c "import socket; s=socket.socket(); s.bind(('', 0)); print(s.getsockname()[1]); s.close()" > "%PORT_FILE%"
+if errorlevel 1 (
+	del /q "%PORT_FILE%" >nul 2>nul
+	echo Could not select an available local port.
+	pause
+	exit /b 1
+)
+set /p PORT=<"%PORT_FILE%"
+del /q "%PORT_FILE%" >nul 2>nul
+if not defined PORT (
+	echo Could not select an available local port.
+	pause
+	exit /b 1
+)
+set "APP_URL=http://127.0.0.1:%PORT%"
+
 cls
 echo Starting MYRA app...
+echo Using available port %PORT%
 echo Opening %APP_URL%
 
 rem Allow the Flask server a moment to start before opening the browser

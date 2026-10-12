@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Reelsly</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v='20261013-cloud-reels') }}">
 </head>
 <body>
   <div class="phone">
@@ -18,6 +18,7 @@
     </header>
 
     <main id="feed" class="feed"></main>
+    <button id="scrollNext" class="scroll-btn" type="button" aria-label="Scroll to next reel" title="Scroll to next reel">↓</button>
     <div id="empty" class="empty" hidden></div>
     <div id="toast" class="toast"></div>
 
@@ -34,6 +35,6 @@
       </form>
     </dialog>
   </div>
-  <script src="{{ url_for('static', filename='app.js') }}"></script>
+  <script src="{{ url_for('static', filename='app.js', v='20261013-cloud-reels') }}"></script>
 </body>
 </html>

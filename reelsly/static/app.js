@@ -1,4 +1,5 @@
 const feed = document.getElementById("feed");
+const scrollNext = document.getElementById("scrollNext");
 const emptyEl = document.getElementById("empty");
 const toastEl = document.getElementById("toast");
 const isBrandDashboard = () => new URLSearchParams(window.location.search).get("view") === "brand" || document.body.dataset.dashboard === "brand";
@@ -11,21 +12,62 @@ const toast = (m) => { toastEl.textContent = m; toastEl.classList.add("show");
 const esc = (s) => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const api = (url, opts) => fetch(url, opts).then(r => r.json());
 
-// Autoplay only the reel that is mostly in view
+function showPlaybackMessage(button, message, canRetry) {
+  button.textContent = message;
+  button.disabled = !canRetry;
+  button.hidden = false;
+}
+
+// Autoplay the reel that occupies most of the feed viewport.
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     const v = e.target.querySelector("video");
     const audio = e.target.querySelector("audio");
     if (audio && !e.isIntersecting) audio.pause();
     if (!v) return;
-    if (e.isIntersecting) { v.muted = muted; v.play().catch(() => {}); }
+    if (e.intersectionRatio >= 0.5) {
+      v.muted = muted;
+      v.play().catch(error => {
+        if (error.name === "NotAllowedError") {
+          showPlaybackMessage(e.target.querySelector(".playback-message"), "Tap to play", true);
+        }
+      });
+    }
     else { v.pause(); v.currentTime = 0; }
   });
-}, { threshold: 0.7 });
+}, { root: feed, threshold: [0, 0.5] });
 
 function appendReelBatch() {
   sourceReels.forEach(r => { const el = buildReel(r); feed.appendChild(el); observer.observe(el); });
+  updateScrollButton();
 }
+
+function updateScrollButton() {
+  const reels = feed.querySelectorAll(".reel");
+  const canScroll = reels.length > 1 || (tab === "all" && sourceReels.length > 0);
+  const currentIndex = Math.round(feed.scrollTop / Math.max(feed.clientHeight, 1));
+  const atSavedEnd = tab === "saved" && currentIndex >= reels.length - 1;
+  scrollNext.hidden = !canScroll;
+  scrollNext.textContent = atSavedEnd ? "↑" : "↓";
+  scrollNext.setAttribute("aria-label", atSavedEnd ? "Return to first reel" : "Scroll to next reel");
+  scrollNext.title = atSavedEnd ? "Return to first reel" : "Scroll to next reel";
+}
+
+scrollNext.addEventListener("click", () => {
+  const reels = feed.querySelectorAll(".reel");
+  if (!reels.length) return;
+  const currentIndex = Math.min(reels.length - 1, Math.round(feed.scrollTop / Math.max(feed.clientHeight, 1)));
+  let nextIndex = currentIndex + 1;
+  if (nextIndex >= reels.length) {
+    if (tab === "saved") nextIndex = 0;
+    else {
+      appendReelBatch();
+      nextIndex = reels.length;
+    }
+  }
+  feed.scrollTo({ top: nextIndex * feed.clientHeight, behavior: "smooth" });
+  updateScrollButton();
+});
 
 let pendingReelIndex = null, pendingReelTimer;
 feed.addEventListener("wheel", (event) => {
@@ -44,6 +86,7 @@ feed.addEventListener("wheel", (event) => {
 }, { passive: false });
 feed.addEventListener("scroll", () => {
   if (tab === "all" && sourceReels.length && feed.scrollHeight - feed.scrollTop - feed.clientHeight < feed.clientHeight / 2) appendReelBatch();
+  updateScrollButton();
 }, { passive: true });
 
 function buildReel(r) {
@@ -58,7 +101,7 @@ function buildReel(r) {
       ? `<div class="file-card audio-card"><span class="file-icon" aria-hidden="true">♪</span><strong>${mediaName}</strong><audio controls preload="metadata" src="${mediaUrl}"></audio></div>`
       : mediaKind === "file"
         ? `<a class="file-card" href="${mediaUrl}" download="${mediaName}"><span class="file-icon" aria-hidden="true">↧</span><strong>${mediaName}</strong><small>Download file</small></a>`
-        : `<video src="${mediaUrl}" loop playsinline muted preload="metadata"></video>`;
+        : `<video src="${mediaUrl}" autoplay loop playsinline webkit-playsinline muted preload="auto"></video><button class="playback-message" type="button" hidden></button>`;
   el.innerHTML = `
     ${mediaContent}
     <div class="shade"></div>
@@ -72,6 +115,23 @@ function buildReel(r) {
       ${mediaKind === "video" ? `<button class="act mute" title="Sound">${muted ? "🔇" : "🔊"}</button>` : ""}
     </div>`;
   const video = el.querySelector("video");
+  const playbackMessage = el.querySelector(".playback-message");
+  if (video) {
+    video.addEventListener("error", () => {
+      showPlaybackMessage(playbackMessage, "Video unavailable — upload MP4 (H.264)", false);
+    });
+    video.addEventListener("playing", () => { playbackMessage.hidden = true; });
+    playbackMessage.onclick = () => {
+      video.muted = muted;
+      video.play().catch(error => {
+        showPlaybackMessage(
+          playbackMessage,
+          error.name === "NotAllowedError" ? "Tap to allow playback" : "Unsupported video — upload MP4 (H.264)",
+          error.name === "NotAllowedError"
+        );
+      });
+    };
+  }
   const likeBtn = el.querySelector(".like"), saveBtn = el.querySelector(".save");
   const hireBtn = el.querySelector(".hire");
   const count = el.querySelector(".count"), burst = el.querySelector(".burst");
@@ -169,6 +229,7 @@ async function load() {
   else appendReelBatch();
   feed.scrollTop = 0;
   pendingReelIndex = null;
+  updateScrollButton();
 }
 
 document.querySelectorAll(".tab").forEach(b => b.onclick = () => {
@@ -189,12 +250,62 @@ form.onsubmit = async (e) => {
   let creatorProfile = {};
   try { creatorProfile = JSON.parse(localStorage.getItem(`forma:creator-profile:${accountEmail}`) || "{}"); } catch {}
   postData.set("creator_profile", JSON.stringify(creatorProfile));
-  const res = await fetch("/api/upload", { method: "POST", body: postData });
-  const data = await res.json();
-  btn.disabled = false; btn.textContent = "Post";
-  if (!res.ok) return toast(data.error || "Upload failed");
-  modal.close(); form.reset(); form.elements.creator_email.value = accountEmail; toast("Post shared!");
-  document.querySelector('[data-tab="all"]').click();
+  try {
+    const storageResponse = await fetch("/api/reels/storage");
+    const storage = await storageResponse.json();
+    if (!storageResponse.ok || storage.mode === "unavailable") {
+      throw new Error(storage.error || "Persistent reel storage is not configured.");
+    }
+
+    if (storage.mode === "shared") {
+      const file = form.elements.media.files[0];
+      const signatureResponse = await fetch("/api/reels/upload-signature", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename: file.name }),
+      });
+      const signature = await signatureResponse.json();
+      if (!signatureResponse.ok) throw new Error(signature.error || "Could not prepare the cloud upload.");
+
+      btn.textContent = "Uploading…";
+      const cloudForm = new FormData();
+      cloudForm.append("file", file);
+      for (const key of ["api_key", "timestamp", "signature", "folder", "public_id"]) {
+        cloudForm.append(key, signature[key]);
+      }
+      const cloudResponse = await fetch(signature.upload_url, { method: "POST", body: cloudForm });
+      const asset = await cloudResponse.json();
+      if (!cloudResponse.ok) throw new Error(asset.error?.message || "Cloud media upload failed.");
+
+      btn.textContent = "Saving…";
+      const saveResponse = await fetch("/api/reels", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          asset,
+          filename: file.name,
+          creator: postData.get("creator"),
+          creator_email: postData.get("creator_email"),
+          caption: postData.get("caption"),
+          creator_profile: creatorProfile,
+        }),
+      });
+      const savedReel = await saveResponse.json();
+      if (!saveResponse.ok) throw new Error(savedReel.error || "Could not save the reel record.");
+    } else {
+      const response = await fetch("/api/upload", { method: "POST", body: postData });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Upload failed.");
+    }
+
+    modal.close(); form.reset(); form.elements.creator_email.value = accountEmail; toast("Post shared!");
+    document.querySelector('[data-tab="all"]').click();
+  } catch (error) {
+    toast(error.message || "Upload failed.");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Post";
+  }
 };
 
 load();

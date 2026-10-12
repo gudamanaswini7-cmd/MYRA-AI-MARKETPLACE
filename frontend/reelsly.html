@@ -7,7 +7,7 @@
   <script>
     if (window.top === window.self) window.location.replace("/marketplace");
   </script>
-  <link rel="stylesheet" href="/reels-static/style.css">
+  <link rel="stylesheet" href="/reels-static/style.css?v=20261013-cloud-reels">
 </head>
 <body data-dashboard="{{ dashboard }}" data-account-email="{{ account_email }}" data-account-name="{{ account_name }}">
   <div class="phone">
@@ -21,6 +21,7 @@
     </header>
 
     <main id="feed" class="feed"></main>
+    <button id="scrollNext" class="scroll-btn" type="button" aria-label="Scroll to next reel" title="Scroll to next reel">↓</button>
     <div id="empty" class="empty" hidden></div>
     <div id="toast" class="toast"></div>
 
@@ -42,6 +43,6 @@
       <div id="creatorProfileContent"></div>
     </dialog>
   </div>
-  <script src="/reels-static/app.js"></script>
+  <script src="/reels-static/app.js?v=20261013-cloud-reels"></script>
 </body>
 </html>

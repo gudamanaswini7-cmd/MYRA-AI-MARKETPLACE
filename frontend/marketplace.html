@@ -328,6 +328,9 @@
     @media(max-width:1050px){.ai-market-grid{grid-template-columns:1fr}}
     @media(max-width:700px){.ai-market-insights-heading{align-items:flex-start;flex-direction:column}.market-demand-row{grid-template-columns:minmax(84px,.8fr) minmax(50px,1fr) 25px;gap:7px}.market-trend-chart{height:145px}}
     .theme-toggle{font-size:19px;line-height:1}
+    .scroll-fab{position:fixed;right:26px;bottom:26px;width:52px;height:52px;border:0;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#495cf0,#8a4ae3);color:white;font-size:22px;box-shadow:0 16px 34px rgba(79,90,219,.33);cursor:pointer;opacity:0;transform:translateY(12px) scale(.94);transition:opacity .2s ease,transform .2s ease,box-shadow .2s ease;pointer-events:none;z-index:1000}
+    .scroll-fab.visible{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+    .scroll-fab:hover{box-shadow:0 18px 36px rgba(79,90,219,.4)}
   </style>
 </head>
 <body>
@@ -360,6 +363,7 @@
         <main class="onboarding-main"><div class="onboarding-kicker" id="onboardingKicker"></div><h1 id="onboardingTitle"></h1><p class="onboarding-copy" id="onboardingCopy"></p><div class="onboarding-steps" id="onboardingSteps"></div><div class="onboarding-actions"><button class="primary" type="button" id="onboardingContinue"></button><span class="onboarding-note">Your workspace will be ready when you are.</span></div><div class="onboarding-visual"><span><strong id="onboardingVisualTitle"></strong><small id="onboardingVisualCopy"></small></span></div></main>
       </section>
 
+  <button class="scroll-fab" id="scrollFab" type="button" aria-label="Scroll to top">↑</button>
   <div class="app hidden" id="appView">
     <aside class="sidebar">
       <div class="side-logo"><span class="brand-symbol">✳</span><span>MYRA<small>AI Marketplace</small></span></div>
@@ -384,7 +388,24 @@
     const onboardingView=document.querySelector('#onboardingView');
     const appView=document.querySelector('#appView');
     const themeToggle=document.querySelector('#themeToggle');
+    const scrollFab=document.querySelector('#scrollFab');
     function setTheme(theme){const isDark=theme==='dark';document.body.dataset.theme=isDark?'dark':'light';themeToggle.textContent=isDark?'☼':'☾';themeToggle.setAttribute('aria-label',`Switch to ${isDark?'light':'dark'} theme`);themeToggle.title=`Switch to ${isDark?'light':'dark'} theme`;themeToggle.setAttribute('aria-pressed',String(isDark));document.querySelector('meta[name="theme-color"]').content=isDark?'#0b1424':'#f3f6fb';localStorage.setItem('myra:theme',isDark?'dark':'light')}
+    function updateScrollFab(){
+      const isAppVisible=!appView.classList.contains('hidden');
+      const isScrollable=document.documentElement.scrollHeight>window.innerHeight+20;
+      const isScrolledDown=window.scrollY>180;
+      scrollFab.classList.toggle('visible',isAppVisible&&isScrollable);
+      scrollFab.textContent=isScrolledDown?'↑':'↓';
+      scrollFab.setAttribute('aria-label',isScrolledDown?'Scroll to top':'Scroll down');
+      scrollFab.title=isScrolledDown?'Scroll to top':'Scroll down';
+    }
+    window.addEventListener('scroll', updateScrollFab, { passive: true });
+    window.addEventListener('resize',updateScrollFab);
+    scrollFab.addEventListener('click',()=>{
+      const isScrolledDown=window.scrollY>180;
+      window.scrollTo({top:isScrolledDown?0:document.documentElement.scrollHeight,behavior:'smooth'});
+    });
+    updateScrollFab();
     setTheme(localStorage.getItem('myra:theme')||'light');
     themeToggle.addEventListener('click',()=>setTheme(document.body.dataset.theme==='dark'?'light':'dark'));
     const roleButtons=[...document.querySelectorAll('.role-option')];
@@ -415,8 +436,8 @@
     function accountKey(email,role){return `forma:onboarded:${role}:${email.trim().toLowerCase()}`}
     function cleanOverviewKey(email,role){return `forma:clean-overview:${role}:${email.trim().toLowerCase()}`}
     function showOnboarding(name){const creator=selectedRole==='creator';document.querySelector('#onboardingKicker').textContent=creator?'YOUR CREATOR STUDIO':'YOUR BUYER SPACE';document.querySelector('#onboardingTitle').textContent=creator?`Welcome, ${name}. Start with what you make.`:`Welcome, ${name}. Find a better way to work.`;document.querySelector('#onboardingCopy').textContent=creator?'Set up your space at your own pace. Start by shaping your creator profile and preparing the first thing you want to share.':'Your MYRA space is ready. Start by exploring independent tools, comparing what fits, and saving the ones you want to revisit.';const steps=creator?[['✦','Shape your creator profile','Tell buyers what you make and what makes it useful.'],['＋','Prepare your first listing','Add a tool or product when it is ready to share.'],['↗','Meet your first customers','Your listings can reach buyers across the marketplace.']]:[['⌕','Explore the marketplace','Browse practical tools made by independent creators.'],['◈','Find your fit','Compare tools by category and the work they help with.'],['♡','Save what stands out','Keep your favorites together for later.']];document.querySelector('#onboardingSteps').innerHTML=steps.map(([icon,title,copy])=>`<article class="onboarding-step"><span>${icon}</span><strong>${title}</strong><p>${copy}</p></article>`).join('');document.querySelector('#onboardingContinue').textContent=creator?'Create your first listing →':'Explore the marketplace →';document.querySelector('#onboardingVisualTitle').textContent=creator?'Your ideas belong here.':'Find tools that fit the way you work.';document.querySelector('#onboardingVisualCopy').textContent=creator?'Make a profile, share your work, and grow from your first listing.':'Discover thoughtful tools from independent creators.';loginView.classList.add('hidden');appView.classList.add('hidden');onboardingView.classList.remove('hidden');}
-    function openDashboard(page='Overview'){onboardingView.classList.add('hidden');loginView.classList.add('hidden');appView.classList.remove('hidden');currentPage=page;renderApp()}
-    function returnToLogin(){appView.classList.add('hidden');onboardingView.classList.add('hidden');loginView.classList.remove('hidden');document.querySelector('#loginForm').reset();selectedRole='brand';roleButtons.forEach(button=>button.classList.toggle('active',button.dataset.role===selectedRole));continueButton.innerHTML='Continue as a brand <span aria-hidden="true">→</span>'}
+    function openDashboard(page='Overview'){onboardingView.classList.add('hidden');loginView.classList.add('hidden');appView.classList.remove('hidden');currentPage=page;renderApp();requestAnimationFrame(updateScrollFab)}
+    function returnToLogin(){appView.classList.add('hidden');onboardingView.classList.add('hidden');loginView.classList.remove('hidden');updateScrollFab();document.querySelector('#loginForm').reset();selectedRole='brand';roleButtons.forEach(button=>button.classList.toggle('active',button.dataset.role===selectedRole));continueButton.innerHTML='Continue as a brand <span aria-hidden="true">→</span>'}
     document.querySelector('#loginForm').addEventListener('submit',event=>{event.preventDefault();activeEmail=document.querySelector('#emailInput').value.trim().toLowerCase();const name=activeEmail.split('@')[0].replace(/[._-]+/g,' ').trim()||'Jordan Davis';const displayName=name.replace(/\b\w/g,char=>char.toUpperCase());document.querySelector('#userName').textContent=displayName;document.querySelector('#userAvatar').textContent=name.split(/\s+/).map(part=>part[0]).join('').slice(0,2).toUpperCase();document.querySelector('#userType').textContent=selectedRole==='brand'?'Brand account':'Creator account';if(localStorage.getItem(accountKey(activeEmail,selectedRole))){isNewUser=Boolean(localStorage.getItem(cleanOverviewKey(activeEmail,selectedRole)));openDashboard()}else{isNewUser=true;showOnboarding(displayName);document.querySelector('#onboardingContinue').textContent='Go to my overview →'}});
     document.querySelector('#onboardingContinue').addEventListener('click',()=>{localStorage.setItem(accountKey(activeEmail,selectedRole),'1');localStorage.setItem(cleanOverviewKey(activeEmail,selectedRole),'1');isNewUser=true;openDashboard('Overview')});
     document.querySelector('#onboardingSignout').addEventListener('click',returnToLogin);
@@ -485,6 +506,7 @@
       }
       if(currentPage==='Overview'){workspace.querySelector('.hero')?.insertAdjacentHTML('afterend',renderMarketInsights())}
       bindWorkspace();
+      requestAnimationFrame(updateScrollFab);
     }
     function renderCurrentPage(){if(currentPage==='Scroll')return '';if(isNewUser&&currentPage==='Overview')return renderCleanOverview();if(selectedRole==='brand'&&(currentPage==='Search Creator'||currentPage==='Saved Creators'))return renderSearchCreators(currentPage==='Saved Creators');if(selectedRole==='creator'&&currentPage==='Settings')return renderCreatorProfile();if(selectedRole==='creator'&&currentPage==='My Portfolio')return renderCreatorPortfolio();if(selectedRole==='creator'&&currentPage==='AI Simulator')return renderCreatorAiSimulator();if(selectedRole==='creator'&&currentPage==='Find Projects')return renderCreatorProjects();if(selectedRole==='creator'&&currentPage==='Applications')return renderCreatorApplications();if(selectedRole==='creator'&&currentPage==='Earnings')return renderCreatorEarnings();const pages=selectedRole==='brand'?brandPageInfo:creatorPageInfo;if(pages[currentPage])return renderSectionPage(currentPage,pages[currentPage]);return selectedRole==='brand'?renderBrand():renderCreator()}
     function renderCreatorProfile(){return `<section class="hero creator"><div class="hero-copy"><div class="eyebrow">YOUR CREATOR STUDIO</div><h1>My Profile</h1><p>Help brands understand your work, strengths, and the projects you want to take on.</p></div><div class="hero-art" aria-hidden="true">✦</div></section><section class="panel"><div class="panel-title"><h3>Creator details</h3></div><form id="creatorProfileForm"><label class="field"><span>Creator name</span><input name="creatorName" type="text" required></label><label class="field"><span>Profile headline</span><input name="headline" type="text" placeholder="e.g. Product designer and AI builder"></label><label class="field"><span>Skills</span><input name="skills" type="text" placeholder="e.g. Python, design, video editing"></label><label class="field"><span>AI tools and models</span><input name="tools" type="text" placeholder="e.g. Gemini, Figma, Blender, Midjourney"></label><label class="field"><span>Delivery formats you support</span><input name="formats" type="text" placeholder="e.g. PNG, MP4, PDF, HTML/CSS/JS"></label><label class="field"><span>Portfolio link</span><input name="portfolio" type="url" placeholder="https://"></label><button class="primary" type="submit" style="max-width:240px">Save profile</button></form></section>`}

@@ -11,11 +11,16 @@ body { background:#050508; color:#fff; font-family:system-ui,-apple-system,"Sego
 .tab { background:none; border:0; color:#ddd; padding:6px 14px; border-radius:16px; font-weight:600; cursor:pointer; }
 .tab.active { background:#fff; color:#000; }
 .post-btn { width:36px; height:36px; border-radius:50%; border:0; background:var(--accent); color:#fff; font-size:22px; cursor:pointer; }
-.scroll-btn { border:0; border-radius:999px; background:rgba(255,255,255,.12); color:#fff; padding:8px 12px; font-weight:700; cursor:pointer; box-shadow:0 8px 24px rgba(0,0,0,.25); }
+.scroll-btn { position:absolute; z-index:20; top:50%; left:14px; transform:translateY(-50%); width:42px; height:50px; display:grid; place-items:center; border:1px solid rgba(255,255,255,.28); border-radius:999px; background:rgba(20,20,28,.72); color:#fff; font-size:22px; font-weight:700; cursor:pointer; box-shadow:0 8px 24px rgba(0,0,0,.3); backdrop-filter:blur(8px); }
+.scroll-btn[hidden] { display:none; }
+.scroll-btn:hover { background:rgba(70,75,115,.9); }
 .feed { height:100%; overflow-y:scroll; scroll-snap-type:y mandatory; scrollbar-width:none; }
 .feed::-webkit-scrollbar { display:none; }
 .reel { position:relative; height:100vh; scroll-snap-align:start; scroll-snap-stop:always; background:#000; }
 .reel video, .post-media { display:block; width:100%; height:100%; object-fit:cover; }
+.playback-message { position:absolute; z-index:5; top:50%; left:50%; transform:translate(-50%,-50%); max-width:calc(100% - 36px); border:1px solid rgba(255,255,255,.35); border-radius:999px; padding:11px 18px; background:rgba(12,16,24,.82); color:#fff; font:600 13px system-ui,-apple-system,"Segoe UI",sans-serif; text-align:center; cursor:pointer; backdrop-filter:blur(8px); }
+.playback-message:disabled { cursor:default; }
+.playback-message[hidden] { display:none; }
 .file-card { position:absolute; inset:18% 12% 24%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:24px; color:#fff; text-align:center; text-decoration:none; overflow-wrap:anywhere; background:radial-gradient(ellipse at 50% 42%,#25333b 0,#11181d 62%,#08090d 100%); }
 .file-icon { font-size:56px; line-height:1; color:#55d6b0; }
 .file-card strong { font-size:16px; }
