@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Creator Studio | Creator Marketplace</title>
+  <link rel="stylesheet" href="/static/work-twin/styles.css">
+  <script src="/static/work-twin/app.js" defer></script>
+</head>
+<body class="profile-view">
+  <div class="app-shell">
+    <main class="main">
+      <header class="minimal-header">
+        <span class="brand-mark">✦</span>
+        <h1>AI Creator Studio</h1>
+      </header>
+
+      <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+      <div class="content-grid">
+        <section class="panel" id="profile">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">01 / YOUR SIGNAL</p>
+              <h2>Build your AI creator profile</h2>
+            </div>
+            <span class="step-badge">PROFILE</span>
+          </div>
+
+          <form id="profile-form">
+            <label for="name">Creator name *</label>
+            <input id="name" name="name" maxlength="100"
+                   placeholder="e.g. Maya Chen" required>
+
+            <label for="title">Creative specialty</label>
+            <input id="title" name="title" maxlength="120"
+                   placeholder="e.g. AI Visual Storyteller">
+
+            <label for="skills">AI tools and creative skills *</label>
+            <textarea id="skills" name="skills" rows="3"
+              placeholder="Prompt design, Midjourney, Python, Video editing"
+              required></textarea>
+            <p class="hint">Separate each skill with a comma.</p>
+
+            <label for="experience">Years creating with AI</label>
+            <input id="experience" name="experience"
+                   type="number" min="0" max="60" value="0" required>
+
+            <label for="portfolio">Portfolio and launch details</label>
+            <textarea id="portfolio" name="portfolio" rows="4"
+              maxlength="3000"
+              placeholder="Describe your AI workflows, brand work, and creative outputs."></textarea>
+
+            <button class="button primary full" type="submit">
+              Next →
+            </button>
+          </form>
+        </section>
+
+        <div class="right-column">
+          <section class="panel twin-panel" id="summary" hidden>
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">02 / CREATOR PROFILE</p>
+                <h2>Your AI creator summary</h2>
+              </div>
+              <span class="twin-icon">✦</span>
+            </div>
+
+            <div class="profile-identity">
+              <div class="large-avatar" id="large-avatar">AI</div>
+              <div>
+                <h3 id="display-name">Your creator name</h3>
+                <p id="display-title">Your creative specialty</p>
+              </div>
+            </div>
+
+            <p id="summary-text" class="summary-text">
+              Save your profile to generate your AI creator summary.
+            </p>
+
+            <h3 class="subheading">Creative toolkit</h3>
+            <div id="skill-list" class="skill-list">
+              <span class="empty-text">Your AI tools and skills will appear here.</span>
+            </div>
+
+            <div class="profile-footer">
+              <span>Profile status</span>
+              <strong id="profile-status">Not saved</strong>
+            </div>
+
+            <div class="summary-actions">
+              <a href="/jobs" class="button primary full">Suitable jobs</a>
+            </div>
+          </section>
+
+          <section class="panel" id="matcher" hidden>
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">03 / CAMPAIGN INTELLIGENCE</p>
+                <h2>Campaign fit analyzer</h2>
+              </div>
+              <span class="step-badge">MATCH</span>
+            </div>
+
+            <form id="match-form">
+              <label for="project-title">Campaign title *</label>
+              <input id="project-title" maxlength="150" required
+                placeholder="e.g. Launch an AI brand campaign">
+
+              <label for="project-skills">Required AI skills *</label>
+              <textarea id="project-skills" rows="3" required
+                placeholder="Prompt design, AI video, Brand storytelling"></textarea>
+              <p class="hint">Enter the skills required for the client brief.</p>
+
+              <label for="project-description">Campaign brief</label>
+              <textarea id="project-description" rows="3"
+                maxlength="5000"
+                placeholder="Describe the creative challenge, output, and target audience."></textarea>
+
+              <button class="button secondary full" type="submit">
+                Analyze creator fit →
+              </button>
+            </form>
+
+            <div id="match-result" class="match-result" hidden>
+              <div class="score-row">
+                <div>
+                  <p class="eyebrow">CREATOR MATCH</p>
+                  <h3 id="match-verdict">Match result</h3>
+                </div>
+                <div class="score-circle" id="score-circle">
+                  <span id="score-value">0%</span>
+                </div>
+              </div>
+
+              <p id="match-explanation" class="summary-text"></p>
+
+              <h3 class="subheading">Matching skills</h3>
+              <div id="matched-skills" class="skill-list"></div>
+
+              <h3 class="subheading">Skills to sharpen</h3>
+              <div id="missing-skills" class="skill-list"></div>
+
+              <h3 class="subheading">Brand opportunities</h3>
+              <div id="brand-opportunities" class="brand-list"></div>
+
+              <p class="disclaimer">
+                This is a creative skill comparison for AI work, not proof of output quality or delivery certainty.
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <footer class="footer">
+        AI Creator Studio · Creator Marketplace
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

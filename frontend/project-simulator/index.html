@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Project Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page-glow glow-one"></div>
+    <div class="page-glow glow-two"></div>
+
+    <main class="container">
+        <header class="hero">
+            <div class="brand-mark">AI<span>✦</span></div>
+            <p class="eyebrow">PLAN • TEST • IMPROVE</p>
+            <h1>AI Project <span>Simulator</span></h1>
+            <p class="hero-copy">Evaluate a project idea virtually before you build it in the real world.</p>
+            <div class="byline">For project planning and risk analysis <span>·</span> by Manaswini</div>
+        </header>
+
+        <section class="panel setup-panel">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">01 / PROJECT INPUT</p>
+                    <h2>Describe your AI initiative</h2>
+                </div>
+                <span class="step-pill">Project plan</span>
+            </div>
+
+            <form id="projectForm">
+                <div class="form-grid">
+                    <label class="field">
+                        <span>Project name</span>
+                        <input id="projectName" type="text" value="AI Customer Support Chatbot" placeholder="AI Customer Support Chatbot">
+                    </label>
+                    <label class="field">
+                        <span>Budget (₹)</span>
+                        <input id="budget" type="number" value="20000" min="5000" step="1000">
+                    </label>
+                    <label class="field">
+                        <span>Deadline (days)</span>
+                        <input id="deadlineDays" type="number" value="30" min="7" max="180">
+                    </label>
+                    <label class="field field-wide">
+                        <span>Project description</span>
+                        <textarea id="projectDescription" rows="4">A customer support chatbot that answers common product questions, routes requests, and reduces manual ticket handling time.</textarea>
+                    </label>
+                    <label class="field">
+                        <span>Team size</span>
+                        <input id="teamSize" type="number" value="3" min="1" max="20">
+                    </label>
+                    <label class="field">
+                        <span>Technology stack</span>
+                        <input id="technologyStack" type="text" value="Python, FastAPI, SQLite, NLP" placeholder="Python, FastAPI, SQLite, NLP">
+                    </label>
+                    <label class="field field-wide">
+                        <span>Scenario</span>
+                        <select id="scenario">
+                            <option value="Everything is alright">Everything is alright</option>
+                            <option value="One developer becomes unavailable">One developer becomes unavailable</option>
+                            <option value="Budget is reduced by 25%">Budget is reduced by 25%</option>
+                            <option value="Delivery deadline is shortened">Delivery deadline is shortened</option>
+                            <option value="Team size is reduced by 2 people">Team size is reduced by 2 people</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="setup-footer">
+                    <span class="privacy-note"><span class="status-dot"></span> Rule-based simulation · no AI API key required</span>
+                    <button id="simulateButton" class="primary-button" type="submit">
+                        <span>▶</span> Run Simulation <span class="button-arrow">↗</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel results-panel" id="resultsSection">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">02 / RESULTS</p>
+                    <h2>Simulation dashboard</h2>
+                </div>
+                <span class="completed-pill" id="riskBadge">READY</span>
+            </div>
+
+            <div class="headline-row">
+                <div>
+                    <p class="result-label">Project</p>
+                    <h3 id="projectSummaryName">AI Customer Support Chatbot</h3>
+                </div>
+                <div class="readiness-wrap">
+                    <div class="readiness-track">
+                        <div id="readinessBar" class="readiness-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="readiness-score" id="readinessScore">--</div>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <article class="metric-card">
+                    <p class="metric-label">COMPLETION TIME</p>
+                    <strong id="completionTime" class="big-metric">--</strong>
+                    <p class="metric-foot">Estimated days</p>
+                </article>
+                <article class="metric-card">
+                    <p class="metric-label">BUDGET IMPACT</p>
+                    <strong id="budgetImpact" class="big-metric">--</strong>
+                    <p class="metric-foot">Expected cost change</p>
+                </article>
+                <article class="metric-card">
+                    <p class="metric-label">RISK LEVEL</p>
+                    <strong id="riskLevel" class="big-metric">--</strong>
+                    <p class="metric-foot">Overall planning risk</p>
+                </article>
+            </div>
+
+            <div class="summary-box">
+                <div class="summary-icon">✧</div>
+                <div>
+                    <strong>Project verdict</strong>
+                    <p id="summaryText">Your simulation summary will appear here.</p>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Project risks</h4>
+                    <ul id="riskList"></ul>
+                </div>
+                <div class="info-card">
+                    <h4>Recommended actions</h4>
+                    <ul id="recommendationList"></ul>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer"><span>AI Project Simulator</span><span>Built for AI marketplace planning · by Manaswini</span></footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

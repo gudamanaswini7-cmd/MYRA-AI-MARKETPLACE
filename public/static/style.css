@@ -1,0 +1,81 @@
+:root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #f8fafc;
+    --primary: #3b82f6;
+    --success: #10b981;
+    --border: #334155;
+}
+body {
+    background-color: var(--bg);
+    background-image:
+        linear-gradient(rgba(15, 23, 42, 0.30), rgba(15, 23, 42, 0.30)),
+        url('./assets/ai-background.svg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: system-ui, sans-serif;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container {
+    width: min(100%, 700px);
+    margin: 0 auto;
+}
+header { text-align: center; margin-bottom: 30px; }
+.grid {
+    display: grid;
+    place-items: center;
+}
+.card {
+    width: min(100%, 520px);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.chat-window { height: 250px; overflow-y: auto; border: 1px solid var(--border); background: #0b1329; padding: 10px; border-radius: 6px; margin-bottom: 10px; }
+.input-row, .checkbox-row { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
+input[type="text"], textarea { flex: 1; padding: 10px; background: #0f172a; border: 1px solid var(--border); color: #fff; border-radius: 4px; }
+textarea { height: 80px; width: 100%; box-sizing: border-box; resize: none; margin-bottom: 15px; }
+button { background: var(--primary); color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+.btn-eval { width: 100%; background: var(--success); font-weight: bold; margin-top: 15px; }
+.results-box { margin-top: 20px; padding: 15px; background: #111827; border-left: 4px solid var(--primary); border-radius: 4px; }
+.creator-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.creator-section input[type="text"],
+.creator-section input[type="file"] {
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 14px;
+    box-sizing: border-box;
+    padding: 10px;
+    background: #0f172a;
+    border: 1px solid var(--border);
+    color: #fff;
+    border-radius: 4px;
+}
+.creator-section label {
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+}
+.dashboard {
+    margin-top: 20px;
+    padding: 18px;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    border-radius: 8px;
+}
+.hidden { display: none; }
+ul { padding-left: 20px; margin: 5px 0; }

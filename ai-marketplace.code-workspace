@@ -1,0 +1,52 @@
+{
+  "folders": [
+    {
+      "name": "MYRA",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "task.allowAutomaticTasks": "on",
+    "python.defaultInterpreterPath": "${workspaceFolder}\\.venv\\Scripts\\python.exe"
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Run MYRA app",
+        "type": "python",
+        "request": "launch",
+        "module": "backend.app",
+        "cwd": "${workspaceFolder}",
+        "console": "integratedTerminal",
+        "justMyCode": true,
+        "env": {
+          "PORT": "5001"
+        }
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Run MYRA app",
+        "type": "shell",
+        "command": "cmd /c \"${workspaceFolder}\\run_app.bat\"",
+        "options": {
+          "cwd": "${workspaceFolder}"
+        },
+        "isBackground": true,
+        "problemMatcher": [],
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated",
+          "clear": true
+        },
+        "runOptions": {
+          "instanceLimit": 1
+        }
+      }
+    ]
+  }
+}

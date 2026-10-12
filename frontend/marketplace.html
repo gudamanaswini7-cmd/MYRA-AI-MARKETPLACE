@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6fb">
+  <title>MYRA — AI Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{font-family:'DM Sans',sans-serif;color:#14213d;background:#f3f6fb;font-synthesis:none;text-rendering:optimizeLegibility;--ink:#14213d;--muted:#75829a;--line:#e6ebf3;--blue:#3459eb;--violet:#7149ed;--mint:#11a985;--panel:#fff;--shadow:0 12px 36px rgba(36,65,112,.08)}
+    *{box-sizing:border-box}body{margin:0;min-width:320px;background:radial-gradient(ellipse at 50% 0%,#e9efff 0,transparent 48%),#f3f6fb}button,input{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.hidden{display:none!important}
+    .login-wrap{min-height:100vh;display:grid;grid-template-columns:minmax(300px,.9fr) minmax(430px,1.1fr);max-width:1440px;margin:auto;padding:36px;gap:7vw;align-items:center}.login-story{padding:5vw 0 5vw 4vw;position:relative}.brandmark{font-family:Manrope,sans-serif;font-weight:800;letter-spacing:-1px;display:inline-flex;align-items:center;gap:11px;font-size:19px}.brand-symbol{width:35px;height:35px;border-radius:12px;background:linear-gradient(145deg,#3449d4,#843ef0);color:white;display:grid;place-items:center;box-shadow:0 7px 16px #4d51d552;font-size:18px}.story-kicker{font-size:11px;letter-spacing:1.7px;font-weight:700;text-transform:uppercase;color:#526be4;margin:64px 0 16px}.login-story h1{font:700 clamp(42px,5vw,68px)/1.04 Manrope,sans-serif;letter-spacing:-2.8px;margin:0;max-width:540px}.login-story h1 span{color:#5b53e9}.story-copy{font-size:16px;line-height:1.7;color:#6a7891;max-width:440px;margin:20px 0 34px}.proof-row{display:flex;align-items:center;gap:12px;color:#58657e;font-size:12px}.avatar-stack{display:flex;padding-left:6px}.avatar-stack img{width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid #f3f6fb;margin-left:-7px}.story-art{max-width:440px;height:170px;margin-top:42px;position:relative;border-radius:20px;overflow:hidden;background:linear-gradient(112deg,#182d80,#5949de 54%,#a48aff)}.story-art:before,.story-art:after{content:'';position:absolute;border:1px solid #ffffff30;border-radius:50%;width:340px;height:340px;top:-168px;right:-20px}.story-art:after{width:230px;height:230px;top:-113px;right:34px}.art-caption{position:absolute;z-index:2;left:23px;bottom:20px;color:white}.art-caption strong{display:block;font:700 17px Manrope,sans-serif}.art-caption small{opacity:.75}.art-orb{position:absolute;right:58px;top:30px;width:95px;height:95px;border-radius:27px;transform:rotate(12deg);background:linear-gradient(145deg,#77e5ff,#a89aff);box-shadow:0 18px 32px #101c684c;display:grid;place-items:center;color:#fff;font-size:44px}
+    .login-panel{background:#fff;border:1px solid #e5eaf2;border-radius:20px;padding:38px;box-shadow:var(--shadow);width:min(100%,510px);justify-self:center}.login-panel .brandmark{display:none}.login-panel h2{font:700 26px Manrope,sans-serif;letter-spacing:-.8px;margin:0 0 7px}.login-panel .sub{font-size:13px;color:var(--muted);margin:0 0 26px}.role-label{font-size:12px;font-weight:700;margin-bottom:10px;display:block}.role-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:23px}.role-option{border:1px solid var(--line);border-radius:12px;padding:14px;text-align:left;background:white;transition:.18s}.role-option:hover{border-color:#aab7fa}.role-option.active{border-color:#555be7;background:#f5f5ff;box-shadow:0 0 0 2px #5b5ee91c}.role-option b{display:block;font-size:13px;margin:8px 0 3px}.role-option small{font-size:11px;color:var(--muted)}.role-icon{width:30px;height:30px;border-radius:9px;background:#eeefff;color:#555be7;display:grid;place-items:center;font-size:15px}.field{display:block;margin:0 0 15px}.field span{display:block;font-size:12px;font-weight:600;margin-bottom:7px}.field input{height:45px;width:100%;border:1px solid #e1e7f0;border-radius:9px;padding:0 13px;background:#fbfcfe;outline:0;font-size:13px}.field input:focus{border-color:#6675ed;box-shadow:0 0 0 3px #6675ed18}.primary{border:0;width:100%;border-radius:9px;background:linear-gradient(105deg,#3449de,#7049ed);color:#fff;font-weight:700;height:46px;box-shadow:0 7px 15px #5549de2e}.primary:hover{filter:brightness(1.06)}.login-terms{font-size:11px;line-height:1.6;color:#8a96a9;text-align:center;margin:16px 0 0}.login-terms a{color:#4f5cdb}
+    .app{min-height:100vh;max-width:1600px;margin:0 auto;padding:20px;display:grid;grid-template-columns:218px minmax(0,1fr);gap:15px}.sidebar{background:linear-gradient(165deg,#0b1734,#071328 70%);color:#d8e0f3;border-radius:14px;min-height:calc(100vh - 40px);padding:22px 13px;display:flex;flex-direction:column;position:sticky;top:20px;height:calc(100vh - 40px)}.side-logo{padding:0 8px 28px;display:flex;gap:9px;align-items:center;color:#fff;font:700 14px Manrope,sans-serif}.side-logo .brand-symbol{height:29px;width:29px;border-radius:9px;font-size:15px}.side-logo small{display:block;font:400 9px 'DM Sans',sans-serif;color:#9facc5;margin-top:2px}.nav-group{display:grid;gap:5px}.nav-item{border:0;background:transparent;color:#c3cde0;text-align:left;padding:10px 11px;border-radius:8px;display:flex;gap:11px;align-items:center;font-size:12px;transition:.15s}.nav-item .nav-icon{width:17px;text-align:center;font-size:15px;color:#aab9d3}.nav-item:hover{background:#ffffff12;color:#fff}.nav-item.active{background:linear-gradient(95deg,#495cf0,#8344ee);color:white;box-shadow:0 5px 12px #101e6944}.nav-item.active .nav-icon{color:white}.side-promo{margin-top:auto;border:1px solid #ffffff1c;background:linear-gradient(145deg,#142858,#252080);border-radius:11px;padding:14px 12px}.side-promo .promo-icon{width:30px;height:30px;border-radius:9px;background:#ffffff1c;display:grid;place-items:center;color:#bdcaff;margin-bottom:11px}.side-promo strong{display:block;color:white;font-size:12px;margin-bottom:5px}.side-promo p{font-size:10px;line-height:1.5;color:#b4bfda;margin:0 0 12px}.side-promo button{border:0;border-radius:7px;background:#7149ed;color:white;font-weight:600;font-size:10px;padding:8px 10px}
+    .main{min-width:0}.topbar{height:48px;display:flex;align-items:center;gap:14px;margin:0 2px 13px}.top-search{height:39px;max-width:600px;flex:1;background:white;border:1px solid #e2e8f2;border-radius:9px;display:flex;align-items:center;gap:9px;padding:0 12px;color:#71809a}.top-search input{border:0;outline:0;width:100%;font-size:11px;background:transparent;color:var(--ink)}.shortcut{font-size:9px;color:#8b97aa;border:1px solid #edf0f5;padding:3px 5px;border-radius:4px;white-space:nowrap}.top-actions{display:flex;align-items:center;gap:14px;margin-left:auto}.icon-button{border:0;background:transparent;color:#53617a;width:33px;height:33px;border-radius:8px;position:relative;font-size:16px}.icon-button:hover{background:#fff}.notice-dot{position:absolute;right:6px;top:5px;width:6px;height:6px;border-radius:50%;background:#ef536c;border:1px solid white}.user-button{border:0;background:none;display:flex;align-items:center;gap:8px;text-align:left;padding:2px}.user-avatar{width:30px;height:30px;background:linear-gradient(145deg,#604bea,#a340e9);border-radius:50%;color:white;display:grid;place-items:center;font-size:11px;font-weight:700}.user-name{font-size:10px;font-weight:700;white-space:nowrap}.user-type{font-size:9px;color:#8591a5;display:block;margin-top:2px}.workspace{display:grid;gap:14px}.hero{border-radius:12px;min-height:166px;overflow:hidden;padding:24px 27px;color:white;position:relative;display:flex;align-items:center;background:linear-gradient(105deg,#263dd1,#5364ee 55%,#8149e8)}.hero.creator{background:linear-gradient(105deg,#18245e,#5543c5 57%,#157fc6)}.hero:after{content:'';position:absolute;width:340px;height:340px;border:1px solid #ffffff29;border-radius:50%;right:8%;top:-215px;box-shadow:0 0 0 34px #ffffff08,0 0 0 74px #ffffff06}.hero-copy{position:relative;z-index:1;max-width:560px}.eyebrow{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#d2d9ff;margin-bottom:8px}.hero h1{font:700 24px/1.2 Manrope,sans-serif;letter-spacing:-.5px;margin:0 0 8px}.hero p{font-size:12px;line-height:1.55;color:#e2e6ff;max-width:470px;margin:0 0 16px}.hero-cta{height:34px;padding:0 13px;border:0;border-radius:7px;background:white;color:#3449db;font-size:11px;font-weight:700}.hero-art{position:absolute;right:4%;bottom:-28px;width:240px;height:150px;border:1px solid #ffffff46;background:linear-gradient(140deg,#87e5ed88,#ffffff28);border-radius:18px;transform:rotate(-7deg);box-shadow:0 18px 30px #11174a36;display:grid;place-items:center;font-size:68px}.hero.creator .hero-art{right:7%;font-size:59px;background:linear-gradient(140deg,#8be6f988,#ab8cff55)}
+    .section-head{display:flex;align-items:center;justify-content:space-between;margin:3px 1px -5px}.section-head h2{font:700 14px Manrope,sans-serif;letter-spacing:-.2px;margin:0}.section-head button,.text-button{border:0;background:transparent;color:#4d5cdb;font-weight:600;font-size:10px;padding:5px}.feature-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.feature-card{min-height:126px;border:1px solid var(--line);border-radius:10px;background:white;padding:14px;box-shadow:0 4px 12px #24416e06;display:flex;flex-direction:column}.feature-icon{width:29px;height:29px;border-radius:9px;display:grid;place-items:center;background:#eeeefe;color:#6052de;font-size:15px;margin-bottom:8px}.feature-card:nth-child(2) .feature-icon{background:#e6f7ff;color:#1389b5}.feature-card:nth-child(3) .feature-icon{background:#fff3e3;color:#e39b24}.feature-card:nth-child(4) .feature-icon{background:#e9efff;color:#4168ec}.feature-card strong{font-size:11px}.feature-card p{font-size:10px;color:#77849a;line-height:1.4;margin:4px 0 10px}.feature-card button{margin-top:auto;align-self:flex-start;border:0;border-radius:20px;padding:5px 9px;background:#eff0ff;color:#4d5cdb;font-size:9px;font-weight:700}
+    .metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.metric-card,.panel{background:white;border:1px solid var(--line);border-radius:10px;box-shadow:0 4px 12px #24416e06}.metric-card{padding:13px 14px}.metric-head{display:flex;justify-content:space-between;align-items:center;color:#8190a6;font-size:10px}.metric-glyph{width:25px;height:25px;border-radius:8px;display:grid;place-items:center;color:#4d65e9;background:#eef1ff;font-size:13px}.metric-card:nth-child(2) .metric-glyph{background:#e7f8f3;color:#13a27f}.metric-card:nth-child(3) .metric-glyph{background:#fff3e4;color:#e59a27}.metric-card:nth-child(4) .metric-glyph{background:#f1eaff;color:#8351dc}.metric-card strong{display:block;font:700 20px Manrope,sans-serif;letter-spacing:-.5px;margin:9px 0 3px}.metric-card small{font-size:9px;color:#8b97a9}.up{color:#0fa47c!important}.metric-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(270px,1fr);gap:11px}.panel{padding:15px}.panel-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}.panel-title h3{font:700 12px Manrope,sans-serif;margin:0}.panel-title select{border:1px solid var(--line);border-radius:6px;padding:5px 7px;background:white;color:#65728a;font-size:9px}.chart{height:162px;width:100%;position:relative;border-bottom:1px solid #edf0f5;background:repeating-linear-gradient(to bottom,transparent 0,transparent 39px,#edf1f6 40px)}.chart svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.chart-labels{display:flex;justify-content:space-between;color:#8a96aa;font-size:8px;padding-top:8px}.rank-list{display:grid;gap:0}.rank-row{display:grid;grid-template-columns:21px 34px minmax(0,1fr) auto;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid #f0f2f6}.rank-row:last-child{border:0}.rank-num{font-size:9px;color:#8995a8;text-align:center}.product-art{height:32px;width:32px;border-radius:8px;display:grid;place-items:center;background:linear-gradient(145deg,#e5efff,#dadfff);font-size:15px;color:#4359dc}.rank-row strong{font-size:10px;display:block}.rank-row small{font-size:9px;color:#8a96a8}.rank-stat{text-align:right;font-size:9px;font-weight:700}.rank-stat small{display:block;color:#14a17c;margin-top:3px}
+    .lower-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(290px,.85fr);gap:11px}.listing-table{width:100%;border-collapse:collapse;text-align:left}.listing-table th{font-size:9px;color:#8894a8;font-weight:500;padding:9px 7px;border-bottom:1px solid #edf0f4}.listing-table td{font-size:9px;padding:10px 7px;border-bottom:1px solid #f0f2f6;white-space:nowrap}.listing-table tr:last-child td{border:0}.table-product{display:flex;align-items:center;gap:8px;font-weight:600}.mini-art{width:26px;height:26px;border-radius:7px;background:#eef0ff;color:#5b56df;display:grid;place-items:center;font-size:12px}.pill{display:inline-flex;padding:4px 7px;border-radius:12px;color:#0f9d79;background:#e4f7f1;font-size:8px}.pill.blue{background:#eff0ff;color:#575ddd}.order-list{display:grid;gap:0}.order{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid #f0f2f6}.order:last-child{border:0}.order-avatar{width:28px;height:28px;border-radius:50%;object-fit:cover}.order strong{font-size:10px;display:block}.order small{font-size:9px;color:#8591a5;display:block;margin-top:3px}.order-amount{text-align:right;font-size:9px;font-weight:700}.order-amount small{color:#8591a5}
+    .tool-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.tool-card{border:1px solid var(--line);background:white;border-radius:10px;overflow:hidden;box-shadow:0 4px 12px #24416e06}.tool-image{height:96px;background-size:cover;background-position:center;position:relative}.tool-image:after{content:'';position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#0006)}.tool-mark{position:absolute;z-index:1;left:10px;bottom:9px;width:30px;height:30px;background:white;border-radius:8px;display:grid;place-items:center;font-size:15px}.tool-content{padding:11px}.tool-content h3{font-size:11px;margin:0 0 4px}.tool-content p{font-size:9px;line-height:1.45;color:#8390a4;margin:0 0 10px;height:26px;overflow:hidden}.tool-foot{display:flex;align-items:center;justify-content:space-between;font-size:9px}.rating{color:#e39a26}.tool-foot button{border:0;background:#f0f1ff;border-radius:6px;color:#505de1;font-size:9px;padding:5px 7px}
+    .toast{position:fixed;right:22px;bottom:22px;background:#162342;color:white;border-radius:9px;padding:12px 16px;font-size:12px;box-shadow:0 8px 24px #101a3740;z-index:10;animation:rise .2s ease}@keyframes rise{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+    @media(max-width:1050px){.app{grid-template-columns:180px minmax(0,1fr);padding:12px;gap:10px}.sidebar{min-height:calc(100vh - 24px);height:calc(100vh - 24px);top:12px}.feature-grid,.metric-grid,.tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-art{right:0;opacity:.7}.login-wrap{gap:3vw;padding:24px}.metric-layout{grid-template-columns:1fr}.lower-grid{grid-template-columns:1fr}}
+    @media(max-width:700px){.login-wrap{display:block;padding:22px 16px}.login-story{padding:18px 4px 22px}.story-kicker{margin:33px 0 12px}.login-story h1{font-size:42px;letter-spacing:-1.8px}.story-copy{font-size:14px;margin:13px 0 18px}.story-art{display:none}.login-panel{padding:23px 20px;margin:0 auto 24px}.login-panel .brandmark{display:inline-flex;margin-bottom:21px}.login-panel h2{font-size:23px}.app{display:block;padding:10px}.sidebar{position:fixed;z-index:5;left:10px;right:10px;bottom:10px;top:auto;width:auto;height:57px;min-height:0;padding:6px;background:#09152e;border-radius:12px;box-shadow:0 8px 26px #14213d40}.side-logo,.side-promo{display:none}.nav-group{display:flex;justify-content:space-around;gap:2px;height:100%}.nav-item{flex:1;justify-content:center;flex-direction:column;gap:2px;padding:4px 2px;font-size:8px;border-radius:7px}.nav-item .nav-icon{font-size:15px}.nav-item:nth-child(n+5){display:none}.topbar{height:42px;margin-bottom:10px;gap:7px}.top-search{height:35px}.shortcut,.user-copy{display:none}.top-actions{gap:6px}.hero{min-height:158px;padding:19px}.hero h1{font-size:21px;max-width:270px}.hero p{max-width:255px;font-size:11px}.hero-art{right:-53px;bottom:-50px;opacity:.35;width:190px;height:135px}.feature-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.feature-card{min-height:123px;padding:11px}.metric-grid{gap:8px}.metric-card{padding:11px}.metric-card strong{font-size:18px}.lower-grid,.metric-layout{gap:9px}.panel{padding:12px;overflow-x:auto}.section-head h2{font-size:13px}.tool-image{height:82px}.tool-content{padding:9px}}
+    @media(max-width:380px){.role-options{gap:7px}.role-option{padding:10px}.login-panel{padding:20px 16px}.metric-card strong{font-size:16px}.listing-table th,.listing-table td{padding:8px 5px}.listing-table{min-width:450px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    .onboarding-wrap{min-height:100vh;max-width:1320px;margin:auto;padding:25px clamp(18px,5vw,72px);display:flex;flex-direction:column}.onboarding-top{display:flex;align-items:center;justify-content:space-between}.onboarding-top button{border:1px solid var(--line);border-radius:8px;background:#fff;color:#56627a;padding:9px 12px;font-size:11px}.onboarding-main{width:min(100%,920px);margin:9vh auto auto}.onboarding-kicker{color:#5864e5;font-size:10px;font-weight:700;letter-spacing:1.5px}.onboarding-main h1{font:700 clamp(32px,4vw,48px)/1.12 Manrope,sans-serif;letter-spacing:-1.6px;margin:12px 0}.onboarding-copy{font-size:14px;line-height:1.7;color:#718099;max-width:610px;margin:0 0 30px}.onboarding-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.onboarding-step{padding:18px;background:#fff;border:1px solid var(--line);border-radius:11px;min-height:142px}.onboarding-step span{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#eff0ff;color:#5757df;font-size:14px;margin-bottom:15px}.onboarding-step strong{font-size:12px}.onboarding-step p{font-size:10px;line-height:1.55;color:#7f8ba0;margin:6px 0 0}.onboarding-actions{margin-top:24px;display:flex;align-items:center;gap:14px}.onboarding-actions .primary{width:auto;padding:0 18px}.onboarding-note{font-size:10px;color:#8490a4}.onboarding-visual{margin-top:30px;min-height:95px;border-radius:12px;background:linear-gradient(105deg,#182d80,#5049d8 55%,#2589bb);position:relative;overflow:hidden;display:flex;align-items:center;padding:20px 25px;color:white}.onboarding-visual:after{content:'✧';position:absolute;right:10%;font-size:80px;color:#ffffff70}.onboarding-visual strong{font:700 15px Manrope,sans-serif;position:relative;z-index:1}.onboarding-visual small{display:block;color:#dce4ff;font-size:10px;margin-top:5px;position:relative;z-index:1}@media(max-width:700px){.onboarding-wrap{padding:18px 15px}.onboarding-main{margin:7vh auto auto}.onboarding-main h1{font-size:34px;letter-spacing:-1px}.onboarding-copy{font-size:13px;margin-bottom:22px}.onboarding-steps{grid-template-columns:1fr;gap:8px}.onboarding-step{min-height:0;padding:13px;display:grid;grid-template-columns:32px 1fr;column-gap:10px;align-items:center}.onboarding-step span{grid-row:span 2;margin:0}.onboarding-step p{margin:3px 0 0}.onboarding-actions{align-items:flex-start;flex-direction:column;gap:10px}.onboarding-visual{min-height:80px;margin-top:22px}}
+  </style>
+  <style>
+    .sidebar{padding:18px 11px;border:1px solid #1d2e49;border-radius:8px;background:linear-gradient(180deg,#08172f,#041124)}
+    .side-logo{padding:0 4px 19px;gap:8px}
+    .side-logo .brand-symbol{width:31px;height:31px;border-radius:8px}
+    .side-logo small{font-size:8px!important;color:#8f9eb8!important;letter-spacing:0}
+    .nav-group{flex:1;min-height:0;align-content:start;gap:4px;overflow-y:auto}
+    .nav-item{min-height:32px;padding:8px 9px;border-radius:6px;gap:10px;font-size:10px}
+    .nav-item .nav-icon{font-size:14px}
+    .nav-item.active{background:linear-gradient(100deg,#3158f5,#7438f5);box-shadow:0 6px 14px #18235f6e}
+    .side-promo{margin:12px 0}
+    .side-account{display:grid;gap:9px;margin-top:auto;padding:12px 4px 0;border-top:1px solid #ffffff1c}
+    .side-account-person{display:flex;min-width:0;align-items:center;gap:9px}
+    .side-account-avatar{width:27px;height:27px;flex:0 0 27px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#3158f5,#7438f5);color:#fff;font-size:9px;font-weight:700}
+    .side-account-person strong{display:block;overflow:hidden;color:#f2f5ff;font-size:9px;text-overflow:ellipsis;white-space:nowrap}
+    .side-account-person small{display:block;margin-top:2px;color:#95a3bc;font-size:8px}
+    .side-account-actions{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+    .side-account-actions button{min-width:0;border:0;border-radius:5px;padding:7px 4px;background:transparent;color:#b9c5dc;font-size:9px;text-align:left}
+    .side-account-actions button:hover{background:#ffffff12;color:#fff}
+    .portfolio-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:11px}
+    .portfolio-grid .panel{min-width:0}
+    .portfolio-status{padding:4px 8px;border-radius:12px;background:#e6f7f1;color:#0b9975;font-size:9px;font-weight:700}
+    .portfolio-form{display:grid;gap:11px}
+    .portfolio-form .field{margin:0}
+    .portfolio-form .field select{display:block;width:100%;min-width:0;height:45px;box-sizing:border-box;border:1px solid #e1e7f0;border-radius:9px;padding:0 13px;background:#fbfcfe;outline:0;font:inherit;font-size:13px}
+    .portfolio-form textarea{width:100%;min-height:72px;padding:10px 12px;border:1px solid #e1e7f0;border-radius:9px;background:#fbfcfe;outline:0;font:inherit;font-size:12px;resize:vertical}
+    .portfolio-form textarea:focus{border-color:#6675ed;box-shadow:0 0 0 3px #6675ed18}
+    .portfolio-form .primary{max-width:220px}
+    .twin-summary{margin:12px 0 0;padding:11px 12px;border-radius:7px;background:#f1f6ff;color:#445472;font-size:11px;line-height:1.6}
+    .twin-summary p{margin:0}
+    .twin-summary p+p{margin-top:8px}
+    .portfolio-projects{display:grid;gap:9px}
+    .portfolio-project{padding:12px;border:1px solid var(--line);border-radius:7px;background:#fff}
+    .portfolio-project-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .portfolio-project h4{margin:0;font-size:12px}
+    .portfolio-project p{margin:7px 0;color:#77849a;font-size:10px;line-height:1.5;overflow-wrap:anywhere}
+    .portfolio-project a{color:#4d5cdb;font-size:10px;overflow-wrap:anywhere}
+    .portfolio-project button{border:0;background:transparent;color:#9a4a55;font-size:10px}
+    .portfolio-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+    .portfolio-tag{padding:4px 7px;border-radius:12px;background:#f0f2ff;color:#5159bd;font-size:9px}
+    .campaign-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .campaign-card{min-width:0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fff}
+    .campaign-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .campaign-head h3{margin:4px 0;font:700 13px Manrope,sans-serif}
+    .campaign-brand{color:#748199;font-size:10px}
+    .campaign-demo{color:#5965d9;font-size:8px;font-weight:700;text-transform:uppercase}
+    .campaign-budget{flex:0 0 auto;color:#0b9275;font-size:11px;font-weight:700}
+    .campaign-description{margin:9px 0;color:#69778f;font-size:10px;line-height:1.55}
+    .campaign-skills{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0}
+    .campaign-skill{padding:4px 7px;border-radius:12px;background:#f1f3f8;color:#69778f;font-size:9px}
+    .campaign-skill.matched{background:#e5f7f1;color:#0b9275}
+    .campaign-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid #edf0f4}
+    .campaign-match{flex:1;min-width:0;color:#718099;font-size:9px;line-height:1.4;overflow-wrap:anywhere}
+    .campaign-apply{border:0;border-radius:6px;padding:7px 10px;background:#eef0ff;color:#4d5cdb;font-size:9px;font-weight:700}
+    .campaign-apply:disabled{background:#e5f7f1;color:#0b9275;cursor:default}
+    .marketplace-essentials{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr);gap:10px;align-items:stretch}
+    .marketplace-stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .marketplace-stat{min-width:0;padding:13px 14px;border:1px solid var(--line);border-radius:8px;background:#fff}
+    .marketplace-stat span{display:block;color:#8290a5;font-size:9px}
+    .marketplace-stat strong{display:block;margin-top:7px;color:#192644;font:700 20px Manrope,sans-serif}
+    .marketplace-stat small{display:block;margin-top:3px;color:#8995a8;font-size:9px}
+    .marketplace-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;align-content:center}
+    .marketplace-actions button{min-height:43px;border:1px solid #e3e8f1;border-radius:7px;background:#fff;color:#435270;font-size:9px;font-weight:700}
+    .marketplace-actions button:hover{border-color:#8291ee;background:#f5f6ff;color:#4d5cdb}
+    @media(max-width:1050px){.marketplace-essentials{grid-template-columns:1fr}}
+    @media(max-width:520px){.marketplace-stat{padding:10px 8px}.marketplace-stat strong{font-size:17px}.marketplace-actions{grid-template-columns:1fr}.marketplace-actions button{min-height:38px}}
+    .ai-summary-result{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:10px;background:#fff;color:#33415f;font-size:11px;line-height:1.65;box-shadow:0 4px 12px rgba(36,65,112,.05)}
+    .ai-summary-result h3{margin:0 0 8px;font:700 12px Manrope,sans-serif;color:#172441}
+    .ai-summary-result p{margin:0 0 8px}
+    .ai-summary-result p strong{color:#172441}
+    .ai-summary-projects{display:grid;gap:8px;margin-top:10px}
+    .ai-summary-project{padding-top:8px;border-top:1px solid #e5ebf4}
+    .ai-summary-project strong{color:#253456}
+    .simulator-status{padding:4px 8px;border-radius:12px;background:#e6f7f1;color:#0b9975;font-size:9px;font-weight:700}
+    .simulator-disclosure{display:block;margin-top:10px;color:#8490a4;font-size:9px;line-height:1.5}
+    .simulator-frame{display:block;width:100%;height:calc(100vh - 90px);min-height:780px;border:0;border-radius:10px;background:#070b14}
+    .scroll-project-frame{display:block;width:100%;height:calc(100vh - 80px);min-height:600px;border:0;border-radius:8px;background:#101010}
+    @media(max-width:700px){.simulator-frame{height:calc(100vh - 76px);min-height:760px}}
+    @media(max-width:1050px){.portfolio-grid{grid-template-columns:1fr}}
+    @media(max-width:700px){.campaign-grid{grid-template-columns:1fr}.campaign-card{padding:12px}}
+    @media(max-width:1050px){.sidebar{padding:18px 9px}}
+    @media(max-width:700px){.sidebar{position:fixed;z-index:5;left:10px;right:10px;bottom:10px;top:auto;width:auto;height:57px;min-height:0;padding:6px;background:#09152e;border:0;border-radius:12px;box-shadow:0 8px 26px #14213d40}.side-logo,.side-promo,.side-account{display:none}.nav-group{display:flex;flex:initial;justify-content:space-around;gap:1px;height:100%;overflow:visible}.nav-item{min-height:0;min-width:0;flex:1 1 0;justify-content:center;flex-direction:column;gap:2px;padding:3px 1px;font-size:7px;line-height:1.05;text-align:center;border-radius:7px}.nav-item span:last-child{max-width:100%;overflow-wrap:anywhere;white-space:normal}.nav-item:nth-child(n+5){display:flex}.nav-item .nav-icon{font-size:15px}}
+    body:has(#loginView:not(.hidden)){background:linear-gradient(90deg,rgba(7,20,43,.76),rgba(7,20,43,.56) 48%,rgba(7,20,43,.22)),url('/static/assets/ai-background.svg') center/cover fixed}
+    body:has(#onboardingView:not(.hidden)),body:has(#appView:not(.hidden)){background:linear-gradient(rgba(241,245,250,.6),rgba(241,245,250,.68)),url('/static/assets/ai-background.svg') center/cover fixed}
+    .login-story .brandmark,.login-story h1{color:#fff}
+    .login-story h1 span{color:#9ceadd}
+    .login-story .story-kicker{color:#a9eee2}
+    .login-story .story-copy{color:#d5dfed}
+    .login-story .proof-row{color:#edf2f8}
+    .creator-search-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .creator-search-card{min-width:0;padding:14px;border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 4px 12px #24416e06;display:grid;gap:11px;align-content:start}
+    .creator-search-head{display:flex;align-items:center;gap:10px;min-width:0}
+    .creator-face{width:52px;height:52px;flex:0 0 52px;border-radius:50%;object-fit:cover;background:#edf1f7}
+    .creator-search-info{min-width:0;flex:1}
+    .creator-search-info h3{margin:0 0 4px;font:700 12px Manrope,sans-serif;color:#192644}
+    .creator-search-info p{margin:0;color:#718099;font-size:10px;line-height:1.4}
+    .creator-location{color:#8793a7;font-size:9px}
+    .creator-search-bio{min-height:34px;margin:0;color:#69778f;font-size:10px;line-height:1.5}
+    .creator-search-tags{display:flex;flex-wrap:wrap;gap:5px}
+    .creator-search-tag{padding:4px 7px;border-radius:12px;background:#f0f2ff;color:#5159bd;font-size:8px}
+    .creator-search-status{margin-left:auto;padding:4px 7px;border-radius:12px;background:#e5f7f1;color:#0b9275;font-size:8px;white-space:nowrap}
+    .brief-layout{display:grid;grid-template-columns:minmax(270px,.72fr) minmax(0,1.28fr);gap:12px;align-items:start}
+    .brief-form{display:grid;gap:13px;position:sticky;top:20px}
+    .brief-form .panel-title{margin:0}
+    .brief-form .field{margin:0}
+    .brief-form textarea{width:100%;min-height:150px;padding:10px 12px;border:1px solid #e1e7f0;border-radius:9px;background:#fbfcfe;outline:0;font:inherit;font-size:12px;line-height:1.5;resize:vertical}
+    .brief-form textarea:focus{border-color:#6675ed;box-shadow:0 0 0 3px #6675ed18}
+    .brief-form .field input,
+    .brief-form .field select,
+    .brief-form .field textarea,
+    .brief-budget-input input{width:100%;min-width:0;box-sizing:border-box;min-height:42px}
+    .brief-form .primary{width:100%;max-width:none;white-space:normal}
+    .brief-hint,.brief-method-note{margin:0;color:#8490a4;font-size:10px;line-height:1.5}
+    .brief-budget-input{display:flex;align-items:center;gap:8px}
+    .brief-budget-input span{color:#718099;font-size:13px;font-weight:700}
+      .brief-budget-input input{height:42px;flex:1;min-width:0;border:1px solid #e1e7f0;border-radius:8px;padding:0 11px;background:#fbfcfe;font:inherit;font-size:12px;outline:0}
+    .brief-results{min-width:0;display:grid;gap:12px}
+    .brief-skill-tags{display:flex;flex-wrap:wrap;gap:6px;margin:11px 0}
+    .brief-skill-tag{padding:6px 9px;border-radius:14px;background:#edf0ff;color:#4d58cc;font-size:10px;font-weight:600}
+    .brief-analysis-copy{margin:0;color:#77849a;font-size:10px;line-height:1.55}
+    .brief-recommendation-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 1px}
+    .brief-recommendation-head h2{margin:0;font:700 14px Manrope,sans-serif}
+    .brief-recommendation-head select{border:1px solid var(--line);border-radius:6px;padding:7px 9px;background:#fff;color:#53617a;font:inherit;font-size:10px}
+    .brief-recommendation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+    .brief-recommendation-card{min-width:0;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 4px 12px #24416e06;display:grid;gap:8px;align-content:start}
+    .brief-recommendation-card[hidden]{display:none}
+    .brief-recommendation-profile{display:flex;align-items:center;gap:9px;min-width:0}
+    .brief-recommendation-profile .creator-face{width:42px;height:42px;flex-basis:42px}
+    .brief-recommendation-profile strong{display:block;font:700 11px Manrope,sans-serif}
+    .brief-recommendation-profile small{display:block;margin-top:3px;color:#77849a;font-size:9px;line-height:1.35}
+    .brief-match-count{margin-left:auto;color:#5662d8;font-size:9px;font-weight:700;white-space:nowrap}
+    .brief-match-skills{display:flex;flex-wrap:wrap;gap:4px}
+    .brief-match-skills span{padding:4px 6px;border-radius:10px;background:#f1f3f8;color:#69778f;font-size:8px}
+    .brief-estimate-row{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#69778f;font-size:9px}
+    .brief-budget-fit{padding:4px 6px;border-radius:10px;background:#e5f7f1;color:#0b9275;font-size:8px;font-weight:700;white-space:nowrap}
+    .brief-budget-fit.over{background:#fff1e8;color:#b45327}
+    .brief-team-toggle{display:flex;align-items:center;gap:7px;color:#4e5b74;font-size:9px;font-weight:600}
+    .brief-team-toggle input{accent-color:#4d5cdb}
+    .brief-team-summary{padding:13px;border:1px solid #dce6f2;border-radius:8px;background:#f7faff}
+    .brief-team-summary h3{margin:0 0 8px;font:700 12px Manrope,sans-serif}
+    .brief-team-members{display:grid;gap:5px;margin:0 0 10px;padding:0;list-style:none}
+    .brief-team-members li,.brief-team-total{display:flex;justify-content:space-between;gap:10px;color:#596781;font-size:10px}
+    .brief-team-total{padding-top:9px;border-top:1px solid #e1e8f2;font-weight:700;color:#192644}
+    .brief-team-fit{margin:8px 0 0;color:#0b9275;font-size:10px;font-weight:700}
+    .brief-team-fit.over{color:#b45327}
+    .brief-empty{padding:13px;border:1px dashed #d8e0ed;border-radius:8px;color:#77849a;font-size:10px;line-height:1.5}
+    .project-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .project-status-pill{display:inline-flex;padding:5px 8px;border-radius:12px;background:#fff3e3;color:#b26d10;font-size:9px;font-weight:700;white-space:nowrap}
+    .project-status-pill.completed{background:#e5f7f1;color:#0b9275}
+    .project-filter{display:flex;align-items:center;gap:8px;color:#8490a4;font-size:10px}
+    .project-filter select{border:1px solid var(--line);border-radius:6px;padding:7px 9px;background:#fff;color:#53617a;font:inherit;font-size:10px}
+    .project-table{width:100%;min-width:720px;border-collapse:collapse;text-align:left}
+    .project-table th{font-size:9px;color:#8894a8;font-weight:500;padding:10px 8px;border-bottom:1px solid #edf0f4;white-space:nowrap}
+    .project-table td{font-size:10px;padding:12px 8px;border-bottom:1px solid #f0f2f6;vertical-align:middle}
+    .project-table tr:last-child td{border-bottom:0}
+    .project-name strong{display:block;color:#192644;font-size:10px}
+    .project-name small{display:block;margin-top:4px;color:#8793a7;font-size:9px}
+    .project-progress{display:grid;grid-template-columns:minmax(55px,1fr) auto;align-items:center;gap:7px;min-width:100px}
+    .project-progress-track{height:6px;overflow:hidden;border-radius:5px;background:#edf0f5}
+    .project-progress-track span{display:block;height:100%;border-radius:inherit;background:#5361e8}
+    .project-progress small{color:#75829a;font-size:9px}
+    .payment-overview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .payment-method-line{display:flex;align-items:center;gap:11px}
+    .payment-method-mark{width:42px;height:30px;flex:0 0 42px;display:grid;place-items:center;border-radius:5px;background:#162342;color:#fff;font-size:9px;font-weight:700}
+    .payment-method-copy{min-width:0}
+    .payment-method-copy strong{display:block;color:#192644;font-size:11px}
+    .payment-method-copy small{display:block;margin-top:4px;color:#8490a4;font-size:9px}
+    .payment-default{margin-left:auto;padding:4px 7px;border-radius:10px;background:#e5f7f1;color:#0b9275;font-size:8px;font-weight:700;white-space:nowrap}
+    .payment-status-pill{display:inline-flex;padding:4px 7px;border-radius:10px;background:#e5f7f1;color:#0b9275;font-size:8px;font-weight:700}
+    @media(max-width:700px){.payment-overview-grid{grid-template-columns:1fr}}
+    .creator-save-button{justify-self:end;border:1px solid #dfe5f0;border-radius:6px;padding:6px 9px;background:#fff;color:#505de1;font-size:9px;font-weight:700}
+    .creator-save-button[aria-pressed="true"]{border-color:#d7dafe;background:#eff0ff;color:#4c51c5}
+    @media(max-width:1050px){.login-wrap{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}.login-panel{min-width:0}.creator-search-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.brief-layout{grid-template-columns:1fr}.brief-form{position:static}.project-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:700px){.brief-recommendation-grid{grid-template-columns:1fr}.brief-recommendation-head{align-items:flex-start;flex-direction:column}.brief-form textarea{min-height:125px}}
+    @media(max-width:700px){.creator-search-grid{grid-template-columns:1fr}}
+  </style>
+  <style>
+    body:has(#appView:not(.hidden))[data-theme="dark"]{color-scheme:dark;--ink:#edf3fb;--muted:#a6b3c7;--line:#2a3a51;--panel:#142238;--shadow:0 8px 24px rgba(0,0,0,.22);color:var(--ink);background:linear-gradient(rgba(7,15,30,.68),rgba(7,15,30,.76)),url('/static/assets/ai-background.svg') center/cover fixed}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .top-search{background:#111e32;border-color:#2b3b53;color:#a8b6cb}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .top-search input{color:#edf3fb}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .icon-button{color:#d7e1f0}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .icon-button:hover{background:#1b2b43}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .user-type{color:#a6b3c7}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .metric-card,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .panel,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .feature-card,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .tool-card,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .campaign-card,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .portfolio-project,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .marketplace-stat,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .marketplace-actions button,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .creator-search-card,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-recommendation-card{background:var(--panel);border-color:var(--line);box-shadow:0 4px 14px rgba(0,0,0,.16)}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .metric-card strong,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .panel-title h3,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .panel-title h2,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .section-head h2,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .feature-card strong,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .tool-content h3,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .creator-search-info h3,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .project-name strong,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .payment-method-copy strong{color:#edf3fb}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .metric-head,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .metric-card small,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .feature-card p,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .tool-content p,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .creator-search-info p,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .creator-search-bio,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .creator-location,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .project-name small,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .project-progress small,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-hint,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-method-note,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-analysis-copy,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .payment-method-copy small{color:#a6b3c7}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .project-table th,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .project-table td,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .listing-table th,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .listing-table td,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .rank-row{border-color:#2a3a51;color:#d7e1f0}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .project-filter select,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-recommendation-head select,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .field input,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .field select,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .field textarea,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-form textarea,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-budget-input input,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .portfolio-form textarea,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .panel-title select,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-form select{background:#0e1a2d;border-color:#32445d;color:#edf3fb}
+    body[data-theme="dark"] .brief-form select[name="commercialUse"]{background:#0e1a2d!important;border-color:#32445d!important;color:#edf3fb!important}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .field select option,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .field input::placeholder,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .field textarea::placeholder,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .field select::placeholder{color:#c8d5eb}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-team-summary,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .twin-summary,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .ai-summary-result,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-team-summary h3,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-team-total,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .ai-summary-result h3,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .ai-summary-result p strong,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .ai-summary-project strong{color:#edf3fb}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .ai-summary-project{border-color:#30445e}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-team-members li,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-team-total,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .creator-search-tag,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-skill-tag,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-match-skills span,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .campaign-skill{background:#20334f;color:#c8d6eb}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .marketplace-stat span,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .marketplace-stat small{color:#a6b3c7}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .marketplace-stat strong{color:#edf3fb}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .primary,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .marketplace-actions button,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .section-head button,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .text-button,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .feature-card button,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .tool-foot button,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .campaign-apply,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .creator-save-button,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .onboarding-top button,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .hero-cta{background:#162c45;border:1px solid #354d70;color:#eaf2ff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .marketplace-actions button{color:#d7e1f0}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .feature-card button:hover,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .tool-foot button:hover,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .campaign-apply:hover,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .creator-save-button:hover,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .marketplace-actions button:hover,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .section-head button:hover,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .text-button:hover,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .onboarding-top button:hover,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .hero-cta:hover{background:#1b3658;border-color:#466489;color:#fff}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .project-progress-track{background:#26374e}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .chart{background:repeating-linear-gradient(to bottom,transparent 0,transparent 39px,#293950 40px)}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .chart-labels{color:#a6b3c7}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .brief-empty{border-color:#394c66;color:#b8c5d8}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .creator-save-button{background:#1b2a42;border-color:#394c66;color:#d7e1f0}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .toast{background:#263750;color:#f3f6fb}
+    .ai-market-insights{display:grid;gap:8px}
+    .ai-market-insights-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .ai-market-insights-heading h2{margin:0;font:700 14px Manrope,sans-serif}
+    .ai-market-insights-heading p{margin:4px 0 0;color:#8490a4;font-size:10px}
+    .market-sample-badge{padding:5px 8px;border:1px solid var(--line);border-radius:14px;color:#718099;font-size:9px;white-space:nowrap}
+    .ai-market-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+    .market-demand-list{display:grid;gap:13px;padding:2px 0}
+    .market-demand-row{display:grid;grid-template-columns:minmax(90px,.7fr) minmax(80px,1fr) 28px;align-items:center;gap:10px}
+    .market-demand-name{color:#53617a;font-size:10px}
+    .market-demand-track{height:8px;overflow:hidden;border-radius:8px;background:#edf0f5}
+    .market-demand-track span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#4e60e8,#18a98b)}
+    .market-demand-value{color:#53617a;font-size:9px;font-weight:700;text-align:right}
+    .market-trend-chart{height:164px;position:relative;border-bottom:1px solid #edf0f5;background:repeating-linear-gradient(to bottom,transparent 0,transparent 39px,#edf1f6 40px)}
+    .market-trend-chart svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+    .market-trend-labels{display:flex;justify-content:space-between;padding-top:8px;color:#8a96aa;font-size:8px}
+    .market-data-note{margin:0;color:#8490a4;font-size:9px;line-height:1.45}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .market-demand-track{background:#26374e}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .market-demand-name,
+    body:has(#appView:not(.hidden))[data-theme="dark"] .market-demand-value{color:#c4d0e1}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .market-trend-chart{border-color:#2a3a51;background:repeating-linear-gradient(to bottom,transparent 0,transparent 39px,#293950 40px)}
+    body:has(#appView:not(.hidden))[data-theme="dark"] .market-trend-labels{color:#a6b3c7}
+    @media(max-width:1050px){.ai-market-grid{grid-template-columns:1fr}}
+    @media(max-width:700px){.ai-market-insights-heading{align-items:flex-start;flex-direction:column}.market-demand-row{grid-template-columns:minmax(84px,.8fr) minmax(50px,1fr) 25px;gap:7px}.market-trend-chart{height:145px}}
+    .theme-toggle{font-size:19px;line-height:1}
+  </style>
+</head>
+<body>
+  <section class="login-wrap" id="loginView">
+    <div class="login-story">
+      <a class="brandmark" href="#"><span class="brand-symbol">✳</span> MYRA</a>
+      <div class="story-kicker">A marketplace for what's next</div>
+      <h1>Ideas deserve<br>a <span>bigger stage.</span></h1>
+      <p class="story-copy">Discover useful AI tools, find your next favorite creator, or turn something you made into your next income stream.</p>
+      <div class="proof-row"><div class="avatar-stack"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80" alt=""><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&q=80" alt=""><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=80&q=80" alt=""></div><span><strong>12,000+</strong> makers and curious minds</span></div>
+      <div class="story-art"><div class="art-orb">✧</div><div class="art-caption"><strong>Make good things happen.</strong><small>One idea can take you anywhere.</small></div></div>
+    </div>
+    <form class="login-panel" id="loginForm">
+      <a class="brandmark" href="#"><span class="brand-symbol">✳</span> MYRA</a>
+      <h2>Welcome to MYRA</h2><p class="sub">Choose how you want to use the marketplace.</p>
+      <span class="role-label">I’m here as a</span>
+      <div class="role-options">
+        <button class="role-option active" type="button" data-role="brand"><span class="role-icon">◈</span><b>Brand / Buyer</b><small>Discover tools and talent</small></button>
+        <button class="role-option" type="button" data-role="creator"><span class="role-icon">✦</span><b>Creator</b><small>Publish and earn</small></button>
+      </div>
+      <label class="field"><span>Email address</span><input id="emailInput" type="email" placeholder="you@company.com" required autocomplete="email"></label>
+      <label class="field"><span>Password</span><input type="password" placeholder="Enter your password" required minlength="4" autocomplete="current-password"></label>
+      <button class="primary" type="submit">Continue as a brand <span aria-hidden="true">→</span></button>
+      <p class="login-terms">By continuing, you agree to MYRA’s <a href="#" data-toast="Terms of service">Terms</a> and <a href="#" data-toast="Privacy policy">Privacy Policy</a>.</p>
+    </form>
+  </section>
+
+      <section class="onboarding-wrap hidden" id="onboardingView">
+        <header class="onboarding-top"><a class="brandmark" href="#"><span class="brand-symbol">✳</span> MYRA</a><button type="button" id="onboardingSignout">Sign out</button></header>
+        <main class="onboarding-main"><div class="onboarding-kicker" id="onboardingKicker"></div><h1 id="onboardingTitle"></h1><p class="onboarding-copy" id="onboardingCopy"></p><div class="onboarding-steps" id="onboardingSteps"></div><div class="onboarding-actions"><button class="primary" type="button" id="onboardingContinue"></button><span class="onboarding-note">Your workspace will be ready when you are.</span></div><div class="onboarding-visual"><span><strong id="onboardingVisualTitle"></strong><small id="onboardingVisualCopy"></small></span></div></main>
+      </section>
+
+  <div class="app hidden" id="appView">
+    <aside class="sidebar">
+      <div class="side-logo"><span class="brand-symbol">✳</span><span>MYRA<small>AI Marketplace</small></span></div>
+      <nav class="nav-group" id="sideNav" aria-label="Main navigation"></nav>
+      <div class="side-promo"><span class="promo-icon">✧</span><strong id="promoTitle">Find your next favorite</strong><p id="promoCopy">Explore standout AI tools made by independent creators.</p><button id="promoAction">Explore marketplace →</button></div>
+      <div class="side-account">
+        <div class="side-account-person"><span class="side-account-avatar" id="sideAvatar">JD</span><span><strong id="sideName">Jordan Davis</strong><small id="sideType">Brand account</small></span></div>
+        <div class="side-account-actions"><button type="button" data-toast="Account settings are not available yet.">⚙ Settings</button><button type="button" id="sidebarLogout">↪ Log out</button></div>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <label class="top-search"><span>⌕</span><input id="searchInput" type="search" placeholder="Search AI tools, creators, or categories..."><span class="shortcut">Ctrl K</span></label>
+        <div class="top-actions"><button class="icon-button" aria-label="Notifications" data-toast="You’re all caught up.">♧<span class="notice-dot"></span></button><button class="icon-button theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Switch to dark theme" aria-pressed="false">☾</button><button class="user-button" id="profileButton" title="Sign out"><span class="user-avatar" id="userAvatar">JD</span><span class="user-copy"><span class="user-name" id="userName">Jordan Davis</span><span class="user-type" id="userType">Brand account</span></span><span aria-hidden="true">⌄</span></button></div>
+      </header>
+      <div class="workspace" id="workspace"></div>
+    </main>
+  </div>
+  <div id="toastRoot" aria-live="polite"></div>
+  <script>
+    const loginView=document.querySelector('#loginView');
+    const onboardingView=document.querySelector('#onboardingView');
+    const appView=document.querySelector('#appView');
+    const themeToggle=document.querySelector('#themeToggle');
+    function setTheme(theme){const isDark=theme==='dark';document.body.dataset.theme=isDark?'dark':'light';themeToggle.textContent=isDark?'☼':'☾';themeToggle.setAttribute('aria-label',`Switch to ${isDark?'light':'dark'} theme`);themeToggle.title=`Switch to ${isDark?'light':'dark'} theme`;themeToggle.setAttribute('aria-pressed',String(isDark));document.querySelector('meta[name="theme-color"]').content=isDark?'#0b1424':'#f3f6fb';localStorage.setItem('myra:theme',isDark?'dark':'light')}
+    setTheme(localStorage.getItem('myra:theme')||'light');
+    themeToggle.addEventListener('click',()=>setTheme(document.body.dataset.theme==='dark'?'light':'dark'));
+    const roleButtons=[...document.querySelectorAll('.role-option')];
+    const continueButton=document.querySelector('#loginForm .primary');
+    const workspace=document.querySelector('#workspace');
+    const sideNav=document.querySelector('#sideNav');
+    let selectedRole='brand';
+    let activeEmail='';
+    let isNewUser=false;
+    let currentPage='Overview';
+    let toastTimer;
+    let activeCategory='';
+    const brandNav=[['⌂','Dashboard','Overview'],['＋','Create Brief','Create Brief'],['▧','Projects','Projects'],['⌕','Search Creator','Search Creator'],['♡','Saved Creators','Saved Creators'],['↑','Scroll','Scroll'],['♧','Notifications','Notifications'],['₹','Payments','Payments']];
+    const creatorNav=[['⌂','Dashboard','Overview'],['♙','My Profile','Settings'],['▤','My Portfolio','My Portfolio'],['✧','AI Simulator','AI Simulator'],['⌕','Find Projects','Find Projects'],['▧','Applications','Applications'],['↑','Scroll','Scroll'],['♧','Notifications','Notifications'],['₹','Earnings','Earnings']];
+    const brandPageInfo={
+      'Search Creator':{copy:'Find creators whose skills and portfolios fit your next idea.',heading:'Creator discovery',empty:'Search and browse creator profiles from this workspace.',actionPage:'Saved Creators',actionLabel:'View saved creators'},
+      'Saved Creators':{copy:'Keep creators you want to revisit close at hand.',heading:'Your saved creators',empty:'Creators you save will appear here.',actionPage:'Search Creator',actionLabel:'Search creators'},
+      'Notifications':{copy:'Updates about your account and activity will appear here.',heading:'Recent notifications',empty:'You’re all caught up.'},
+    };
+    const creatorPageInfo={
+      'My Portfolio':{copy:'Showcase the work and skills you want clients to discover.',heading:'Your portfolio',empty:'Add portfolio work to give project owners a feel for what you make.',actionPage:'Settings',actionLabel:'Edit your profile'},
+      'Find Projects':{copy:'Explore opportunities that match your skills and interests.',heading:'Available projects',empty:'Project opportunities will appear here as brands publish briefs.',actionPage:'Settings',actionLabel:'Update your profile'},
+      'Applications':{copy:'Keep track of projects you have applied to.',heading:'Your applications',empty:'Your submitted applications and their status will appear here.',actionPage:'Find Projects',actionLabel:'Find projects'},
+      'Earnings':{copy:'Review your creator income and payment activity.',heading:'Earnings overview',empty:'Your earnings and payout history will appear here.'},
+      'Notifications':{copy:'Updates about your account and creator activity will appear here.',heading:'Recent notifications',empty:'You’re all caught up.'}
+    };
+    roleButtons.forEach(button=>button.addEventListener('click',()=>{selectedRole=button.dataset.role;roleButtons.forEach(item=>item.classList.toggle('active',item===button));continueButton.innerHTML=`Continue as a ${selectedRole==='brand'?'brand':'creator'} <span aria-hidden="true">→</span>`;}));
+    function accountKey(email,role){return `forma:onboarded:${role}:${email.trim().toLowerCase()}`}
+    function cleanOverviewKey(email,role){return `forma:clean-overview:${role}:${email.trim().toLowerCase()}`}
+    function showOnboarding(name){const creator=selectedRole==='creator';document.querySelector('#onboardingKicker').textContent=creator?'YOUR CREATOR STUDIO':'YOUR BUYER SPACE';document.querySelector('#onboardingTitle').textContent=creator?`Welcome, ${name}. Start with what you make.`:`Welcome, ${name}. Find a better way to work.`;document.querySelector('#onboardingCopy').textContent=creator?'Set up your space at your own pace. Start by shaping your creator profile and preparing the first thing you want to share.':'Your MYRA space is ready. Start by exploring independent tools, comparing what fits, and saving the ones you want to revisit.';const steps=creator?[['✦','Shape your creator profile','Tell buyers what you make and what makes it useful.'],['＋','Prepare your first listing','Add a tool or product when it is ready to share.'],['↗','Meet your first customers','Your listings can reach buyers across the marketplace.']]:[['⌕','Explore the marketplace','Browse practical tools made by independent creators.'],['◈','Find your fit','Compare tools by category and the work they help with.'],['♡','Save what stands out','Keep your favorites together for later.']];document.querySelector('#onboardingSteps').innerHTML=steps.map(([icon,title,copy])=>`<article class="onboarding-step"><span>${icon}</span><strong>${title}</strong><p>${copy}</p></article>`).join('');document.querySelector('#onboardingContinue').textContent=creator?'Create your first listing →':'Explore the marketplace →';document.querySelector('#onboardingVisualTitle').textContent=creator?'Your ideas belong here.':'Find tools that fit the way you work.';document.querySelector('#onboardingVisualCopy').textContent=creator?'Make a profile, share your work, and grow from your first listing.':'Discover thoughtful tools from independent creators.';loginView.classList.add('hidden');appView.classList.add('hidden');onboardingView.classList.remove('hidden');}
+    function openDashboard(page='Overview'){onboardingView.classList.add('hidden');loginView.classList.add('hidden');appView.classList.remove('hidden');currentPage=page;renderApp()}
+    function returnToLogin(){appView.classList.add('hidden');onboardingView.classList.add('hidden');loginView.classList.remove('hidden');document.querySelector('#loginForm').reset();selectedRole='brand';roleButtons.forEach(button=>button.classList.toggle('active',button.dataset.role===selectedRole));continueButton.innerHTML='Continue as a brand <span aria-hidden="true">→</span>'}
+    document.querySelector('#loginForm').addEventListener('submit',event=>{event.preventDefault();activeEmail=document.querySelector('#emailInput').value.trim().toLowerCase();const name=activeEmail.split('@')[0].replace(/[._-]+/g,' ').trim()||'Jordan Davis';const displayName=name.replace(/\b\w/g,char=>char.toUpperCase());document.querySelector('#userName').textContent=displayName;document.querySelector('#userAvatar').textContent=name.split(/\s+/).map(part=>part[0]).join('').slice(0,2).toUpperCase();document.querySelector('#userType').textContent=selectedRole==='brand'?'Brand account':'Creator account';if(localStorage.getItem(accountKey(activeEmail,selectedRole))){isNewUser=Boolean(localStorage.getItem(cleanOverviewKey(activeEmail,selectedRole)));openDashboard()}else{isNewUser=true;showOnboarding(displayName);document.querySelector('#onboardingContinue').textContent='Go to my overview →'}});
+    document.querySelector('#onboardingContinue').addEventListener('click',()=>{localStorage.setItem(accountKey(activeEmail,selectedRole),'1');localStorage.setItem(cleanOverviewKey(activeEmail,selectedRole),'1');isNewUser=true;openDashboard('Overview')});
+    document.querySelector('#onboardingSignout').addEventListener('click',returnToLogin);
+    document.querySelector('#profileButton').addEventListener('click',returnToLogin);
+    document.querySelector('#loginForm').addEventListener('submit',()=>{document.querySelector('#sideAvatar').textContent=document.querySelector('#userAvatar').textContent;document.querySelector('#sideName').textContent=document.querySelector('#userName').textContent;document.querySelector('#sideType').textContent=document.querySelector('#userType').textContent});
+    document.querySelector('#sidebarLogout').addEventListener('click',returnToLogin);
+    const USD_TO_INR=85;
+    const brandTools=[['ChatGPT Pro','A thoughtful AI assistant for writing, research and everyday work.','photo-1677442136019-21780ecad995','✳','4.9','₹1,615/mo','Productivity'],['Midjourney Studio','Create expressive images from a few words and a spark.','photo-1686191128892-3b9b49f2c7a5','◩','4.8','₹850/mo','Design'],['Notion AI','Bring your notes, plans and ideas together in one place.','photo-1558655146-d09347e92766','▣','4.7','₹680/mo','Productivity'],['GitHub Copilot','A coding companion that helps your team move faster.','photo-1518770660439-4636190af475','◉','4.6','₹850/mo','Development'],['Perplexity AI','Research and summarize trusted sources in one place.','photo-1451187580459-43490279c0fa','⌕','4.7','₹1,700/mo','Research']];
+    const creatorProducts=[['AI Resume Builder','Build a clear, confident resume in minutes.','photo-1455390582262-044cdead277a','▤','1,248','₹1,020'],['Image Generator Pro','Make original visuals with your own creative direction.','photo-1545239351-1141bd82e8a6','✧','856','₹1,530'],['Data Insight Copilot','Turn complex data into decisions your team can act on.','photo-1551288049-bebda4e38f71','◫','642','₹2,040'],['Video Summarizer','Get the useful parts of every long video, fast.','photo-1492619375914-88005aa9e8fb','▶','521','₹765']];
+    const brandProjectBriefs=[
+      {id:'clipforge-video',brand:'ClipForge Studio',title:'AI video creator for product launch films',description:'Create a short AI-generated launch video and explain your creative workflow from prompt to final edit.',skills:['AI video','Video editing','Runway','Storytelling'],budget:'₹38,250'},
+      {id:'motionmint-video',brand:'MotionMint',title:'Create short-form AI video ads',description:'Produce vertical AI video concepts for a social campaign, with polished pacing and motion.',skills:['AI video generation','Motion design','Video editing','Social video'],budget:'₹46,750'},
+      {id:'pixelbloom-image',brand:'PixelBloom',title:'Generate branded AI image campaigns',description:'Create a coordinated set of original AI images and share the prompts and art direction behind them.',skills:['AI image generation','Midjourney','Prompt design','Visual design'],budget:'₹42,500'},
+      {id:'artifex-image',brand:'Artifex Creative',title:'Create AI product images and concept art',description:'Develop product visuals and concept art using an image-generation workflow.',skills:['AI image generator','Stable Diffusion','Concept art','Image editing'],budget:'₹44,200'},
+      {id:'wordwell-writing',brand:'Wordwell',title:'Write product content with AI tools',description:'Create clear product copy and show how you use AI to develop, edit, and refine each draft.',skills:['AI writing','ChatGPT','Copywriting','Editing'],budget:'₹34,000'},
+      {id:'draftsmith-writing',brand:'Draftsmith AI',title:'AI writer for explainers and guides',description:'Write a helpful long-form explainer with an AI-assisted research and editorial process.',skills:['AI writer','Technical writing','Research','Editorial'],budget:'₹40,800'},
+      {id:'soundkind-audio',brand:'SoundKind Audio',title:'Generate AI audio for a creator campaign',description:'Create original AI-generated audio and prepare a short sound pack for a digital campaign.',skills:['AI audio generation','Sound design','Music production','Audio editing'],budget:'₹42,500'},
+      {id:'echolabs-audio',brand:'EchoLabs',title:'Build AI voice and podcast clips',description:'Produce natural-sounding AI voice clips and edit them into short podcast-ready segments.',skills:['AI audio','Voice synthesis','Podcast editing','Sound design'],budget:'₹38,250'},
+      {id:'formforge-3d',brand:'FormForge 3D',title:'Animate 3D assets for product stories',description:'Create an AI-assisted 3D animation that introduces a product through a short visual story.',skills:['AI 3D animation','Blender','3D modeling','Motion design'],budget:'₹59,500'},
+      {id:'kineticvoxel-3d',brand:'KineticVoxel',title:'Create AI-assisted 3D scenes',description:'Build and animate a 3D scene using AI-assisted modeling and a clear visual direction.',skills:['3D animator','AI 3D','3D animation','Blender'],budget:'₹63,750'}
+    ];
+    const aiCreatorProfiles=[
+      ['Ava Chen','AI image generation creator','San Francisco, CA',['Image generation','Prompt design','Product visuals'],'photo-1534528741775-53994a69daeb','Creates coherent product images and visual concepts with generative AI.',520],
+      ['Marcus Reed','AI audio developer','Austin, TX',['Audio AI','Speech synthesis','Python'],'photo-1500648767791-00dcc994a43e','Builds speech and sound generation tools from prototype to production.',680],
+      ['Nia Okafor','Generative image artist','London, UK',['Text-to-image','Illustration','Art direction'],'photo-1531123897727-8f129e1688ce','Turns image-generation models into distinctive editorial artwork.',480],
+      ['Leo Martins','AI music generator developer','Lisbon, Portugal',['Music generation','TypeScript','Audio APIs'],'photo-1506794778202-cad84cf45f1d','Develops tools for composing, editing, and arranging AI-generated music.',650],
+      ['Sofia Patel','AI writer and editor','Toronto, Canada',['AI writing','Research','Editorial'],'photo-1494790108377-be9c29b29330','Writes and edits clear, well-researched content with language models.',400],
+      ['Ethan Brooks','AI video generator developer','New York, NY',['Video generation','Automation','APIs'],'photo-1507003211169-0a1dd7228f2d','Connects generative video models to practical creator workflows.',850],
+      ['Maya Laurent','AI video creator','Paris, France',['Text-to-video','Motion design','Editing'],'photo-1544005313-94ddf0286df2','Produces short-form videos by blending generative clips with motion design.',620],
+      ['Noah Kim','AI image model trainer','Seattle, WA',['Image models','Python','Fine-tuning'],'photo-1535713875002-d1d0cf377fde','Fine-tunes image models for consistent styles and specialized use cases.',700],
+      ['Isabella Rivera','AI content writer','Miami, FL',['SEO writing','Brand voice','LLM editing'],'photo-1527980965255-d3b416303d12','Creates useful, search-aware copy while keeping each brand voice distinct.',450],
+      ['Priya Nair','AI voice developer','Bengaluru, India',['Voice synthesis','Speech APIs','Evaluation'],'photo-1517841905240-472988babdf9','Integrates natural-sounding synthetic voices and evaluates speech quality.',720],
+      ['Oliver Grant','AI image generator creator','Melbourne, Australia',['Product images','Image prompting','Retouching'],'photo-1508214751196-bcfd4ca60f91','Generates polished product imagery and prepares it for launch campaigns.',500],
+      ['Zara Ali','AI story and prompt writer','Dubai, UAE',['Prompt writing','Storytelling','Workflows'],'photo-1504593811423-6dd665756598','Designs story prompts and reusable writing workflows for generative AI.',430],
+      ['Daniel Foster','AI audio tools developer','Chicago, IL',['Audio APIs','Python','Voice workflows'],'photo-1524504388940-b1c1722653e1','Builds audio applications for transcription, voice generation, and sound editing.',700],
+      ['Amara Wilson','AI image and illustration creator','Atlanta, GA',['Illustration','Image generation','Character design'],'photo-1504257432389-52343af06ae3','Combines original illustration with generative image tools for character work.',560],
+      ['Theo Nguyen','AI video generator creator','Vancouver, Canada',['Text-to-video','Video editing','Storyboarding'],'photo-1539571696357-5a69c17a67c6','Creates story-led videos with generative scenes, editing, and sound.',680]
+    ];
+    function navItems(){return selectedRole==='brand'?brandNav:creatorNav}
+    function renderApp(){
+      const links=navItems();
+      sideNav.innerHTML=links.map(([icon,label,page])=>`<button class="nav-item ${currentPage===page?'active':''}" data-page="${page}"><span class="nav-icon">${icon}</span><span>${label}</span></button>`).join('');
+      sideNav.querySelectorAll('.nav-item').forEach(button=>button.addEventListener('click',()=>{currentPage=button.dataset.page;activeCategory='';renderApp()}));
+      document.querySelector('#searchInput').placeholder=selectedRole==='brand'?'Search AI tools, creators, or categories...':'Search your listings...';
+      document.querySelector('#promoTitle').textContent=selectedRole==='brand'?'Find your next favorite':'Grow your creative business';
+      document.querySelector('#promoCopy').textContent=selectedRole==='brand'?'Explore standout AI tools made by independent creators.':'Reach more buyers and build your next income stream.';
+      document.querySelector('#promoAction').textContent=selectedRole==='brand'?'Explore marketplace →':'Create a listing →';
+      document.querySelector('.side-promo').classList.toggle('hidden',selectedRole==='creator');
+      const reelslyRoute = selectedRole === 'brand' ? '/brand' : '/creator';
+      const reelslyIdentity = new URLSearchParams({embedded:'1',account_email:activeEmail,account_name:document.querySelector('#userName').textContent}).toString();
+      const reelslySrc = `${reelslyRoute}?${reelslyIdentity}`;
+      workspace.innerHTML=currentPage==='Scroll'?`<iframe class="scroll-project-frame" src="${reelslySrc}" title="Reelsly video feed" allow="autoplay; fullscreen; picture-in-picture"></iframe>`:renderCurrentPage();
+      workspace.querySelectorAll('.hero-art,.metric-glyph,.nav-icon').forEach(icon=>{if(icon.textContent.trim()==='＄')icon.textContent='₹'});
+      workspace.querySelectorAll('*').forEach(element=>{
+        if(element.children.length===0&&/^\$[\d,]+(?:\.\d{1,2})?$/.test(element.textContent.trim())){
+          const amount=Number(element.textContent.trim().replace(/[$,]/g,''));
+          element.textContent=formatUsd(amount);
+        }
+      });
+      const briefBudgetInput=workspace.querySelector('#brandBriefForm input[name="budget"]');
+      if(briefBudgetInput){briefBudgetInput.value=String(Number(briefBudgetInput.value||0)*USD_TO_INR);workspace.querySelector('.brief-budget-input > span').textContent='₹';const hint=workspace.querySelector('#brandBriefForm .brief-hint');if(hint)hint.textContent=`Sample creator estimates shown in INR at the illustrative rate ₹${USD_TO_INR} per USD.`}
+      if(selectedRole==='creator'&&currentPage==='My Portfolio'){
+        workspace.querySelector('.portfolio-grid > .panel:first-child')?.remove();
+        const portfolioIntro=workspace.querySelector('.hero-copy p');
+        if(portfolioIntro)portfolioIntro.textContent='Share your projects and skills with potential clients.';
+      }
+      if(currentPage==='Overview'){workspace.querySelector('.hero')?.insertAdjacentHTML('afterend',renderMarketInsights())}
+      bindWorkspace();
+    }
+    function renderCurrentPage(){if(currentPage==='Scroll')return '';if(isNewUser&&currentPage==='Overview')return renderCleanOverview();if(selectedRole==='brand'&&(currentPage==='Search Creator'||currentPage==='Saved Creators'))return renderSearchCreators(currentPage==='Saved Creators');if(selectedRole==='creator'&&currentPage==='Settings')return renderCreatorProfile();if(selectedRole==='creator'&&currentPage==='My Portfolio')return renderCreatorPortfolio();if(selectedRole==='creator'&&currentPage==='AI Simulator')return renderCreatorAiSimulator();if(selectedRole==='creator'&&currentPage==='Find Projects')return renderCreatorProjects();if(selectedRole==='creator'&&currentPage==='Applications')return renderCreatorApplications();if(selectedRole==='creator'&&currentPage==='Earnings')return renderCreatorEarnings();const pages=selectedRole==='brand'?brandPageInfo:creatorPageInfo;if(pages[currentPage])return renderSectionPage(currentPage,pages[currentPage]);return selectedRole==='brand'?renderBrand():renderCreator()}
+    function renderCreatorProfile(){return `<section class="hero creator"><div class="hero-copy"><div class="eyebrow">YOUR CREATOR STUDIO</div><h1>My Profile</h1><p>Help brands understand your work, strengths, and the projects you want to take on.</p></div><div class="hero-art" aria-hidden="true">✦</div></section><section class="panel"><div class="panel-title"><h3>Creator details</h3></div><form id="creatorProfileForm"><label class="field"><span>Creator name</span><input name="creatorName" type="text" required></label><label class="field"><span>Profile headline</span><input name="headline" type="text" placeholder="e.g. Product designer and AI builder"></label><label class="field"><span>Skills</span><input name="skills" type="text" placeholder="e.g. Python, design, video editing"></label><label class="field"><span>AI tools and models</span><input name="tools" type="text" placeholder="e.g. Gemini, Figma, Blender, Midjourney"></label><label class="field"><span>Delivery formats you support</span><input name="formats" type="text" placeholder="e.g. PNG, MP4, PDF, HTML/CSS/JS"></label><label class="field"><span>Portfolio link</span><input name="portfolio" type="url" placeholder="https://"></label><button class="primary" type="submit" style="max-width:240px">Save profile</button></form></section>`}
+    function renderCreatorEarnings(){return `<section class="hero creator"><div class="hero-copy"><div class="eyebrow">YOUR CREATOR STUDIO</div><h1>Earnings</h1><p>Your current recorded earnings and payout balances.</p></div><div class="hero-art" aria-hidden="true">＄</div></section><div class="metric-grid">${[['Lifetime earnings','＄'],['Available balance','↗'],['Pending payout','◷']].map(([label,glyph])=>`<article class="metric-card"><div class="metric-head"><span>${label}</span><span class="metric-glyph">${glyph}</span></div><strong>$0.00</strong><small>No earnings recorded</small></article>`).join('')}</div><section class="panel"><div class="panel-title"><h3>Payment activity</h3><span class="portfolio-status">No activity</span></div><p style="font-size:11px;line-height:1.6;color:#77849a">There are no creator earnings or payouts yet.</p><button class="text-button" data-page="Find Projects">Browse creator projects →</button></section>`}
+    function renderCreatorAiSimulator(){
+      const projects=readCreatorProjects();
+      return `<section class="hero creator"><div class="hero-copy"><div class="eyebrow">YOUR CREATOR STUDIO</div><h1>AI Simulator</h1><p>Test project timelines, budgets, and team availability before you commit.</p></div><div class="hero-art" aria-hidden="true">✦</div></section>
+      <section class="panel" id="creatorProjectSimulator">
+        <div class="panel-title"><div><h3>Project Simulator</h3><p style="margin:5px 0 0;color:#77849a;font-size:11px">Test timeline pressure, budget constraints, and team availability using your project plan.</p></div><span class="pill">Planning tool</span></div>
+        <form id="creatorProjectSimulationForm" class="portfolio-form">
+          <label class="field"><span>Project name</span><input name="project_name" type="text" placeholder="e.g. AI Customer Support Chatbot" value="${escapeHtml(projects[0]?.title||'')}" required></label>
+          <label class="field"><span>Project description</span><textarea name="description" placeholder="What are you building, and what should it achieve?" required>${escapeHtml(projects[0]?.description||'')}</textarea></label>
+          <div class="form-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px">
+            <label class="field"><span>Budget (₹)</span><input name="budget" type="number" min="0" value="20000" required></label>
+            <label class="field"><span>Deadline (days)</span><input name="deadline_days" type="number" min="7" max="365" value="30" required></label>
+            <label class="field"><span>Team size</span><input name="team_size" type="number" min="1" max="100" value="3" required></label>
+          </div>
+          <label class="field"><span>Scenario to test</span><select name="scenario"><option>One developer becomes unavailable</option><option>Project budget is reduced</option><option>Delivery deadline is shortened</option><option>Technology integration becomes more complex</option><option>Unexpected project costs increase</option></select></label>
+          <button class="primary" type="submit" id="creatorRunSimulation" style="max-width:260px">▶ Run project simulation</button>
+          <p style="margin:0;color:#77849a;font-size:10px;line-height:1.5">Estimates are planning guidance based on your inputs, not guarantees of real-world delivery.</p>
+        </form>
+        <div id="creatorSimulationStatus" role="status" aria-live="polite" style="margin-top:14px;font-size:11px;color:#66748d"></div>
+        <div id="creatorSimulationResults" class="ai-summary-result hidden" aria-live="polite">
+          <h3>Simulation results</h3>
+          <div class="metric-grid" style="margin:12px 0">
+            <article class="metric-card"><span>Readiness</span><strong id="creatorSimReadiness">—</strong></article>
+            <article class="metric-card"><span>Estimated duration</span><strong id="creatorSimDuration">—</strong></article>
+            <article class="metric-card"><span>Budget impact</span><strong id="creatorSimBudget">—</strong></article>
+            <article class="metric-card"><span>Risk level</span><strong id="creatorSimRisk">—</strong></article>
+          </div>
+          <p id="creatorSimSummary"></p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px">
+            <div><strong>Risks to watch</strong><ul id="creatorSimRisks"></ul></div>
+            <div><strong>Recommended actions</strong><ul id="creatorSimActions"></ul></div>
+          </div>
+        </div>
+      </section>`;
+    }
+    function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]))}
+    function safeProjectUrl(value){try{const url=new URL(value);return url.protocol==='http:'||url.protocol==='https:'?url.href:''}catch{return ''}}
+    function creatorProjectsKey(){return `forma:creator-projects:${activeEmail}`}
+    function readCreatorProjects(){try{const projects=JSON.parse(localStorage.getItem(creatorProjectsKey())||'[]');return Array.isArray(projects)?projects:[]}catch{return []}}
+    function readCreatorProfile(){try{return JSON.parse(localStorage.getItem(`forma:creator-profile:${activeEmail}`)||'{}')}catch{return {}}}
+    function creatorApplicationsKey(){return `forma:creator-applications:${activeEmail}`}
+    function readCreatorApplications(){try{const applications=JSON.parse(localStorage.getItem(creatorApplicationsKey())||'[]');return Array.isArray(applications)?applications:[]}catch{return []}}
+    function readCreatorProfileSkills(){let profile={};try{profile=JSON.parse(localStorage.getItem(`forma:creator-profile:${activeEmail}`)||'{}')}catch{};return (profile.skills||'').split(',').map(skill=>skill.trim()).filter(Boolean)}
+    function readCreatorPortfolioSkills(){return [...new Set(readCreatorProjects().flatMap(project=>(project.skills||'').split(',')).map(skill=>skill.trim()).filter(Boolean))]}
+    function matchingBriefSkills(briefSkills,creatorSkills){const ignoredTerms=new Set(['ai','creator','creators','generator','generators','generation','generative','for','and','the','with','tool','tools']);const canonicalTerm=term=>({animator:'animation',animators:'animation',animated:'animation',animating:'animation',writer:'writing',writers:'writing',writing:'writing'}[term]||term);const terms=value=>value.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().split(/\s+/).map(canonicalTerm).filter(term=>term&&!ignoredTerms.has(term));return briefSkills.filter(briefSkill=>{const briefTerms=terms(briefSkill);return creatorSkills.some(creatorSkill=>{const creatorTerms=terms(creatorSkill);return briefTerms.some(term=>creatorTerms.includes(term))})})}
+    function briefMatchLabel(brief,hasSkills){const matches=[];if(brief.profileMatches.length)matches.push(`Profile: ${escapeHtml(brief.profileMatches.join(', '))}`);if(brief.portfolioMatches.length)matches.push(`Portfolio: ${escapeHtml(brief.portfolioMatches.join(', '))}`);return matches.join(' · ')||(hasSkills?'No direct skill match':'Set skills for match details')}
+    function renderCreatorProjects(){
+      const profileSkills=readCreatorProfileSkills();
+      const portfolioSkills=readCreatorPortfolioSkills();
+      const creatorSkills=[...new Set([...profileSkills,...portfolioSkills])];
+      const applications=new Set(readCreatorApplications().map(application=>application.briefId));
+      const briefs=brandProjectBriefs.map((brief,order)=>{
+        const profileMatches=matchingBriefSkills(brief.skills,profileSkills);
+        const portfolioMatches=matchingBriefSkills(brief.skills,portfolioSkills);
+        return {...brief,order,profileMatches,portfolioMatches,matches:[...new Set([...profileMatches,...portfolioMatches])]};
+      }).sort((first,second)=>second.profileMatches.length-first.profileMatches.length||second.portfolioMatches.length-first.portfolioMatches.length||first.order-second.order);
+      const skillCopy=creatorSkills.length?`Ranked using your profile and portfolio skills: ${escapeHtml(creatorSkills.join(', '))}.`:'Add skills in My Profile to personalize your matches. All ten sample briefs are shown.';
+      return `<section class="hero creator"><div class="hero-copy"><div class="eyebrow">DEMO BRAND BRIEFS</div><h1>Projects looking for AI creators</h1><p>Sample opportunities, ranked by how closely their requested skills match yours.</p></div><div class="hero-art" aria-hidden="true">✦</div></section><section class="panel"><p style="margin:0;font-size:11px;line-height:1.6;color:#66748d">${skillCopy} These are examples, not live brand offers.</p></section><div class="campaign-grid">${briefs.map(brief=>`<article class="campaign-card" data-searchable="${escapeHtml(`${brief.brand} ${brief.title} ${brief.description} ${brief.skills.join(' ')}`)}"><div class="campaign-head"><div><span class="campaign-demo">Sample brand brief</span><h3>${escapeHtml(brief.title)}</h3><div class="campaign-brand">${escapeHtml(brief.brand)}</div></div><span class="campaign-budget">${escapeHtml(brief.budget)}</span></div><p class="campaign-description">${escapeHtml(brief.description)}</p><div class="campaign-skills">${brief.skills.map(skill=>`<span class="campaign-skill ${brief.matches.includes(skill)?'matched':''}">${escapeHtml(skill)}</span>`).join('')}</div><div class="campaign-foot"><span class="campaign-match">${briefMatchLabel(brief,creatorSkills.length>0)}</span><button class="campaign-apply" type="button" data-apply-campaign="${escapeHtml(brief.id)}" ${applications.has(brief.id)?'disabled':''}>${applications.has(brief.id)?'Applied':'Apply'}</button></div></article>`).join('')}</div>`;
+    }
+    function renderCreatorApplications(){const applications=readCreatorApplications().map(application=>brandProjectBriefs.find(brief=>brief.id===application.briefId)).filter(Boolean);return `<section class="hero creator"><div class="hero-copy"><div class="eyebrow">YOUR CREATOR STUDIO</div><h1>Applications</h1><p>Sample briefs you have chosen to apply to.</p></div><div class="hero-art" aria-hidden="true">✦</div></section><section class="panel"><div class="panel-title"><h3>Your applications</h3><span style="font-size:10px;color:#8490a4">${applications.length}</span></div>${applications.length?`<div class="campaign-grid">${applications.map(brief=>`<article class="campaign-card"><div class="campaign-demo">Sample brand brief</div><h3>${escapeHtml(brief.title)}</h3><div class="campaign-brand">${escapeHtml(brief.brand)}</div><p class="campaign-description">${escapeHtml(brief.description)}</p></article>`).join('')}</div>`:'<p style="font-size:11px;color:#77849a">You have not applied to any sample briefs yet.</p>'}</section>`}
+    function renderCreatorPortfolio(){const projects=readCreatorProjects();let profile={};try{profile=JSON.parse(localStorage.getItem(`forma:creator-profile:${activeEmail}`)||'{}')}catch{};const skills=(profile.skills||'').split(',').map(skill=>skill.trim()).filter(Boolean);const creatorName=profile.creatorName||document.querySelector('#userName').textContent;const creatorDescription=`${creatorName}${profile.headline?` — ${profile.headline}`:' is an independent creator'}${skills.length?`. Skills include ${skills.join(', ')}`:''}.`;const projectDescriptions=projects.length?projects.map(project=>`${project.title||'Untitled project'}: ${project.description||'No project description added.'}${project.skills?` Skills used: ${project.skills}.`:''}`).join(' '):'No projects have been added to the portfolio yet.';const twinActive=localStorage.getItem(`forma:creator-work-twin:${activeEmail}`)==='active';return `<section class="hero creator"><div class="hero-copy"><div class="eyebrow">YOUR CREATOR STUDIO</div><h1>My Portfolio</h1><p>Share your projects and start an AI Work Twin shaped around your skills and work.</p></div><div class="hero-art" aria-hidden="true">✦</div></section><div class="portfolio-grid"><section class="panel"><div class="panel-title"><h3>AI Work Twin</h3><span class="portfolio-status">${twinActive?'Active':'Ready to start'}</span></div><p style="font-size:11px;line-height:1.6;color:#77849a">Your Work Twin uses your saved profile and projects as its creator context.</p><button class="primary" id="startWorkTwin" type="button" style="max-width:220px">${twinActive?'Refresh Work Twin':'Start AI Work Twin'}</button>${twinActive?`<div class="twin-summary"><p><strong>Creator</strong> ${escapeHtml(creatorDescription)}</p><p><strong>Projects</strong> ${escapeHtml(projectDescriptions)}</p></div>`:''}</section><section class="panel"><div class="panel-title"><h3>Add a project</h3></div><form id="creatorProjectForm" class="portfolio-form"><label class="field"><span>Project name</span><input name="title" type="text" placeholder="e.g. Accessible travel planner" required></label><label class="field"><span>What did you create?</span><textarea name="description" placeholder="Describe your contribution and the result." required></textarea></label><label class="field"><span>Skills used</span><input name="skills" type="text" placeholder="e.g. React, research, prototyping"></label><label class="field"><span>Project link</span><input name="link" type="url" placeholder="https://"></label><button class="primary" type="submit">Add project</button></form></section></div><section class="panel"><div class="panel-title"><h3>Your projects</h3><span style="font-size:10px;color:#8490a4">${projects.length} ${projects.length===1?'project':'projects'}</span></div>${projects.length?`<div class="portfolio-projects">${projects.map(project=>{const link=safeProjectUrl(project.link);const tags=(project.skills||'').split(',').map(skill=>skill.trim()).filter(Boolean);return `<article class="portfolio-project"><div class="portfolio-project-head"><h4>${escapeHtml(project.title)}</h4><button type="button" data-delete-project="${escapeHtml(project.id)}">Remove</button></div><p>${escapeHtml(project.description)}</p>${tags.length?`<div class="portfolio-tags">${tags.map(tag=>`<span class="portfolio-tag">${escapeHtml(tag)}</span>`).join('')}</div>`:''}${link?`<a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">View project</a>`:''}</article>`}).join('')}</div>`:'<p style="font-size:11px;line-height:1.6;color:#77849a">Your added projects will appear here and help shape your Work Twin.</p>'}</section>`}
+    function renderSectionPage(title,info){const role=selectedRole==='creator'?'creator':'brand';const action=info.actionPage?`<button class="text-button" data-page="${info.actionPage}">${info.actionLabel} →</button>`:'';const content=title==='Notifications'?'<div id="notificationsList" aria-live="polite">Loading notifications…</div>':`<p style="font-size:11px;line-height:1.6;color:#77849a">${info.empty}</p>`;return `<section class="hero ${role}"><div class="hero-copy"><div class="eyebrow">${role==='creator'?'YOUR CREATOR STUDIO':'BRAND WORKSPACE'}</div><h1>${title}</h1><p>${info.copy}</p></div><div class="hero-art" aria-hidden="true">${role==='creator'?'✦':'✧'}</div></section><section class="panel"><div class="panel-title"><h3>${info.heading}</h3></div>${content}${action}</section>`}
+    async function loadNotifications(container){const params=new URLSearchParams({email:activeEmail,name:document.querySelector('#userName').textContent,role:selectedRole});try{const response=await fetch(`/api/notifications?${params.toString()}`);const notifications=await response.json();if(!response.ok)throw new Error(notifications.error||'Could not load notifications.');if(!notifications.length){container.innerHTML='<p style="font-size:11px;line-height:1.6;color:#77849a">You’re all caught up.</p>';return}container.innerHTML=notifications.map(item=>{const pending=selectedRole==='creator'&&item.status==='pending';const title=selectedRole==='creator'?`${escapeHtml(item.brand_name)} wants to hire you`:`Hire request to @${escapeHtml(item.creator_name)}`;const details=item.caption?escapeHtml(item.caption):'Reel hire request';const time=new Date(item.created_at).toLocaleString();const controls=pending?`<div style="display:flex;gap:8px;margin-top:10px"><button class="primary" type="button" data-notification-response="accept" data-notification-id="${escapeHtml(item.id)}">Accept</button><button class="text-button" type="button" data-notification-response="decline" data-notification-id="${escapeHtml(item.id)}">Decline</button></div>`:'';const status=selectedRole==='creator'&&pending?'Response needed':item.status.charAt(0).toUpperCase()+item.status.slice(1);return `<article style="padding:14px 0;border-bottom:1px solid var(--line)"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div><strong>${title}</strong><p style="margin:5px 0;font-size:11px;color:#77849a">${details}</p><small style="font-size:10px;color:#8995a8">${time}</small></div><span class="portfolio-status">${status}</span></div>${controls}</article>`}).join('');container.querySelectorAll('[data-notification-response]').forEach(button=>button.addEventListener('click',async()=>{const buttons=[...container.querySelectorAll(`[data-notification-id="${button.dataset.notificationId}"]`)];buttons.forEach(item=>item.disabled=true);try{const response=await fetch(`/api/notifications/${encodeURIComponent(button.dataset.notificationId)}/respond`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:activeEmail,name:document.querySelector('#userName').textContent,decision:button.dataset.notificationResponse})});const result=await response.json();if(!response.ok)throw new Error(result.error||'Could not update this hire request.');showToast(button.dataset.notificationResponse==='accept'?'Hire request accepted.':'Hire request declined.');renderApp()}catch(error){showToast(error.message||'Could not update this hire request.');buttons.forEach(item=>item.disabled=false)}}))}catch(error){container.textContent=error.message||'Could not load notifications.'}}
+    function renderCleanOverview(){
+        if(selectedRole==='brand')return renderCleanBuyerOverview();
+          function renderCleanBuyerOverview(){return `<section class="hero"><div class="hero-copy"><div class="eyebrow">YOUR AI TOOL MARKETPLACE</div><h1>Your marketplace starts here</h1><p>Browse independent tools, compare what fits, and save useful finds.</p><button class="hero-cta" data-page="Browse AI tools">Browse AI tools →</button></div><div class="hero-art" aria-hidden="true">✧</div></section>${brandDashboardEssentials()}<div class="section-head"><h2>Explore by category</h2></div>${marketCategoryCards()}`}
+      if(selectedRole==='creator')return `<section class="hero creator"><div class="hero-copy"><div class="eyebrow">YOUR CREATOR STUDIO</div><h1>Your studio starts here</h1><p>Set up your profile, prepare your first listing, and share your work when it is ready.</p><button class="hero-cta" data-page="Create a tool">Create your first listing →</button></div><div class="hero-art" aria-hidden="true">✦</div></section><div class="section-head"><h2>Set up your studio</h2></div><div class="feature-grid"><article class="feature-card"><span class="feature-icon">✦</span><strong>Introduce your work</strong><p>Add a name and a short description to your creator profile.</p><button data-page="Settings">Set up profile →</button></article><article class="feature-card"><span class="feature-icon">＋</span><strong>Create a listing</strong><p>Share a tool or product with people looking for it.</p><button data-page="Create a tool">Start a listing →</button></article><article class="feature-card"><span class="feature-icon">↗</span><strong>Grow at your pace</strong><p>Your studio will fill in as you publish and make sales.</p><button data-page="My listings">View listings →</button></article></div>`;
+      return `<section class="hero"><div class="hero-copy"><div class="eyebrow">YOUR BUYER SPACE</div><h1>Your workspace starts here</h1><p>Explore independent tools, save what you like, and build a collection that works for you.</p><button class="hero-cta" data-page="Discover AI">Explore the marketplace →</button></div><div class="hero-art" aria-hidden="true">✧</div></section><div class="section-head"><h2>Make yourself at home</h2></div><div class="feature-grid"><article class="feature-card"><span class="feature-icon">⌕</span><strong>Explore tools</strong><p>Browse practical AI tools from independent creators.</p><button data-page="Discover AI">Browse marketplace →</button></article><article class="feature-card"><span class="feature-icon">♡</span><strong>Save your favorites</strong><p>Keep useful tools close while you compare options.</p><button data-page="Saved">See saved tools →</button></article><article class="feature-card"><span class="feature-icon">▧</span><strong>Start a project</strong><p>Bring your ideas together and find tools to help.</p><button data-page="Projects">Explore projects →</button></article></div>`;
+    }
+    function hero(title,copy,role,button){return `<section class="hero ${role}"><div class="hero-copy"><div class="eyebrow">${role==='creator'?'Your creator studio':'The independent AI marketplace'}</div><h1>${title}</h1><p>${copy}</p><button class="hero-cta" data-toast="${button==='Browse tools'?'Showing the latest AI tools.':'Your new listing is ready to set up.'}">${button} →</button></div><div class="hero-art" aria-hidden="true">${role==='creator'?'▱':'✧'}</div></section>`}
+    function marketCategoryCards(){return `<div class="feature-grid">${[['✎','Writing & productivity','Draft, edit, summarize, and organize.','Productivity'],['✧','Image generation','Create visuals, illustrations, and designs.','Design'],['⌘','Coding & development','Build, review, and ship software.','Development'],['⌕','Research & knowledge','Search, synthesize, and understand information.','Research']].map(([icon,title,copy,category])=>`<article class="feature-card"><span class="feature-icon">${icon}</span><strong>${title}</strong><p>${copy}</p><button data-filter-category="${category}">Explore tools →</button></article>`).join('')}</div>`}
+    function readSavedTools(){try{return JSON.parse(localStorage.getItem(`forma:saved-tools:${activeEmail}`)||'[]')}catch{return []}}
+    function readSavedCreators(){try{const saved=JSON.parse(localStorage.getItem(`forma:saved-creators:${activeEmail}`)||'[]');return Array.isArray(saved)?saved:[]}catch{return []}}
+    function brandDashboardEssentials(){const categories=new Set(brandTools.map(([, , , , , ,category])=>category));const savedCount=readSavedTools().length;return `<section class="marketplace-essentials"><div class="marketplace-stat-grid"><article class="marketplace-stat"><span>AI products</span><strong>${brandTools.length}</strong><small>Available to explore</small></article><article class="marketplace-stat"><span>Categories</span><strong>${categories.size}</strong><small>Browse by specialty</small></article><article class="marketplace-stat"><span>Saved tools</span><strong>${savedCount}</strong><small>In your collection</small></article></div><div class="marketplace-actions"><button type="button" data-page="Create Brief">＋ Create brief</button><button type="button" data-page="Search Creator">⌕ Find creators</button><button type="button" data-page="Projects">▧ View projects</button></div></section>`}
+    function renderMarketInsights(){
+      const categories=[['Image generation',84],['Video generation',76],['AI audio',63],['AI writing',58],['AI agents',51]];
+      return `<section class="ai-market-insights" aria-labelledby="aiMarketTitle"><div class="ai-market-insights-heading"><div><h2 id="aiMarketTitle">AI market pulse</h2><p>Category demand and search interest · six-month sample</p></div><span class="market-sample-badge">Illustrative data</span></div><div class="ai-market-grid"><section class="panel"><div class="panel-title"><h3>Category demand index</h3><span style="font-size:9px;color:#8490a4">Index / 100</span></div><div class="market-demand-list" role="list">${categories.map(([name,value])=>`<div class="market-demand-row" role="listitem"><span class="market-demand-name">${name}</span><div class="market-demand-track" role="meter" aria-label="${name} demand index" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${value}"><span style="width:${value}%"></span></div><span class="market-demand-value">${value}</span></div>`).join('')}</div></section><section class="panel"><div class="panel-title"><h3>Marketplace search interest</h3><span style="font-size:9px;color:#8490a4">Index / 100</span></div><div class="market-trend-chart"><svg viewBox="0 0 600 160" preserveAspectRatio="none" role="img" aria-label="Illustrative AI marketplace search interest rises from 42 in January to 82 in June"><defs><linearGradient id="marketAreaFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#18a98b" stop-opacity=".23"/><stop offset="1" stop-color="#18a98b" stop-opacity="0"/></linearGradient></defs><path d="M0 132 C42 127 80 116 120 115 S200 123 240 120 S321 95 360 88 S442 63 480 58 S560 34 600 28 L600 160 L0 160Z" fill="url(#marketAreaFill)"/><path d="M0 132 C42 127 80 116 120 115 S200 123 240 120 S321 95 360 88 S442 63 480 58 S560 34 600 28" fill="none" stroke="#159c83" stroke-width="3" vector-effect="non-scaling-stroke"/></svg></div><div class="market-trend-labels"><span>Jan · 42</span><span>Feb · 49</span><span>Mar · 47</span><span>Apr · 61</span><span>May · 72</span><span>Jun · 82</span></div></section></div><p class="market-data-note">Illustrative sample signals for dashboard preview; not live market research.</p></section>`;
+    }
+    function metric(label,value,change,glyph){return `<article class="metric-card"><div class="metric-head"><span>${label}</span><span class="metric-glyph">${glyph}</span></div><strong>${value}</strong><small class="up">↑ ${change} <span style="color:#8b97a9">from last month</span></small></article>`}
+    function features(){return `<div class="feature-grid">${[['▧','Project Simulator','Try out an idea before you commit.','Run a simulation'],['⌕','AI Analysis','Find the signal in your tools and projects.','See insights']].map(([icon,title,copy,action])=>`<article class="feature-card"><span class="feature-icon">${icon}</span><strong>${title}</strong><p>${copy}</p><button data-toast="${title} is ready to explore.">${action} →</button></article>`).join('')}</div>`}
+    function toolCards(tools=brandTools){return `<div class="tool-grid" id="toolGrid">${tools.map(([title,copy,image,mark,rating,price,category])=>`<article class="tool-card" data-searchable="${title} ${copy} ${category}"><div class="tool-image" style="background-image:url('https://images.unsplash.com/${image}?auto=format&fit=crop&w=600&q=80')"><span class="tool-mark">${mark}</span></div><div class="tool-content"><h3>${title}</h3><p>${copy}</p><div class="tool-foot"><span><span class="rating">★</span> ${rating} <span style="color:#8793a7">· ${category}</span></span><span style="font-weight:700;color:#14213d">${price}</span><button data-save-tool="${title}">${readSavedTools().includes(title)?'Saved':'Save'}</button></div></div></article>`).join('')}</div>`}
+    function renderSearchCreators(savedOnly=false){
+      const creators=aiCreatorProfiles;
+      const saved=new Set(readSavedCreators());
+      const visibleCreators=savedOnly?creators.filter(([name])=>saved.has(name)):creators;
+      if(savedOnly&&!visibleCreators.length)return `<section class="hero"><div class="hero-copy"><div class="eyebrow">YOUR COLLECTION</div><h1>Saved creators</h1><p>Keep AI creators you want to work with close at hand.</p></div><div class="hero-art" aria-hidden="true">♡</div></section><section class="panel"><h3>No saved creators yet</h3><p style="font-size:11px;color:#77849a">Save a creator from Search Creator and they will appear here.</p><button class="text-button" data-page="Search Creator">Find AI creators →</button></section>`;
+      const cards=visibleCreators.map(([name,headline,location,skills,image,bio])=>{const isSaved=saved.has(name);return `<article class="creator-search-card" data-domain="${escapeHtml(creatorDomains(headline,skills).join(' '))}" data-commercial="unknown" data-searchable="${escapeHtml([name,headline,location,...skills,bio].join(' '))}"><div class="creator-search-head"><img class="creator-face" src="https://images.unsplash.com/${image}?auto=format&fit=crop&w=160&h=160&q=85" alt="Portrait of ${escapeHtml(name)}" loading="lazy"><div class="creator-search-info"><h3>${escapeHtml(name)}</h3><p>${escapeHtml(headline)}</p><span class="creator-location">${escapeHtml(location)}</span></div><span class="creator-search-status">Available</span></div><p class="creator-search-bio">${escapeHtml(bio)}</p><p class="creator-license-note" data-commercial="unknown" style="font-size:9px;color:#8490a4;margin:0">Commercial-use rights: confirm directly with creator</p><div class="creator-search-tags">${skills.map(skill=>`<span class="creator-search-tag">${escapeHtml(skill)}</span>`).join('')}</div><button class="creator-save-button" type="button" data-save-creator="${escapeHtml(name)}" aria-pressed="${isSaved}" aria-label="${isSaved?'Remove':'Save'} ${escapeHtml(name)} ${isSaved?'from':'to'} saved creators">${isSaved?'Saved':'Save creator'}</button></article>`}).join('');
+      const title=savedOnly?'Saved creators':'Featured AI creators';
+      const count=`${visibleCreators.length} ${savedOnly?'saved ':''}${visibleCreators.length===1?'creator':'creators'}`;
+      return `<section class="hero"><div class="hero-copy"><div class="eyebrow">${savedOnly?'YOUR COLLECTION':'AI CREATOR DISCOVERY'}</div><h1>${savedOnly?'Saved creators':'Find your next AI creator'}</h1><p>${savedOnly?'Keep AI creators you want to work with close at hand.':'Connect with specialists in video, image, audio, and AI-powered writing.'}</p></div><div class="hero-art" aria-hidden="true">${savedOnly?'♡':'✧'}</div></section>${savedOnly?'':`<section class="panel" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px"><label class="field" style="margin:0"><span>Filter by skill or keyword</span><input id="creatorSkillFilter" placeholder="e.g. Python, video, branding" style="width:100%;height:40px;border:1px solid var(--line);border-radius:8px;padding:0 10px"></label><label class="field" style="margin:0"><span>Specialization</span><select id="creatorDomainFilter" style="width:100%;height:40px;border:1px solid var(--line);border-radius:8px;padding:0 10px"><option value="">All specializations</option><option>Video</option><option>Image</option><option>Audio</option><option>Writing</option><option>3D</option><option>Development</option></select></label><label class="field" style="margin:0"><span>Commercial use</span><select id="creatorCommercialFilter" style="width:100%;height:40px;border:1px solid var(--line);border-radius:8px;padding:0 10px"><option value="">Any license status</option><option value="yes">Commercial use listed</option><option value="unknown">Confirm with creator</option></select></label></section><p id="creatorFilterEmpty" class="brief-empty" hidden>No creators match these filters. Try another skill or specialization.</p>`}<div class="section-head"><h2>${title}</h2><span style="color:#8490a4;font-size:10px">${count}</span></div><div class="creator-search-grid" aria-label="AI creator profiles">${cards}</div>`;
+    }
+    function inferBriefRequirements(text){
+      const rules=[
+        {domain:'Video',pattern:/video|film|clip|reel|motion|animation/,skills:['Video generation','Text-to-video','Video editing','Motion design','Storyboarding']},
+        {domain:'Image',pattern:/image|photo|visual|illustrat|artwork|product art/,skills:['Image generation','Text-to-image','Image prompting','Illustration','Product visuals']},
+        {domain:'Audio',pattern:/audio|voice|speech|podcast|music|sound|song/,skills:['Audio AI','Speech synthesis','Music generation','Voice synthesis','Sound design','Audio APIs']},
+        {domain:'Writing',pattern:/writ|content|copy|article|blog|story|editor|research|guide|narrative/,skills:['AI writing','Editorial','Copywriting','Technical writing','Prompt writing','Storytelling']},
+        {domain:'3D',pattern:/3d|blender|three-dimensional/,skills:['AI 3D','3D animation','Blender','3D modeling']},
+        {domain:'Development',pattern:/app|application|software|platform|api|integrat|develop|build|code/,skills:['Python','TypeScript','APIs','LLM integration']}
+      ];
+      const matchedRules=rules.filter(rule=>rule.pattern.test(text.toLowerCase()));
+      return {domains:matchedRules.map(rule=>rule.domain),skills:[...new Set(matchedRules.flatMap(rule=>rule.skills))],skillsByDomain:Object.fromEntries(matchedRules.map(rule=>[rule.domain,rule.skills]))};
+    }
+    function creatorDomains(headline,skills){
+      const headlineText=headline.toLowerCase();
+      const profileText=skills.join(' ').toLowerCase();
+      const rules={Video:/video|motion design|storyboard|film/,Image:/image|illustration|product visuals|text-to-image/,Audio:/audio|speech|music|voice|sound design/,Writing:/writer|writing|editorial|copywriting|content/,'3D':/\b3d\b|blender|modeling/,Development:/\bpython\b|typescript|\bapis?\b|developer|integration/};
+      const headlineDomains=Object.entries(rules).filter(([,pattern])=>pattern.test(headlineText)).map(([domain])=>domain);
+      return headlineDomains.length?headlineDomains:Object.entries(rules).filter(([,pattern])=>pattern.test(profileText)).map(([domain])=>domain);
+    }
+    function recommendBriefCreators(requirements,budget){
+      const ranked=aiCreatorProfiles.map(([name,headline,location,skills,image,bio,estimate])=>{
+        const matchedDomains=requirements.domains.filter(domain=>creatorDomains(headline,skills).includes(domain));
+        const relevantSkills=[...new Set(matchedDomains.flatMap(domain=>requirements.skillsByDomain[domain]||[]))];
+        const matchedSkills=relevantSkills.filter(skill=>matchingBriefSkills([skill],skills).length>0);
+        return {name,headline,location,skills,image,bio,estimate,matchedSkills,matchedDomains,score:matchedSkills.length};
+      }).filter(creator=>creator.matchedDomains.length>0).sort((first,second)=>second.score-first.score||(first.estimate>budget)-(second.estimate>budget)||first.estimate-second.estimate);
+      const selected=[];
+      requirements.domains.forEach(domain=>{const best=ranked.find(creator=>creator.matchedDomains.includes(domain)&&!selected.some(item=>item.name===creator.name));if(best)selected.push(best)});
+      return [...selected,...ranked.filter(creator=>!selected.some(item=>item.name===creator.name))].slice(0,8);
+    }
+    function formatUsd(value){return new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(value*USD_TO_INR)}
+    function renderCreateBrief(){
+      return `<section class="hero"><div class="hero-copy"><div class="eyebrow">BRAND WORKSPACE</div><h1>Build the right team for your idea</h1><p>Describe what you want to create. Get skill suggestions, creator matches, and a budget estimate.</p></div><div class="hero-art" aria-hidden="true">✧</div></section><div class="brief-layout"><form class="panel brief-form" id="brandBriefForm"><div class="panel-title"><h2 style="font:700 14px Manrope,sans-serif;margin:0">Project brief</h2></div><label class="field"><span>Project name</span><input name="title" required placeholder="e.g. Launch a product video campaign"></label><label class="field"><span>What do you want to create?</span><textarea name="description" required minlength="12" placeholder="Describe the deliverable, audience, style, and any tools or formats you have in mind."></textarea></label><div class="field"><span>Content type</span><select name="contentType"><option value="Any">Any / not sure</option><option>Image</option><option>Video</option><option>Audio</option><option>Writing</option><option>3D</option><option>Code / software</option><option>Presentation / PDF</option></select></div><div class="field"><span>Preferred aspect ratio</span><select name="aspectRatio"><option value="Not applicable">Not applicable</option><option>1:1 — Square</option><option>4:5 — Portrait</option><option>16:9 — Landscape</option><option>9:16 — Vertical</option><option>3:2 — Photo</option><option>Custom / flexible</option></select></div><div class="field"><span>Required delivery format</span><select name="outputFormat"><option value="Flexible">Flexible / creator recommendation</option><option>PNG / JPG</option><option>MP4 / MOV</option><option>MP3 / WAV</option><option>PDF / PPTX</option><option>HTML / CSS / JavaScript</option><option>Source files included</option></select></div><label class="field"><span>Commercial use</span><select name="commercialUse" required style="height:42px;width:100%;border:1px solid #e1e7f0;border-radius:8px;padding:0 10px;background:#fbfcfe;font:inherit;font-size:12px"><option value="required">Commercial use required</option><option value="not_required">Personal / non-commercial use</option><option value="discuss">Discuss with creator</option></select></label><label class="field"><span>Project budget</span><div class="brief-budget-input"><span>$</span><input name="budget" type="number" min="50" step="50" value="1800" required></div></label><p class="brief-hint">Creator rates are sample project estimates in USD, not binding quotes.</p><button class="primary" type="submit">Analyze brief and find creators →</button></form><div class="brief-results" id="briefResults"><section class="panel"><h3 style="margin:0 0 7px;font:700 13px Manrope,sans-serif">Your recommendations will appear here</h3><p class="brief-hint">Add a project description and budget to see inferred skills and matching AI creators.</p></section></div></div>`;
+    }
+    function renderBriefResults(title,budget,requiredSkills,recommendations){
+      const skillContent=requiredSkills.length?requiredSkills.map(skill=>`<span class="brief-skill-tag">${escapeHtml(skill)}</span>`).join(''):'<p class="brief-empty">No specialty was detected yet. Add terms such as video, image, audio, writing, or 3D to your description.</p>';
+      const creatorCards=recommendations.map(creator=>{const fits=creator.estimate<=budget;return `<article class="brief-recommendation-card" data-budget-fit="${fits}"><div class="brief-recommendation-profile"><img class="creator-face" src="https://images.unsplash.com/${creator.image}?auto=format&fit=crop&w=120&h=120&q=80" alt="Portrait of ${escapeHtml(creator.name)}" loading="lazy"><div><strong>${escapeHtml(creator.name)}</strong><small>${escapeHtml(creator.headline)}</small></div><span class="brief-match-count">${creator.score} skill${creator.score===1?'':'s'}</span></div><div class="brief-match-skills">${creator.matchedSkills.slice(0,4).map(skill=>`<span>${escapeHtml(skill)}</span>`).join('')}</div><div class="brief-estimate-row"><span>Est. project rate <strong>${formatUsd(creator.estimate)}</strong></span><span class="brief-budget-fit ${fits?'':'over'}">${fits?'Fits budget':'Over budget'}</span></div><label class="brief-team-toggle"><input type="checkbox" value="${escapeHtml(creator.name)}" data-estimate="${creator.estimate}"> Add to team</label></article>`}).join('');
+      return `<section class="panel"><div class="panel-title"><h2 style="font:700 14px Manrope,sans-serif;margin:0">AI skill analysis</h2><span class="simulator-status">${requiredSkills.length?'Ready':'Needs details'}</span></div><strong style="font-size:11px">${escapeHtml(title)}</strong><div class="brief-skill-tags">${skillContent}</div><p class="brief-analysis-copy">Skills are inferred from the language in your brief. Review and refine these suggestions with your team.</p></section><div class="brief-recommendation-head"><h2>Best creator matches</h2><select id="briefBudgetFilter" aria-label="Filter creator matches by budget"><option value="all">All matches</option><option value="fits">Within budget</option></select></div>${creatorCards?`<div class="brief-recommendation-grid">${creatorCards}</div><p class="brief-empty" id="briefNoBudgetMatches" hidden>No recommended creators fit this budget. Increase the budget or review all matches.</p>`:`<div class="brief-empty">No direct creator match yet. Add more detail to your brief or browse all <button class="text-button" type="button" data-page="Search Creator">AI creators →</button></div>`}<p class="brief-method-note">Matches are ranked by overlap between inferred skills and creator profiles. Rates are illustrative estimates.</p><section class="brief-team-summary" id="briefTeamSummary" data-budget="${budget}"><h3>Assemble your team</h3><p class="brief-hint">Select creators above to build a team and see the combined estimate.</p></section>`;
+    }
+    function updateBriefTeamSummary(){
+      const summary=workspace.querySelector('#briefTeamSummary');
+      if(!summary)return;
+      const selected=[...workspace.querySelectorAll('.brief-team-toggle input:checked')];
+      const budget=Number(summary.dataset.budget)||0;
+      const total=selected.reduce((sum,input)=>sum+Number(input.dataset.estimate),0);
+      const difference=budget-total;
+      const fitCopy=selected.length?(difference>=0?`Within budget by ${formatUsd(difference)}.`:`Over budget by ${formatUsd(Math.abs(difference))}.`):'Select at least one creator to estimate a team.';
+      summary.innerHTML=`<h3>Assemble your team <span style="font-weight:400;color:#8490a4">(${selected.length})</span></h3>${selected.length?`<ul class="brief-team-members">${selected.map(input=>`<li><span>${escapeHtml(input.value)}</span><span>${formatUsd(Number(input.dataset.estimate))}</span></li>`).join('')}</ul>`:''}<div class="brief-team-total"><span>Team estimate</span><span>${formatUsd(total)} / ${formatUsd(budget)}</span></div><p class="brief-team-fit ${selected.length&&difference<0?'over':''}">${fitCopy}</p>`;
+    }
+    function renderBrandProjects(){
+      const projects=[
+        {name:'Skincare launch video campaign',type:'Social video · creator team',status:'In progress',budget:2500,spent:2180,progress:82,team:'Maya Laurent, Marcus Reed +2'},
+        {name:'AI customer support assistant',type:'Customer experience · automation',status:'Completed',budget:4800,spent:4650,progress:100,team:'Product and engineering team'},
+        {name:'Product image generation suite',type:'Image tools · brand creative',status:'In progress',budget:1800,spent:980,progress:55,team:'Image and design team'},
+        {name:'Podcast voice localization',type:'Audio production · localization',status:'Completed',budget:3200,spent:2940,progress:100,team:'Audio and editorial team'},
+        {name:'AI research copilot pilot',type:'Research · internal tools',status:'In progress',budget:4000,spent:1210,progress:36,team:'Research and AI team'}
+      ];
+      const completed=projects.filter(project=>project.status==='Completed').length;
+      const inProgress=projects.length-completed;
+      const totalSpent=projects.reduce((total,project)=>total+project.spent,0);
+      const stats=[['Total projects',projects.length,'▧'],['Completed',completed,'✓'],['In progress',inProgress,'◷'],['Total spent',formatUsd(totalSpent),'＄']];
+      const rows=projects.map(project=>`<tr data-project-row data-project-status="${project.status}" data-searchable="${escapeHtml(`${project.name} ${project.type} ${project.status} ${project.team}`)}"><td class="project-name"><strong>${escapeHtml(project.name)}</strong><small>${escapeHtml(project.type)}</small></td><td><span class="project-status-pill ${project.status==='Completed'?'completed':''}">${project.status}</span></td><td>${escapeHtml(project.team)}</td><td>${formatUsd(project.budget)}</td><td><strong>${formatUsd(project.spent)}</strong></td><td><div class="project-progress"><div class="project-progress-track" role="progressbar" aria-label="${escapeHtml(project.name)} progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${project.progress}"><span style="width:${project.progress}%"></span></div><small>${project.progress}%</small></div></td></tr>`).join('');
+      return `<section class="hero"><div class="hero-copy"><div class="eyebrow">BRAND WORKSPACE</div><h1>Projects at a glance</h1><p>Track delivery, project status, and spend across your creator teams.</p></div><div class="hero-art" aria-hidden="true">▧</div></section><div class="project-summary-grid">${stats.map(([label,value,glyph])=>`<article class="metric-card"><div class="metric-head"><span>${label}</span><span class="metric-glyph">${glyph}</span></div><strong>${value}</strong><small>${label==='Total spent'?'Across all projects':label==='Total projects'?'In this workspace':'Project status'}</small></article>`).join('')}</div><section class="panel"><div class="panel-title"><h2 style="font:700 14px Manrope,sans-serif;margin:0">Project tracker</h2><label class="project-filter" for="projectStatusFilter">Status<select id="projectStatusFilter"><option value="all">All projects</option><option value="Completed">Completed</option><option value="In progress">In progress</option></select></label></div><div style="overflow-x:auto"><table class="project-table"><thead><tr><th>Project</th><th>Status</th><th>Team</th><th>Budget</th><th>Spent</th><th>Progress</th></tr></thead><tbody>${rows}<tr id="projectFilterEmpty" hidden><td colspan="6">No projects match this status.</td></tr></tbody></table></div><p class="brief-method-note" style="margin-top:10px">Sample project data for workspace preview.</p></section>`;
+    }
+    function renderBrandPayments(){
+      const payments=[
+        {date:'Oct 7, 2026',id:'MYRA-PAY-1042',project:'AI research copilot pilot',amount:1210},
+        {date:'Sep 12, 2026',id:'MYRA-PAY-1028',project:'Podcast voice localization',amount:2940},
+        {date:'Aug 2, 2026',id:'MYRA-PAY-1016',project:'Product image generation suite',amount:980},
+        {date:'Jul 18, 2026',id:'MYRA-PAY-1009',project:'AI customer support assistant',amount:4650},
+        {date:'Jun 14, 2026',id:'MYRA-PAY-1001',project:'Skincare launch video campaign',amount:2180}
+      ];
+      const totalPaid=payments.reduce((total,payment)=>total+payment.amount,0);
+      const stats=[['Total paid',formatUsd(totalPaid),'＄'],['Transactions',payments.length,'▤'],['Open invoices','0','◷'],['Payment methods','1','▣']];
+      const rows=payments.map(payment=>`<tr data-searchable="${escapeHtml(`${payment.id} ${payment.project} ${payment.date} Paid`)}"><td>${escapeHtml(payment.date)}</td><td>${escapeHtml(payment.id)}</td><td class="project-name"><strong>${escapeHtml(payment.project)}</strong></td><td>Visa ending in 4242</td><td><strong>${formatUsd(payment.amount)}</strong></td><td><span class="payment-status-pill">Paid</span></td></tr>`).join('');
+      return `<section class="hero"><div class="hero-copy"><div class="eyebrow">BRAND WORKSPACE</div><h1>Payment activity</h1><p>Review creator payments, invoices, and the billing method on file.</p></div><div class="hero-art" aria-hidden="true">＄</div></section><div class="project-summary-grid">${stats.map(([label,value,glyph])=>`<article class="metric-card"><div class="metric-head"><span>${label}</span><span class="metric-glyph">${glyph}</span></div><strong>${value}</strong><small>${label==='Total paid'?'Across listed transactions':label==='Open invoices'?'Nothing due':'Billing overview'}</small></article>`).join('')}</div><div class="payment-overview-grid"><section class="panel"><div class="panel-title"><h2 style="font:700 13px Manrope,sans-serif;margin:0">Payment method</h2><span class="payment-default">Default</span></div><div class="payment-method-line"><span class="payment-method-mark">VISA</span><span class="payment-method-copy"><strong>Visa ending in 4242</strong><small>Demo payment method · no real card details stored</small></span></div></section><section class="panel"><div class="panel-title"><h2 style="font:700 13px Manrope,sans-serif;margin:0">Billing profile</h2></div><strong style="font-size:11px;color:#192644">MYRA Brand Workspace</strong><p class="brief-method-note" style="margin:6px 0 0">Used for creator project payments and invoices.</p></section></div><section class="panel"><div class="panel-title"><h2 style="font:700 14px Manrope,sans-serif;margin:0">Recent transactions</h2><span style="font-size:10px;color:#8490a4">${payments.length} payments</span></div><div style="overflow-x:auto"><table class="project-table"><thead><tr><th>Date</th><th>Payment ID</th><th>Project</th><th>Method</th><th>Amount</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div><p class="brief-method-note" style="margin-top:10px">Sample billing activity for workspace preview. No payments are processed here.</p></section>`;
+    }
+    function renderBrand(){
+      if(currentPage==='Projects')return renderBrandProjects();
+      if(currentPage==='Create Brief')return renderCreateBrief();
+      if(currentPage==='Payments')return renderBrandPayments();
+      if(currentPage==='Categories')return `${hero('Find the right AI tool','Browse practical tools by the kind of work you want to do.','brand','Browse tools')}<div class="section-head"><h2>Explore categories</h2></div>${marketCategoryCards()}`;
+      if(currentPage==='Saved tools'){const saved=readSavedTools();const tools=brandTools.filter(([title])=>saved.includes(title));return `${hero('Your saved AI tools','Keep useful tools together while you compare what fits.','brand','Browse tools')}<div class="section-head"><h2>Saved tools</h2></div>${tools.length?toolCards(tools):'<section class="panel"><h3>No saved tools yet</h3><p style="font-size:11px;color:#77849a">Save a tool from the marketplace and it will show up here.</p><button class="text-button" data-page="Browse AI tools">Browse AI tools →</button></section>'}`}
+      if(currentPage==='My orders')return `${hero('Your orders','Purchased tools and plans will be collected here.','brand','Browse tools')}<section class="panel"><h3>No orders yet</h3><p style="font-size:11px;color:#77849a">Explore the marketplace to find an AI tool for your workflow.</p><button class="text-button" data-page="Browse AI tools">Browse AI tools →</button></section>`;
+      if(currentPage==='Browse AI tools'){const tools=activeCategory?brandTools.filter(([, , , , , ,category])=>category===activeCategory):brandTools;return `${hero(activeCategory?`${activeCategory} AI tools`:'Browse AI tools','Discover independent AI products, compare options, and find the right fit for your work.','brand','Browse tools')}<div class="section-head"><h2>${activeCategory||'Popular AI tools'}</h2>${activeCategory?'<button class="text-button" data-clear-category>Clear category</button>':'<button class="text-button" data-page="Categories">Browse categories →</button>'}</div>${toolCards(tools)}`}
+      return `${hero('The AI tools marketplace','Discover useful AI products from independent makers and established teams.','brand','Browse tools')}${brandDashboardEssentials()}<div class="section-head"><h2>Explore by category</h2><button class="text-button" data-page="Categories">All categories →</button></div>${marketCategoryCards()}<div class="section-head"><h2>Popular AI tools</h2><button class="text-button" data-page="Browse AI tools">Browse all →</button></div>${toolCards()}<div class="section-head"><h2>Made by people who build</h2></div><section class="panel"><p style="font-size:11px;color:#77849a;margin:0">Discover focused AI products, see what each tool does, and save promising finds for later.</p></section>`;
+    }
+    function renderCreator(){if(currentPage==='Create a tool'||currentPage==='Settings'){return `${hero(currentPage==='Settings'?'Make your studio yours':'Bring your next idea to life',currentPage==='Settings'?'Manage your creator profile and preferences.':'Share your work with people who are looking for exactly what you make.','creator',currentPage==='Settings'?'Edit profile':'Start a listing')}<section class="panel"><div class="panel-title"><h3>${currentPage==='Settings'?'Creator profile':'New listing'}</h3></div><label class="field"><span>Tool or product name</span><input placeholder="e.g. Smart Image Studio"></label><label class="field"><span>Short description</span><input placeholder="What does it help people do?"></label><button class="primary" style="max-width:240px" data-toast="Draft saved. Add your details when you’re ready.">Save as draft →</button></section>`}
+      const creatorPage=currentPage==='My listings'?'Your listings':currentPage;return `${hero('Turn what you make into momentum','Publish your AI tools, reach people who need them, and build a business on your own terms.','creator','Start a listing')}<div class="section-head"><h2>Your studio at a glance</h2><button data-page="Analytics">Full analytics →</button></div><div class="metric-grid">${metric('Total revenue','$4,850','12%','＄')}${metric('Product views','12.4K','18%','◉')}${metric('Orders','342','24%','▤')}${metric('Conversion rate','8.6%','2.4%','↗')}</div><div class="metric-layout"><section class="panel"><div class="panel-title"><h3>Revenue overview</h3><select aria-label="Revenue time period"><option>Last 30 days</option><option>Last 7 days</option><option>This year</option></select></div><div class="chart"><svg viewBox="0 0 600 160" preserveAspectRatio="none" role="img" aria-label="Revenue trending upward"><defs><linearGradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6554ec" stop-opacity=".25"/><stop offset="1" stop-color="#6554ec" stop-opacity="0"/></linearGradient></defs><path d="M0 137 C25 125 29 149 55 127 S90 140 111 111 S149 128 169 112 S199 104 220 116 S261 92 287 98 S320 74 343 84 S371 94 391 64 S424 76 447 65 S483 78 506 51 S538 58 560 31 S584 42 600 22 L600 160 L0 160Z" fill="url(#fill)"/><path d="M0 137 C25 125 29 149 55 127 S90 140 111 111 S149 128 169 112 S199 104 220 116 S261 92 287 98 S320 74 343 84 S371 94 391 64 S424 76 447 65 S483 78 506 51 S538 58 560 31 S584 42 600 22" fill="none" stroke="#5d55e8" stroke-width="3" vector-effect="non-scaling-stroke"/></svg></div><div class="chart-labels"><span>Oct 1</span><span>Oct 5</span><span>Oct 10</span><span>Oct 15</span><span>Oct 20</span><span>Oct 25</span><span>Oct 31</span></div></section><section class="panel"><div class="panel-title"><h3>Top-performing tools</h3><button class="text-button" data-page="My listings">View all →</button></div><div class="rank-list">${creatorProducts.map(([title,,img,icon,sales,price],i)=>`<div class="rank-row"><span class="rank-num">${i+1}</span><span class="product-art">${icon}</span><span><strong>${title}</strong><small>${['Productivity','Design','Analytics','Video'][i]}</small></span><span class="rank-stat">${price}<small>↑ ${22-i*4}%</small></span></div>`).join('')}</div></section></div><div class="lower-grid"><section class="panel"><div class="panel-title"><h3>${creatorPage}</h3><button class="text-button" data-page="My listings">Manage →</button></div><table class="listing-table"><thead><tr><th>Tool / product</th><th>Category</th><th>Price</th><th>Status</th></tr></thead><tbody>${creatorProducts.slice(0,3).map(([title,,img,icon,,price],i)=>`<tr><td><span class="table-product"><span class="mini-art">${icon}</span>${title}</span></td><td>${['Productivity','Design','Analytics'][i]}</td><td>${price}/mo</td><td><span class="pill">Published</span></td></tr>`).join('')}</tbody></table></section><section class="panel"><div class="panel-title"><h3>Recent orders</h3><button class="text-button" data-page="Orders">View all →</button></div>${[['Maya Chen','AI Resume Builder','$12','photo-1534528741775-53994a69daeb'],['Leo Martin','Image Generator Pro','$18','photo-1500648767791-00dcc994a43e'],['Ava Patel','Data Insight Copilot','$24','photo-1531123897727-8f129e1688ce']].map(([name,item,price,img])=>`<div class="order"><img class="order-avatar" src="https://images.unsplash.com/${img}?auto=format&fit=crop&w=80&q=80" alt=""><span><strong>${name}</strong><small>${item}</small></span><span class="order-amount">${price}<small> just now</small></span></div>`).join('')}</section></div>`}
+    function bindWorkspace(){
+      const notificationsList=workspace.querySelector('#notificationsList');
+      if(notificationsList)loadNotifications(notificationsList);
+      workspace.querySelectorAll('[data-toast]').forEach(button=>button.addEventListener('click',()=>showToast(button.dataset.toast)));
+      workspace.querySelectorAll('[data-page]').forEach(button=>button.addEventListener('click',()=>{currentPage=button.dataset.page;activeCategory='';renderApp()}));
+      workspace.querySelectorAll('[data-filter-category]').forEach(button=>button.addEventListener('click',()=>{activeCategory=button.dataset.filterCategory;currentPage='Browse AI tools';renderApp()}));
+      workspace.querySelectorAll('[data-clear-category]').forEach(button=>button.addEventListener('click',()=>{activeCategory='';renderApp()}));
+      const projectStatusFilter=workspace.querySelector('#projectStatusFilter');
+      if(projectStatusFilter)projectStatusFilter.addEventListener('change',()=>{
+        const rows=[...workspace.querySelectorAll('[data-project-row]')];
+        let visibleCount=0;
+        rows.forEach(row=>{const matches=projectStatusFilter.value==='all'||row.dataset.projectStatus===projectStatusFilter.value;row.hidden=!matches;if(matches)visibleCount++});
+        const emptyRow=workspace.querySelector('#projectFilterEmpty');
+        if(emptyRow)emptyRow.hidden=visibleCount>0;
+      });
+      workspace.querySelectorAll('[data-save-tool]').forEach(button=>button.addEventListener('click',()=>{const saved=readSavedTools();const title=button.dataset.saveTool;const next=saved.includes(title)?saved.filter(item=>item!==title):[...saved,title];localStorage.setItem(`forma:saved-tools:${activeEmail}`,JSON.stringify(next));renderApp()}));
+      const applyCreatorFilters=()=>{const skill=(workspace.querySelector('#creatorSkillFilter')?.value||'').trim().toLowerCase();const domain=(workspace.querySelector('#creatorDomainFilter')?.value||'').toLowerCase();const commercial=workspace.querySelector('#creatorCommercialFilter')?.value||'';const cards=[...workspace.querySelectorAll('.creator-search-card')];let shown=0;cards.forEach(card=>{const okSkill=!skill||card.dataset.searchable.toLowerCase().includes(skill);const okDomain=!domain||card.dataset.domain.toLowerCase().includes(domain);const okCommercial=!commercial||(commercial==='unknown'&&card.dataset.commercial==='unknown')||(commercial==='yes'&&card.dataset.commercial==='yes');card.hidden=!(okSkill&&okDomain&&okCommercial);if(!card.hidden)shown++});const empty=workspace.querySelector('#creatorFilterEmpty');if(empty)empty.hidden=shown>0};['#creatorSkillFilter','#creatorDomainFilter','#creatorCommercialFilter'].forEach(selector=>workspace.querySelector(selector)?.addEventListener('input',applyCreatorFilters));
+      workspace.querySelectorAll('[data-save-creator]').forEach(button=>button.addEventListener('click',()=>{const saved=readSavedCreators();const name=button.dataset.saveCreator;const next=saved.includes(name)?saved.filter(item=>item!==name):[...saved,name];localStorage.setItem(`forma:saved-creators:${activeEmail}`,JSON.stringify(next));renderApp();showToast(next.includes(name)?`${name} saved to Saved Creators.`:`${name} removed from Saved Creators.`)}));
+      const brandBriefForm=workspace.querySelector('#brandBriefForm');
+      if(brandBriefForm)brandBriefForm.addEventListener('submit',event=>{
+        event.preventDefault();
+        const formData=new FormData(brandBriefForm);
+        const title=String(formData.get('title')||'').trim();
+        const description=String(formData.get('description')||'').trim();
+        const budget=Math.max(0,Number(formData.get('budget'))||0)/USD_TO_INR;
+        const contentType=String(formData.get('contentType')||'Any');
+        const aspectRatio=String(formData.get('aspectRatio')||'Not applicable');
+        const outputFormat=String(formData.get('outputFormat')||'Flexible');
+        const commercialUse=String(formData.get('commercialUse')||'discuss');
+        let requirements=inferBriefRequirements(`${title} ${description} ${contentType}`);
+        if(contentType!=='Any'&&!requirements.domains.length){const map={'Code / software':'Development','Presentation / PDF':'Writing'};const domain=map[contentType]||contentType;requirements={...requirements,domains:[domain],skills:[...new Set([...requirements.skills, ...(domain==='Development'?['Python','APIs','LLM integration']:domain==='Video'?['Video generation','Video editing']:domain==='Image'?['Image generation','Image prompting']:domain==='Audio'?['Audio AI','Sound design']:domain==='Writing'?['AI writing','Content strategy']:domain==='3D'?['AI 3D','3D modeling']:[])])]};}
+        const recommendations=recommendBriefCreators(requirements,budget);
+        workspace.querySelector('#briefResults').innerHTML=renderBriefResults(title,budget,requirements.skills,recommendations)+`<section class="panel"><h3 style="font:700 13px Manrope,sans-serif">Delivery requirements</h3><p class="brief-hint">Type: ${escapeHtml(contentType)} · Aspect ratio: ${escapeHtml(aspectRatio)} · Format: ${escapeHtml(outputFormat)}</p><p class="brief-hint">Commercial use: ${escapeHtml(commercialUse==='required'?'Required':commercialUse==='not_required'?'Not required':'Discuss with creator')}. Confirm licensing and ownership in writing before purchase.</p><button type="button" class="text-button" id="aiBriefEnhance">✦ Enhance brief with Gemini AI</button><p id="aiBriefEnhanceResult" class="brief-analysis-copy" aria-live="polite"></p></section>`;
+        workspace.querySelector('#aiBriefEnhance')?.addEventListener('click',async()=>{const button=workspace.querySelector('#aiBriefEnhance');const output=workspace.querySelector('#aiBriefEnhanceResult');button.disabled=true;output.textContent='Asking Gemini to improve your brief…';try{const response=await fetch('/api/ai/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'brief',title,description,contentType,aspectRatio,outputFormat,commercialUse,budget})});const data=await response.json();if(!response.ok)throw new Error(data.error||'AI request failed');output.textContent=data.text+(data.provider==='gemini'?'':' (rule-based fallback; configure GEMINI_API_KEY for live AI)');}catch(error){output.textContent=error.message||'Unable to enhance brief right now.'}finally{button.disabled=false}});
+        const budgetFilter=workspace.querySelector('#briefBudgetFilter');
+        budgetFilter?.addEventListener('change',()=>{
+          const fitOnly=budgetFilter.value==='fits';
+          const cards=[...workspace.querySelectorAll('.brief-recommendation-card')];
+          cards.forEach(card=>{card.hidden=fitOnly&&card.dataset.budgetFit!=='true'});
+          const empty=workspace.querySelector('#briefNoBudgetMatches');
+          if(empty)empty.hidden=!fitOnly||cards.some(card=>!card.hidden);
+        });
+        workspace.querySelectorAll('.brief-team-toggle input').forEach(input=>input.addEventListener('change',updateBriefTeamSummary));
+        updateBriefTeamSummary();
+      });
+      const creatorSimulationForm=workspace.querySelector('#creatorProjectSimulationForm');
+      if(creatorSimulationForm){
+        creatorSimulationForm.addEventListener('submit',async event=>{
+          event.preventDefault();
+          const formData=new FormData(creatorSimulationForm);
+          const payload={
+            project_name:String(formData.get('project_name')||'').trim(),
+            description:String(formData.get('description')||'').trim(),
+            budget:Number(formData.get('budget')||0),
+            deadline_days:Number(formData.get('deadline_days')||30),
+            team_size:Number(formData.get('team_size')||1),
+            scenario:String(formData.get('scenario')||'One developer becomes unavailable')
+          };
+          const button=workspace.querySelector('#creatorRunSimulation');
+          const status=workspace.querySelector('#creatorSimulationStatus');
+          const results=workspace.querySelector('#creatorSimulationResults');
+          button.disabled=true;button.textContent='⏳ Simulating…';status.textContent='Evaluating your project plan…';results.classList.add('hidden');
+          try{
+            const response=await fetch('/api/simulator/simulate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+            const data=await response.json();
+            if(!response.ok)throw new Error(data.error||'Simulation request failed.');
+            workspace.querySelector('#creatorSimReadiness').textContent=`${data.readiness_score}%`;
+            workspace.querySelector('#creatorSimDuration').textContent=`${data.completion_time_days} days`;
+            workspace.querySelector('#creatorSimBudget').textContent=`₹${Number(data.budget_impact||0).toLocaleString('en-IN')}`;
+            workspace.querySelector('#creatorSimRisk').textContent=data.risk_level;
+            workspace.querySelector('#creatorSimSummary').textContent=data.summary;
+            const fillList=(selector,items)=>{const list=workspace.querySelector(selector);list.replaceChildren();(items||[]).forEach(item=>{const li=document.createElement('li');li.textContent=item;list.appendChild(li)})};
+            fillList('#creatorSimRisks',data.risk_list);fillList('#creatorSimActions',data.recommendations);
+            results.classList.remove('hidden');status.textContent='Simulation complete. Review the risks and recommendations below.';
+          }catch(error){status.textContent=error.message||'Could not run the simulation. Check that the backend is available.'}
+          finally{button.disabled=false;button.textContent='▶ Run project simulation'}
+        });
+      }
+      const profileForm=workspace.querySelector('#creatorProfileForm');
+      if(profileForm){let savedProfile={};try{savedProfile=JSON.parse(localStorage.getItem(`forma:creator-profile:${activeEmail}`)||'{}')}catch{};for(const field of profileForm.elements){if(field.name)field.value=savedProfile[field.name]||(field.name==='creatorName'?document.querySelector('#userName').textContent:'')}profileForm.addEventListener('submit',event=>{event.preventDefault();localStorage.setItem(`forma:creator-profile:${activeEmail}`,JSON.stringify(Object.fromEntries(new FormData(profileForm))));showToast('Creator profile saved.')})}
+      workspace.querySelector('#generateAiSummary')?.addEventListener('click',async()=>{const profile=readCreatorProfile();const projects=readCreatorProjects();const name=profile.creatorName||document.querySelector('#userName').textContent;const result=workspace.querySelector('#aiSummaryResult');result.innerHTML='<p>Generating portfolio summary…</p>';result.classList.remove('hidden');try{const response=await fetch('/api/ai/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({task:'portfolio',profile:{name,headline:profile.headline||'',skills:profile.skills||'',tools:profile.tools||'',formats:profile.formats||'',portfolio:profile.portfolio||''},projects})});const data=await response.json();if(!response.ok)throw new Error(data.error||'AI request failed');result.innerHTML=`<h3>${escapeHtml(name)}’s creator portfolio</h3><p>${escapeHtml(data.text)}</p><small>${data.provider==='gemini'?'Generated by Gemini from your saved profile and projects.':'Demo summary: configure GEMINI_API_KEY for a Gemini-generated summary.'}</small>`}catch(error){result.textContent=error.message||'Could not generate summary.'}});
+      const simulationForm=workspace.querySelector('#projectSimulationForm');
+      if(simulationForm){simulationForm.addEventListener('submit',event=>{event.preventDefault();const formData=new FormData(simulationForm);const projectTitle=String(formData.get('projectTitle')||'').trim();const projectDescription=String(formData.get('projectDescription')||'').trim();const audience=String(formData.get('audience')||'').trim();const status=workspace.querySelector('#projectSimulationStatus');const result=workspace.querySelector('#projectSimulationResult');const runButton=simulationForm.querySelector('[type="submit"]');status.textContent='Running';runButton.disabled=true;result.classList.add('hidden');setTimeout(()=>{const skills=[...new Set([...readCreatorProfileSkills(),...readCreatorPortfolioSkills()])];const matchingBriefs=brandProjectBriefs.map(brief=>({...brief,matches:matchingBriefSkills(brief.skills,skills)})).filter(brief=>brief.matches.length).sort((first,second)=>second.matches.length-first.matches.length);const skillSummary=skills.length?`Your saved skills include ${escapeHtml(skills.join(', '))}.`:'Add skills to My Profile for a more tailored fit check.';const opportunitySummary=matchingBriefs.length?`Related sample briefs: ${matchingBriefs.slice(0,3).map(brief=>`${escapeHtml(brief.brand)} (${escapeHtml(brief.matches.join(', '))})`).join('; ')}.`:'No sample brief currently matches your saved skills; consider adding relevant skills to your profile.';const projectCount=readCreatorProjects().length;result.innerHTML=`<h3>Simulation preview: ${escapeHtml(projectTitle)}</h3><p>${escapeHtml(projectDescription)}</p><p><strong>Audience:</strong> ${escapeHtml(audience)}</p><p>${skillSummary} Your portfolio contains ${projectCount} ${projectCount===1?'project':'projects'}.</p><p>${opportunitySummary}</p><p><strong>Suggested next step:</strong> Build a small version for ${escapeHtml(audience)} and compare the response with your project goal.</p><small class="simulator-disclosure">This is a local fit preview based on your saved data, not a prediction of results.</small>`;result.classList.remove('hidden');status.textContent='Complete';runButton.disabled=false},450)});simulationForm.requestSubmit()}
+      const projectForm=workspace.querySelector('#creatorProjectForm');
+      if(projectForm)projectForm.addEventListener('submit',event=>{event.preventDefault();const formData=new FormData(projectForm);const projects=readCreatorProjects();projects.unshift({id:`${Date.now().toString(36)}${Math.random().toString(36).slice(2)}`,title:String(formData.get('title')||'').trim(),description:String(formData.get('description')||'').trim(),skills:String(formData.get('skills')||'').trim(),link:String(formData.get('link')||'').trim()});localStorage.setItem(creatorProjectsKey(),JSON.stringify(projects));renderApp();showToast('Project added to your portfolio.')});
+      workspace.querySelectorAll('[data-delete-project]').forEach(button=>button.addEventListener('click',()=>{const projects=readCreatorProjects().filter(project=>project.id!==button.dataset.deleteProject);localStorage.setItem(creatorProjectsKey(),JSON.stringify(projects));renderApp()}));
+      workspace.querySelectorAll('[data-apply-campaign]').forEach(button=>button.addEventListener('click',()=>{const applications=readCreatorApplications();const briefId=button.dataset.applyCampaign;if(!applications.some(application=>application.briefId===briefId)){applications.unshift({briefId,appliedAt:new Date().toISOString()});localStorage.setItem(creatorApplicationsKey(),JSON.stringify(applications));renderApp();showToast('Sample application saved.')}}));
+    }
+    function showToast(message){clearTimeout(toastTimer);document.querySelector('#toastRoot').innerHTML=`<div class="toast">${message}</div>`;toastTimer=setTimeout(()=>document.querySelector('#toastRoot').innerHTML='',2600)}
+    document.querySelector('#promoAction').addEventListener('click',()=>{currentPage=selectedRole==='brand'?'Browse AI tools':'Create a tool';activeCategory='';renderApp()});
+    document.querySelector('#searchInput').addEventListener('input',event=>{const query=event.target.value.toLowerCase();workspace.querySelectorAll('[data-searchable]').forEach(card=>card.classList.toggle('hidden',!card.dataset.searchable.toLowerCase().includes(query)))});
+    document.addEventListener('click',event=>{const link=event.target.closest('[data-toast]');if(link&&!link.closest('#workspace')){event.preventDefault();showToast(link.dataset.toast)}});
+    document.addEventListener('keydown',event=>{if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='k'){event.preventDefault();document.querySelector('#searchInput').focus()}});
+  </script>
+</body>
+</html>

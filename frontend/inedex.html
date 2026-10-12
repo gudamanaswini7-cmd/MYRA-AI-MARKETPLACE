@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creator Verification Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Creator Verification Portal</h1>
+            <p>Upload your file and let the AI review it before credit approval.</p>
+        </header>
+
+        <main class="grid">
+            <section class="card creator-section">
+                <h3>Creator Upload & Verification</h3>
+
+                <form id="creator-form">
+                    <label for="creator-name">Creator Name</label>
+                    <input type="text" id="creator-name" name="creator_name" placeholder="Enter creator name" required>
+
+                    <label for="creator-file">Upload your work</label>
+                    <input type="file" id="creator-file" name="file" accept="image/*,video/*,.pdf,.doc,.docx,.txt,.zip" required>
+
+                    <button type="submit" class="btn-eval">Verify & Submit</button>
+                </form>
+
+                <div id="creator-result" class="results-box hidden">
+                    <h4>Verification: <span id="creator-status"></span></h4>
+                    <p>AI Score: <strong id="creator-score">0</strong> / 100</p>
+                    <ul id="creator-feedback"></ul>
+                </div>
+
+                <div id="creator-dashboard" class="dashboard hidden">
+                    <h4>Creator Dashboard</h4>
+                    <p>Welcome, <strong id="dashboard-name">Creator</strong>!</p>
+                    <p>Your content passed the verification threshold and is now available in your dashboard.</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

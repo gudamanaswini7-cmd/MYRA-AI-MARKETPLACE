@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Thumbs up</title>
+  <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+    <path d="M24 29 31 13c1-3 5-4 7-1 2 2 2 5 1 8l-2 8h12c4 0 6 3 5 7l-4 15c-.6 2-2 3-4 3H25c-2 0-4-2-4-4V33c0-2 1-3 3-4Z" fill="#12a77c"/>
+    <path d="M12 30h8v23h-8c-2 0-3-1-3-3V33c0-2 1-3 3-3Z"/>
+  </g>
+</svg>

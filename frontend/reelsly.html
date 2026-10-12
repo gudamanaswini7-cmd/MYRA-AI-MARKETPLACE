@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reelsly</title>
+  <script>
+    if (window.top === window.self) window.location.replace("/marketplace");
+  </script>
+  <link rel="stylesheet" href="/reels-static/style.css">
+</head>
+<body data-dashboard="{{ dashboard }}" data-account-email="{{ account_email }}" data-account-name="{{ account_name }}">
+  <div class="phone">
+    <header class="top">
+      <h1>reelsly</h1>
+      <nav>
+        <button class="tab active" data-tab="all">For You</button>
+        <button class="tab" data-tab="saved">Saved</button>
+      </nav>
+      <button id="openUpload" class="post-btn" aria-label="Create a post" title="Create a post">＋</button>
+    </header>
+
+    <main id="feed" class="feed"></main>
+    <div id="empty" class="empty" hidden></div>
+    <div id="toast" class="toast"></div>
+
+    <dialog id="uploadModal">
+      <form id="uploadForm">
+        <h2>Create a post</h2>
+        <input type="hidden" name="creator_email" value="{{ account_email }}">
+        <input name="creator" placeholder="Your creator name" maxlength="30" required>
+        <textarea name="caption" placeholder="Write a caption… #hashtags" maxlength="200"></textarea>
+        <input type="file" name="media" accept="image/*,video/*,audio/*,.pdf,.txt,.md,.rtf,.csv,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip" required>
+        <div class="row">
+          <button type="button" id="cancelUpload" class="ghost">Cancel</button>
+          <button type="submit" id="submitUpload">Post</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="creatorProfileModal" class="profile-modal" aria-labelledby="creatorProfileTitle">
+      <button type="button" id="closeCreatorProfile" class="profile-close" aria-label="Close creator profile">×</button>
+      <div id="creatorProfileContent"></div>
+    </dialog>
+  </div>
+  <script src="/reels-static/app.js"></script>
+</body>
+</html>

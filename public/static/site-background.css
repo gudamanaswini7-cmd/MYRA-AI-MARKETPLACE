@@ -1,0 +1,6 @@
+body {
+  background-image: linear-gradient(rgba(247, 249, 249, .78), rgba(247, 249, 249, .84)), url('/static/assets/ai-background.svg');
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}

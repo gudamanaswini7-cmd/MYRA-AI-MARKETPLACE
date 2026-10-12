@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suitable jobs | AI Creator Studio</title>
+  <link rel="stylesheet" href="/static/work-twin/styles.css">
+</head>
+<body class="jobs-view">
+  <div class="app-shell jobs-page-shell">
+    <main class="main jobs-page">
+      <header class="jobs-header">
+        <div>
+          <p class="eyebrow">04 / JOB MATCHES</p>
+          <h1>Suitable jobs for {{ creator }}</h1>
+        </div>
+        <a href="/work-twin/" class="button ghost">Back to profile</a>
+      </header>
+
+      <div class="jobs-grid">
+        {% for job in jobs %}
+        <article class="job-card">
+          <div class="job-card-header">
+            <div>
+              <p class="company-name">{{ job.company }}</p>
+              <h2>{{ job.title }}</h2>
+            </div>
+            <span class="job-score">{{ job.match_score }}% fit</span>
+          </div>
+
+          <div class="job-meta">
+            <span>{{ job.industry }}</span>
+            <span>•</span>
+            <span>{{ job.location }}</span>
+          </div>
+
+          <p class="job-description">{{ job.description }}</p>
+
+          <div class="job-fit-box">
+            <strong>Fit ratio</strong>
+            <span>{{ job.match_score }}% based on your current skills</span>
+          </div>
+
+          <div class="job-skill-section">
+            <h3>Your matching skills</h3>
+            <div class="job-skills">
+              {% for skill in job.matched_skills %}
+              <span class="skill-tag matched">{{ skill }}</span>
+              {% else %}
+              <span class="empty-text">You do not yet match the core skills for this role.</span>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="job-skill-section">
+            <h3>Skills still needed</h3>
+            <div class="job-skills">
+              {% if job.missing_skills %}
+                {% for skill in job.missing_skills %}
+                <span class="skill-tag missing">{{ skill }}</span>
+                {% endfor %}
+              {% else %}
+                <span class="empty-text">You already match the required skills for this company.</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="job-actions">
+            <button class="button primary full apply-btn" type="button">Apply</button>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Deploying AI Marketplace on Vercel
+
+## Included changes
+- Root `app.py` exports the existing Flask app for Vercel's zero-configuration Flask detection.
+- `public/static/` contains CSS, JavaScript, and image assets served by Vercel's CDN at `/static/...`.
+- `backend/database.py` uses `/tmp/marketplace_challenge.db` when running on Vercel. This is only for demos: the database is ephemeral and records can disappear between instances/deployments.
+- The legacy project-simulator JavaScript now calls the same-origin `/api/simulator/simulate` endpoint instead of a local port.
+
+## Deploy
+1. Extract this ZIP. Copy the files and folders inside it into your GitHub repository, preserving the directory structure, and commit/push the changes.
+2. In Vercel, import or open the project connected to that repository.
+3. Set Root Directory to the repository root (leave it as `.`/blank).
+4. Use automatic framework detection. Leave Build Command, Output Directory, and Install Command at their defaults/blank. Do not set the Root Directory to `frontend`.
+5. In Project Settings -> Environment Variables, add `SECRET_KEY` with a long, random private value. Redeploy after adding it.
+6. Deploy and test `/`, `/health`, `/marketplace`, `/work-twin/`, `/simulator/`, and the API interactions.
+
+## Important limitations
+- The included SQLite setup is not durable on Vercel. For persistent creator submissions and other saved records, migrate to a managed PostgreSQL database and configure its connection string.
+- Gemini-backed portfolio summaries and brief enhancement are available through `/api/ai/generate`. Set `GEMINI_API_KEY` to enable live Gemini calls; without it the app labels the response as a demo fallback. Creator matching remains explainable rule-based scoring, not an AI claim.
+- Never put private API keys in frontend JavaScript.
+
+## Persistent database (recommended for production)
+
+The app supports both local SQLite and managed PostgreSQL. To persist creator submissions on Vercel:
+
+1. Create a PostgreSQL database with a provider such as Neon or Supabase.
+2. Copy its pooled/standard PostgreSQL connection string. Keep it private.
+3. In Vercel, open Project Settings → Environment Variables and add `DATABASE_URL` with that connection string for Production (and Preview if needed).
+4. Keep `SECRET_KEY` configured as a private environment variable.
+5. Redeploy. On startup, the app creates the `creator_uploads` table if it does not exist.
+
+If `DATABASE_URL` is absent, the app falls back to SQLite. On Vercel this fallback uses `/tmp` and is temporary; it is only suitable for a demo. Existing SQLite data is not automatically migrated to PostgreSQL.
