@@ -1,3 +1,4 @@
+import hashlib
 import json
 import mimetypes
 import os
@@ -5,6 +6,7 @@ import threading
 import uuid
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import quote, unquote, urlsplit
 
 from flask import Flask, jsonify, redirect, render_template, request, send_from_directory, url_for
 from werkzeug.utils import secure_filename
@@ -26,7 +28,11 @@ from backend.routes.work_twin import work_twin_bp
 BASE_DIR = Path(__file__).resolve().parent.parent
 REELSLY_DIR = BASE_DIR / "reelsly"
 REELSLY_STATIC = REELSLY_DIR / "static"
-REELSLY_DB = REELSLY_DIR / "data" / "db.json"
+REELSLY_DB = (
+    Path("/tmp/myra_reels.json")
+    if os.environ.get("VERCEL") == "1"
+    else REELSLY_DIR / "data" / "db.json"
+)
 REELSLY_UPLOADS = REELSLY_STATIC / "uploads"
 REELSLY_VIDEOS = REELSLY_STATIC / "videos"
 REELSLY_VIDEO_EXTENSIONS = {".mp4", ".webm", ".mov"}
@@ -42,6 +48,68 @@ REELSLY_SEED = [
 ]
 
 
+def bundled_reels():
+    curated = {
+        filename: (creator, caption, likes)
+        for filename, creator, caption, likes in REELSLY_SEED
+    }
+    reels = []
+    if not REELSLY_VIDEOS.is_dir():
+        return reels
+    for video in sorted(REELSLY_VIDEOS.iterdir()):
+        if not video.is_file() or video.suffix.lower() not in REELSLY_VIDEO_EXTENSIONS:
+            continue
+        if video.name in curated:
+            creator, caption, likes = curated[video.name]
+            reel_id = f"seed{REELSLY_SEED.index((video.name, creator, caption, likes))}"
+        else:
+            creator, caption, likes = "MYRA creator", "Featured video", 0
+            reel_id = f"seed-{hashlib.sha256(video.name.encode('utf-8')).hexdigest()[:12]}"
+        reels.append({
+            "id": reel_id,
+            "video_url": f"/reels-static/videos/{quote(video.name)}",
+            "creator": creator,
+            "caption": caption,
+            "likes": likes,
+            "liked": False,
+            "saved": False,
+            "created": datetime.now().isoformat(),
+        })
+    return reels
+
+
+def merge_bundled_reels(db):
+    reels = []
+    changed = False
+    existing_ids = set()
+    existing_urls = set()
+    static_root = REELSLY_STATIC.resolve()
+
+    for reel in db.get("reels", []):
+        media_url = reel.get("media_url") or reel.get("video_url") or ""
+        parsed_url = urlsplit(media_url)
+        if parsed_url.path.startswith("/reels-static/"):
+            relative_path = unquote(parsed_url.path.removeprefix("/reels-static/"))
+            media_path = (static_root / relative_path).resolve()
+            if not media_path.is_relative_to(static_root) or not media_path.is_file():
+                changed = True
+                continue
+        reels.append(reel)
+        existing_ids.add(reel.get("id"))
+        existing_urls.add(media_url)
+
+    for reel in bundled_reels():
+        media_url = reel["video_url"]
+        if reel["id"] not in existing_ids and media_url not in existing_urls:
+            reels.append(reel)
+            existing_ids.add(reel["id"])
+            existing_urls.add(media_url)
+            changed = True
+
+    db["reels"] = reels
+    return changed
+
+
 def load_reels_db():
     if USE_POSTGRES:
         with get_connection() as connection:
@@ -54,29 +122,25 @@ def load_reels_db():
                 for row in connection.execute("SELECT payload FROM reel_hire_requests").fetchall()
             ]
 
+        needs_save = False
         if not reels and REELSLY_DB.exists():
             legacy = json.loads(REELSLY_DB.read_text(encoding="utf-8"))
             reels = legacy.get("reels", [])
             hire_requests = legacy.get("hire_requests", [])
+            needs_save = bool(reels or hire_requests)
+        database = {"reels": reels}
+        needs_save = merge_bundled_reels(database) or needs_save
+        reels = database["reels"]
+        if needs_save:
             save_reels_db({"reels": reels, "hire_requests": hire_requests})
         return {"reels": reels, "hire_requests": hire_requests}
 
     if not REELSLY_DB.exists():
-        reels = []
-        for i, (fname, creator, caption, likes) in enumerate(REELSLY_SEED):
-            if (REELSLY_VIDEOS / fname).exists():
-                reels.append({
-                    "id": f"seed{i}",
-                    "video_url": f"/reels-static/videos/{fname}",
-                    "creator": creator,
-                    "caption": caption,
-                    "likes": likes,
-                    "liked": False,
-                    "saved": False,
-                    "created": datetime.now().isoformat(),
-                })
-        REELSLY_DB.parent.mkdir(exist_ok=True)
-        REELSLY_DB.write_text(json.dumps({"reels": reels}, indent=2), encoding="utf-8")
+        REELSLY_DB.parent.mkdir(parents=True, exist_ok=True)
+        REELSLY_DB.write_text(
+            json.dumps({"reels": bundled_reels(), "hire_requests": []}, indent=2),
+            encoding="utf-8",
+        )
 
     db = json.loads(REELSLY_DB.read_text(encoding="utf-8"))
     changed = False
@@ -84,6 +148,7 @@ def load_reels_db():
         if reel.get("video_url", "").startswith("/static/"):
             reel["video_url"] = reel["video_url"].replace("/static/", "/reels-static/")
             changed = True
+    changed = merge_bundled_reels(db) or changed
     if changed:
         REELSLY_DB.write_text(json.dumps(db, indent=2), encoding="utf-8")
     return db
@@ -105,7 +170,7 @@ def save_reels_db(db):
             )
         return
 
-    REELSLY_DB.parent.mkdir(exist_ok=True)
+    REELSLY_DB.parent.mkdir(parents=True, exist_ok=True)
     REELSLY_DB.write_text(json.dumps(db, indent=2), encoding="utf-8")
 
 

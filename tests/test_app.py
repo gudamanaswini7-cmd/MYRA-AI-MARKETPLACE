@@ -115,9 +115,11 @@ class MarketplaceAppTests(unittest.TestCase):
             db_path = Path(temp_dir) / "reels.json"
             static_path = Path(temp_dir) / "static"
             uploads_path = static_path / "uploads"
+            videos_path = static_path / "videos"
+            videos_path.mkdir(parents=True)
             db_path.write_text(json.dumps({"reels": []}), encoding="utf-8")
 
-            with patch("backend.app.REELSLY_DB", db_path), patch("backend.app.REELSLY_STATIC", static_path), patch("backend.app.REELSLY_UPLOADS", uploads_path):
+            with patch("backend.app.REELSLY_DB", db_path), patch("backend.app.REELSLY_STATIC", static_path), patch("backend.app.REELSLY_UPLOADS", uploads_path), patch("backend.app.REELSLY_VIDEOS", videos_path):
                 response = self.client.post(
                     "/api/upload",
                     data={
@@ -150,9 +152,11 @@ class MarketplaceAppTests(unittest.TestCase):
             db_path = Path(temp_dir) / "reels.json"
             static_path = Path(temp_dir) / "static"
             uploads_path = static_path / "uploads"
+            videos_path = static_path / "videos"
+            videos_path.mkdir(parents=True)
             db_path.write_text(json.dumps({"reels": []}), encoding="utf-8")
 
-            with patch("backend.app.REELSLY_DB", db_path), patch("backend.app.REELSLY_STATIC", static_path), patch("backend.app.REELSLY_UPLOADS", uploads_path):
+            with patch("backend.app.REELSLY_DB", db_path), patch("backend.app.REELSLY_STATIC", static_path), patch("backend.app.REELSLY_UPLOADS", uploads_path), patch("backend.app.REELSLY_VIDEOS", videos_path):
                 for filename, expected_kind in (
                     ("photo.png", "image"),
                     ("clip.mp4", "video"),

@@ -1,8 +1,11 @@
 import hashlib
+import tempfile
 import unittest
+from pathlib import Path
+from urllib.parse import unquote
 from unittest.mock import patch
 
-from backend.app import create_app
+from backend.app import REELSLY_VIDEOS, create_app
 from backend.reels_storage import (
     cloudinary_delivery_url,
     create_upload_signature,
@@ -11,6 +14,88 @@ from backend.reels_storage import (
 
 
 class ReelsStorageTests(unittest.TestCase):
+    def test_bundled_mp4_videos_are_served_with_range_requests(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            database_path = Path(temp_dir) / "reels.json"
+            expected_videos = sorted(
+                video.name
+                for video in REELSLY_VIDEOS.glob("*.mp4")
+            )
+            with (
+                patch("backend.app.USE_POSTGRES", False),
+                patch("backend.app.REELSLY_DB", database_path),
+            ):
+                client = create_app({"TESTING": True}).test_client()
+                reels = client.get("/api/reels").get_json()
+                served_videos = []
+                for reel in reels:
+                    response = client.get(
+                        reel["video_url"],
+                        headers={"Range": "bytes=0-31"},
+                    )
+                    served_videos.append((
+                        Path(unquote(reel["video_url"].split("?")[0])).name,
+                        response.status_code,
+                        response.mimetype,
+                        response.headers.get("Content-Range", ""),
+                        len(response.data),
+                    ))
+                    response.close()
+
+            self.assertEqual(
+                sorted(name for name, *_ in served_videos),
+                expected_videos,
+            )
+            self.assertTrue(all(
+                status == 206
+                and mimetype == "video/mp4"
+                and content_range.startswith("bytes 0-31/")
+                and byte_count == 32
+                for _, status, mimetype, content_range, byte_count in served_videos
+            ))
+
+    def test_empty_feed_seeds_bundled_videos_and_serves_them(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            static_dir = root / "static"
+            videos_dir = static_dir / "videos"
+            videos_dir.mkdir(parents=True)
+            video_path = videos_dir / "creator clip.mp4"
+            video_path.write_bytes(b"sample video")
+            database_path = root / "data" / "reels.json"
+
+            with (
+                patch("backend.app.USE_POSTGRES", False),
+                patch("backend.app.REELSLY_DB", database_path),
+                patch("backend.app.REELSLY_STATIC", static_dir),
+                patch("backend.app.REELSLY_VIDEOS", videos_dir),
+            ):
+                client = create_app({"TESTING": True}).test_client()
+                reels = client.get("/api/reels").get_json()
+                self.assertEqual(len(reels), 1)
+                self.assertEqual(
+                    reels[0]["video_url"],
+                    "/reels-static/videos/creator%20clip.mp4",
+                )
+                video_response = client.get(reels[0]["video_url"])
+                ranged_response = client.get(
+                    reels[0]["video_url"],
+                    headers={"Range": "bytes=0-3"},
+                )
+                video_status = video_response.status_code
+                video_data = video_response.data
+                video_mimetype = video_response.mimetype
+                video_response.close()
+                ranged_status = ranged_response.status_code
+                ranged_data = ranged_response.data
+                ranged_response.close()
+
+            self.assertEqual(video_status, 200)
+            self.assertEqual(video_data, b"sample video")
+            self.assertEqual(video_mimetype, "video/mp4")
+            self.assertEqual(ranged_status, 206)
+            self.assertEqual(ranged_data, b"samp")
+
     def test_signed_upload_is_scoped_to_reels_folder(self):
         with patch.dict("os.environ", {
             "CLOUDINARY_CLOUD_NAME": "test-cloud",
