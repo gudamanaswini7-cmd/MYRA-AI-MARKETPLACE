@@ -1,7 +1,9 @@
 # Deploying AI Marketplace on Vercel
 
 ## Included changes
-- Root `app.py` exports the existing Flask app for Vercel's zero-configuration Flask detection.
+- `vercel.json` configures two Flask services: the public `app` service at the repository root and the internal-only `reelsly` service under `reelsly/`.
+- The catch-all public rewrite targets `app`, preserving existing paths and output. The main app already serves the Reelsly feature; the standalone `reelsly` service is not publicly routed.
+- Neither service calls the other, so no service bindings are required.
 - `public/static/` contains CSS, JavaScript, and image assets served by Vercel's CDN at `/static/...`.
 - `backend/database.py` uses `/tmp/marketplace_challenge.db` when running on Vercel. This is only for demos: the database is ephemeral and records can disappear between instances/deployments.
 - The legacy project-simulator JavaScript now calls the same-origin `/api/simulator/simulate` endpoint instead of a local port.
@@ -9,8 +11,8 @@
 ## Deploy
 1. Extract this ZIP. Copy the files and folders inside it into your GitHub repository, preserving the directory structure, and commit/push the changes.
 2. In Vercel, import or open the project connected to that repository.
-3. Set Root Directory to the repository root (leave it as `.`/blank).
-4. Use automatic framework detection. Leave Build Command, Output Directory, and Install Command at their defaults/blank. Do not set the Root Directory to `frontend`.
+3. Keep the Vercel project root at the repository root so it can read `vercel.json`. The service roots and Flask framework are configured per service in that file; do not set the project root to `frontend` or `reelsly`.
+4. Leave Build Command, Output Directory, and Install Command at their defaults/blank.
 5. In Project Settings -> Environment Variables, add `SECRET_KEY` with a long, random private value. Redeploy after adding it.
 6. Deploy and test `/`, `/health`, `/marketplace`, `/work-twin/`, `/simulator/`, and the API interactions.
 
