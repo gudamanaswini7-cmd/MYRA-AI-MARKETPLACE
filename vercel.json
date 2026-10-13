@@ -10,6 +10,11 @@
       "framework": "flask"
     }
   },
+  "functions": {
+    "app.py": {
+      "includeFiles": "reelsly/static/videos/**"
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
