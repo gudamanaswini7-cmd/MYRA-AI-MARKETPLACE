@@ -92,6 +92,7 @@ class ReelsStorageTests(unittest.TestCase):
                 patch("backend.app.USE_POSTGRES", False),
                 patch("backend.app.REELSLY_DB", database_path),
                 patch("backend.app.REELSLY_STATIC", static_dir),
+                patch("backend.app.REELSLY_FRONTEND_REELS_STATIC", static_dir),
                 patch("backend.app.REELSLY_VIDEOS", videos_dir),
             ):
                 client = create_app({"TESTING": True}).test_client()

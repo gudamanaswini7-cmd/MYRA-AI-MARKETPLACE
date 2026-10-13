@@ -3,7 +3,12 @@
   "services": {
     "app": {
       "root": ".",
-      "framework": "flask"
+      "framework": "flask",
+      "functions": {
+        "app.py": {
+          "includeFiles": "frontend/reels/videos/**"
+        }
+      }
     },
     "reelsly": {
       "root": "reelsly",

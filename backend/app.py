@@ -28,14 +28,15 @@ from backend.routes.work_twin import work_twin_bp
 BASE_DIR = Path(__file__).resolve().parent.parent
 REELSLY_DIR = BASE_DIR / "reelsly"
 REELSLY_STATIC = REELSLY_DIR / "static"
-REELSLY_PUBLIC_REELS_STATIC = BASE_DIR / "public" / "static" / "reels"
+REELSLY_FRONTEND_STATIC = BASE_DIR / "frontend"
+REELSLY_FRONTEND_REELS_STATIC = REELSLY_FRONTEND_STATIC / "reels"
 REELSLY_DB = (
     Path("/tmp/myra_reels.json")
     if os.environ.get("VERCEL") == "1"
     else REELSLY_DIR / "data" / "db.json"
 )
 REELSLY_UPLOADS = REELSLY_STATIC / "uploads"
-REELSLY_VIDEOS = REELSLY_PUBLIC_REELS_STATIC / "videos"
+REELSLY_VIDEOS = REELSLY_FRONTEND_REELS_STATIC / "videos"
 REELSLY_VIDEO_EXTENSIONS = {".mp4", ".webm", ".mov"}
 REELSLY_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp", ".avif"}
 REELSLY_AUDIO_EXTENSIONS = {".mp3", ".wav", ".m4a", ".ogg", ".aac"}
@@ -87,18 +88,18 @@ def merge_bundled_reels(db):
     for reel in db.get("reels", []):
         media_url = reel.get("media_url") or reel.get("video_url") or ""
         parsed_url = urlsplit(media_url)
-        if parsed_url.path.startswith(("/reels-static/", "/static/reels/")):
-            prefix = "/reels-static/" if parsed_url.path.startswith("/reels-static/") else "/static/reels/"
+        if parsed_url.path.startswith("/reels-static/"):
+            prefix = "/reels-static/"
+            static_root = REELSLY_STATIC.resolve()
+        elif parsed_url.path.startswith("/static/reels/"):
+            prefix = "/static/reels/"
+            static_root = REELSLY_FRONTEND_REELS_STATIC.resolve()
+        else:
+            prefix = ""
+        if prefix:
             relative_path = unquote(parsed_url.path.removeprefix(prefix))
-            static_roots = (
-                REELSLY_STATIC.resolve(),
-                REELSLY_PUBLIC_REELS_STATIC.resolve(),
-            )
-            media_exists = any(
-                (media_path := (root / relative_path).resolve()).is_relative_to(root)
-                and media_path.is_file()
-                for root in static_roots
-            )
+            media_path = (static_root / relative_path).resolve()
+            media_exists = media_path.is_relative_to(static_root) and media_path.is_file()
             if not media_exists:
                 changed = True
                 continue
@@ -305,9 +306,8 @@ def create_app(test_config=None):
             relative_video = filename.removeprefix("videos/")
             if (REELSLY_VIDEOS / relative_video).is_file():
                 return send_from_directory(str(REELSLY_VIDEOS), relative_video)
-        for static_root in (REELSLY_STATIC,):
-            if (static_root / filename).is_file():
-                return send_from_directory(str(static_root), filename)
+        if (REELSLY_STATIC / filename).is_file():
+            return send_from_directory(str(REELSLY_STATIC), filename)
         return jsonify(error="Not found"), 404
 
     @app.route("/static/reels/videos/<path:filename>")
