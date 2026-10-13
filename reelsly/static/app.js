@@ -270,7 +270,7 @@ form.onsubmit = async (e) => {
       btn.textContent = "Uploading…";
       const cloudForm = new FormData();
       cloudForm.append("file", file);
-      for (const key of ["api_key", "timestamp", "signature", "folder", "public_id"]) {
+      for (const key of ["api_key", "timestamp", "signature", "public_id"]) {
         cloudForm.append(key, signature[key]);
       }
       const cloudResponse = await fetch(signature.upload_url, { method: "POST", body: cloudForm });

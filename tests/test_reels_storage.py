@@ -213,6 +213,8 @@ class ReelsStorageTests(unittest.TestCase):
                 "/api/reels/upload-signature",
                 json={"filename": "clip.mp4"},
             ).get_json()
+            self.assertEqual(signature["resource_type"], "video")
+            self.assertNotIn("folder", signature)
             public_id = signature["public_id"]
             asset = {
                 "public_id": public_id,
