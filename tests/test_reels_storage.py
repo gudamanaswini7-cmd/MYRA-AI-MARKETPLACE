@@ -3,9 +3,9 @@ import tempfile
 import unittest
 from pathlib import Path
 from urllib.parse import unquote
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
-from backend.app import REELSLY_VIDEOS, create_app
+from backend.app import REELSLY_VIDEOS, create_app, save_reels_db
 from backend.reels_storage import (
     cloudinary_delivery_url,
     create_upload_signature,
@@ -14,6 +14,30 @@ from backend.reels_storage import (
 
 
 class ReelsStorageTests(unittest.TestCase):
+    def test_postgres_reels_are_saved_with_cursor_executemany(self):
+        connection = MagicMock()
+        cursor = MagicMock()
+        connection.__enter__.return_value = connection
+        connection.cursor.return_value.__enter__.return_value = cursor
+        reels = [{"id": "reel-1", "caption": "Test reel"}]
+        hire_requests = [{"id": "request-1", "status": "pending"}]
+
+        with (
+            patch("backend.app.USE_POSTGRES", True),
+            patch("backend.app.get_connection", return_value=connection),
+        ):
+            save_reels_db({"reels": reels, "hire_requests": hire_requests})
+
+        self.assertEqual(cursor.executemany.call_count, 2)
+        self.assertEqual(
+            cursor.executemany.call_args_list[0].args[1],
+            [("reel-1", '{"id": "reel-1", "caption": "Test reel"}')],
+        )
+        self.assertEqual(
+            cursor.executemany.call_args_list[1].args[1],
+            [("request-1", '{"id": "request-1", "status": "pending"}')],
+        )
+
     def test_bundled_mp4_videos_are_served_with_range_requests(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             database_path = Path(temp_dir) / "reels.json"

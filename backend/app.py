@@ -158,16 +158,17 @@ def save_reels_db(db):
     if USE_POSTGRES:
         placeholder = "%s"
         with get_connection() as connection:
-            connection.executemany(
-                f"""INSERT INTO reels (id, payload) VALUES ({placeholder}, {placeholder})
-                    ON CONFLICT (id) DO UPDATE SET payload = excluded.payload""",
-                [(reel["id"], json.dumps(reel)) for reel in db.get("reels", [])],
-            )
-            connection.executemany(
-                f"""INSERT INTO reel_hire_requests (id, payload) VALUES ({placeholder}, {placeholder})
-                    ON CONFLICT (id) DO UPDATE SET payload = excluded.payload""",
-                [(item["id"], json.dumps(item)) for item in db.get("hire_requests", [])],
-            )
+            with connection.cursor() as cursor:
+                cursor.executemany(
+                    f"""INSERT INTO reels (id, payload) VALUES ({placeholder}, {placeholder})
+                        ON CONFLICT (id) DO UPDATE SET payload = excluded.payload""",
+                    [(reel["id"], json.dumps(reel)) for reel in db.get("reels", [])],
+                )
+                cursor.executemany(
+                    f"""INSERT INTO reel_hire_requests (id, payload) VALUES ({placeholder}, {placeholder})
+                        ON CONFLICT (id) DO UPDATE SET payload = excluded.payload""",
+                    [(item["id"], json.dumps(item)) for item in db.get("hire_requests", [])],
+                )
         return
 
     REELSLY_DB.parent.mkdir(parents=True, exist_ok=True)
