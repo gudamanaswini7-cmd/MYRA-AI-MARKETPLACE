@@ -3,12 +3,7 @@
   "services": {
     "app": {
       "root": ".",
-      "framework": "flask",
-      "functions": {
-        "app.py": {
-          "includeFiles": "reelsly/static/videos/**"
-        }
-      }
+      "framework": "flask"
     },
     "reelsly": {
       "root": "reelsly",

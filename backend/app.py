@@ -28,13 +28,14 @@ from backend.routes.work_twin import work_twin_bp
 BASE_DIR = Path(__file__).resolve().parent.parent
 REELSLY_DIR = BASE_DIR / "reelsly"
 REELSLY_STATIC = REELSLY_DIR / "static"
+REELSLY_PUBLIC_STATIC = BASE_DIR / "public" / "reels-static"
 REELSLY_DB = (
     Path("/tmp/myra_reels.json")
     if os.environ.get("VERCEL") == "1"
     else REELSLY_DIR / "data" / "db.json"
 )
 REELSLY_UPLOADS = REELSLY_STATIC / "uploads"
-REELSLY_VIDEOS = REELSLY_STATIC / "videos"
+REELSLY_VIDEOS = REELSLY_PUBLIC_STATIC / "videos"
 REELSLY_VIDEO_EXTENSIONS = {".mp4", ".webm", ".mov"}
 REELSLY_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp", ".avif"}
 REELSLY_AUDIO_EXTENSIONS = {".mp3", ".wav", ".m4a", ".ogg", ".aac"}
@@ -83,15 +84,19 @@ def merge_bundled_reels(db):
     changed = False
     existing_ids = set()
     existing_urls = set()
-    static_root = REELSLY_STATIC.resolve()
+    static_roots = (REELSLY_STATIC.resolve(), REELSLY_PUBLIC_STATIC.resolve())
 
     for reel in db.get("reels", []):
         media_url = reel.get("media_url") or reel.get("video_url") or ""
         parsed_url = urlsplit(media_url)
         if parsed_url.path.startswith("/reels-static/"):
             relative_path = unquote(parsed_url.path.removeprefix("/reels-static/"))
-            media_path = (static_root / relative_path).resolve()
-            if not media_path.is_relative_to(static_root) or not media_path.is_file():
+            media_exists = any(
+                (media_path := (root / relative_path).resolve()).is_relative_to(root)
+                and media_path.is_file()
+                for root in static_roots
+            )
+            if not media_exists:
                 changed = True
                 continue
         reels.append(reel)
@@ -293,9 +298,10 @@ def create_app(test_config=None):
 
     @app.route("/reels-static/<path:filename>")
     def reels_static(filename):
-        if not (REELSLY_STATIC / filename).exists():
-            return jsonify(error="Not found"), 404
-        return send_from_directory(str(REELSLY_STATIC), filename)
+        for static_root in (REELSLY_STATIC, REELSLY_PUBLIC_STATIC):
+            if (static_root / filename).is_file():
+                return send_from_directory(str(static_root), filename)
+        return jsonify(error="Not found"), 404
 
     @app.get("/api/reels/storage")
     def reels_storage_config():

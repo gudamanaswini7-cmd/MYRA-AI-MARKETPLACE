@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename
 BASE = Path(__file__).parent
 DB_FILE = BASE / "data" / "db.json"
 UPLOADS = BASE / "static" / "uploads"
-VIDEOS = BASE / "static" / "videos"
+VIDEOS = BASE.parent / "public" / "reels-static" / "videos"
 ALLOWED = {".mp4", ".webm", ".mov"}
 
 app = Flask(__name__)
