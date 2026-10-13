@@ -99,9 +99,12 @@ class ReelsStorageTests(unittest.TestCase):
                 self.assertEqual(len(reels), 1)
                 self.assertEqual(
                     reels[0]["video_url"],
-                    "/reels-static/videos/creator%20clip.mp4",
+                    "/static/reels/videos/creator%20clip.mp4",
                 )
                 video_response = client.get(reels[0]["video_url"])
+                legacy_video_response = client.get(
+                    "/reels-static/videos/creator%20clip.mp4"
+                )
                 ranged_response = client.get(
                     reels[0]["video_url"],
                     headers={"Range": "bytes=0-3"},
@@ -110,6 +113,9 @@ class ReelsStorageTests(unittest.TestCase):
                 video_data = video_response.data
                 video_mimetype = video_response.mimetype
                 video_response.close()
+                legacy_video_status = legacy_video_response.status_code
+                legacy_video_data = legacy_video_response.data
+                legacy_video_response.close()
                 ranged_status = ranged_response.status_code
                 ranged_data = ranged_response.data
                 ranged_response.close()
@@ -117,6 +123,8 @@ class ReelsStorageTests(unittest.TestCase):
             self.assertEqual(video_status, 200)
             self.assertEqual(video_data, b"sample video")
             self.assertEqual(video_mimetype, "video/mp4")
+            self.assertEqual(legacy_video_status, 200)
+            self.assertEqual(legacy_video_data, b"sample video")
             self.assertEqual(ranged_status, 206)
             self.assertEqual(ranged_data, b"samp")
 

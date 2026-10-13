@@ -4,7 +4,7 @@
 - `vercel.json` configures two Flask services: the public `app` service at the repository root and the internal-only `reelsly` service under `reelsly/`.
 - The catch-all public rewrite targets `app`, preserving existing paths and output. The main app already serves the Reelsly feature; the standalone `reelsly` service is not publicly routed.
 - Neither service calls the other, so no service bindings are required.
-- Sample MP4s live in `public/reels-static/videos/` so Vercel serves them directly through its CDN; the Flask feed seeds its starter Reels from this directory.
+- Sample MP4s live in `public/static/reels/videos/` so Vercel serves them through the existing `/static/...` asset path; the Flask feed seeds its starter Reels from this directory.
 - If the Reels feed has no records, it is seeded from the bundled MP4s. On Vercel, the temporary JSON feed file is kept under `/tmp`; this supports demo playback but is not durable storage.
 - `public/static/` contains CSS, JavaScript, and image assets served by Vercel's CDN at `/static/...`.
 - `backend/database.py` uses `/tmp/marketplace_challenge.db` when running on Vercel. This is only for demos: the database is ephemeral and records can disappear between instances/deployments.
